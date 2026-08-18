@@ -200,3 +200,38 @@ export interface ThemeConfig {
   accentColor: string;
   previewBg: string;
 }
+
+export interface WeatherData {
+  placeName: string;
+  region: string;
+  country: string;
+  latitude: number;
+  longitude: number;
+  temperatureC: number;
+  humidityPercent: number;
+  apparentTempC: number;
+  weatherCode: number;
+  weatherDescription: string;
+  windSpeedKmh: number;
+  precipitationTodayMm: number;
+  forecastRain3DaysMm: number;
+  evapotranspirationMmDay: number;
+  lastUpdated: string;
+  dailyForecast: Array<{
+    date: string;
+    maxTempC: number;
+    minTempC: number;
+    rainMm: number;
+    rainProbPercent: number;
+    weatherDescription: string;
+  }>;
+}
+
+export interface LocationOption {
+  name: string;
+  region?: string;
+  country?: string;
+  latitude: number;
+  longitude: number;
+}
+
