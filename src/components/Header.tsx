@@ -1,9 +1,9 @@
 import React from "react";
-import { Sprout, BookOpen, Globe, Droplets, Leaf, Sliders, MapPin, Award, HelpCircle } from "lucide-react";
+import { Sprout, Globe, Droplets, Leaf, Sliders, MapPin, HelpCircle } from "lucide-react";
 
 interface HeaderProps {
-  activeTab: "dss" | "crop-doctor" | "soil" | "farm-data" | "activity-lab" | "notebook";
-  setActiveTab: (tab: "dss" | "crop-doctor" | "soil" | "farm-data" | "activity-lab" | "notebook") => void;
+  activeTab: "dss" | "crop-doctor" | "soil" | "farm-data";
+  setActiveTab: (tab: "dss" | "crop-doctor" | "soil" | "farm-data") => void;
   language: string;
   setLanguage: (lang: string) => void;
   onOpenQuickAdvisory: () => void;
@@ -20,8 +20,8 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   return (
     <header className="sticky top-0 z-40 bg-slate-900 text-white border-b border-slate-800 shadow-md">
-      {/* Top Simple Helper Bar */}
-      <div className="bg-emerald-950 border-b border-emerald-900/60 py-1 px-4 text-xs text-emerald-200 hidden md:block">
+      {/* Top Helper Bar */}
+      <div className="bg-emerald-950 border-b border-emerald-900/60 py-1.5 px-4 text-xs text-emerald-200 hidden md:block">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="font-semibold text-emerald-300 flex items-center gap-1.5">
@@ -35,11 +35,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           <div className="flex items-center gap-2 text-emerald-200">
-            <span>S.S Agriculture Project</span>
-            <span>•</span>
-            <span className="bg-emerald-900 text-emerald-300 px-2 py-0.5 rounded font-bold">
-              School Activity
-            </span>
+            <span>Precision Agriculture & Irrigation Decision Support</span>
           </div>
         </div>
       </div>
@@ -59,13 +55,13 @@ export const Header: React.FC<HeaderProps> = ({
               AgriVision <span className="text-emerald-400">AI</span>
             </span>
             <span className="text-[11px] text-slate-400 font-medium block">
-              Farmer & Student Assistant
+              Farmer Decision Support System
             </span>
           </div>
         </div>
 
         {/* Simple Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-1 bg-slate-800/90 p-1 rounded-xl border border-slate-700/80">
+        <nav className="hidden md:flex items-center gap-1 bg-slate-800/90 p-1 rounded-xl border border-slate-700/80">
           <button
             onClick={() => setActiveTab("dss")}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -113,30 +109,6 @@ export const Header: React.FC<HeaderProps> = ({
             <MapPin className="w-3.5 h-3.5 text-teal-400" />
             My Fields
           </button>
-
-          <button
-            onClick={() => setActiveTab("activity-lab")}
-            className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-              activeTab === "activity-lab"
-                ? "bg-amber-600 text-white shadow-sm"
-                : "text-amber-300 hover:text-white hover:bg-slate-700/60"
-            }`}
-          >
-            <Award className="w-3.5 h-3.5 text-amber-300" />
-            School AI Project
-          </button>
-
-          <button
-            onClick={() => setActiveTab("notebook")}
-            className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-              activeTab === "notebook"
-                ? "bg-amber-800 text-amber-100 shadow-sm"
-                : "text-slate-300 hover:text-white hover:bg-slate-700/60"
-            }`}
-          >
-            <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-            Notebook Pages
-          </button>
         </nav>
 
         {/* Language & Help Action */}
@@ -177,7 +149,7 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Mobile Horizontal Navigation Tabs */}
-      <div className="lg:hidden flex items-center overflow-x-auto px-4 py-2 bg-slate-800 border-t border-slate-700 gap-1.5 text-xs">
+      <div className="md:hidden flex items-center overflow-x-auto px-4 py-2 bg-slate-800 border-t border-slate-700 gap-1.5 text-xs">
         <button
           onClick={() => setActiveTab("dss")}
           className={`px-3 py-1.5 rounded-lg whitespace-nowrap font-bold ${
@@ -209,22 +181,6 @@ export const Header: React.FC<HeaderProps> = ({
           }`}
         >
           My Fields
-        </button>
-        <button
-          onClick={() => setActiveTab("activity-lab")}
-          className={`px-3 py-1.5 rounded-lg whitespace-nowrap font-bold ${
-            activeTab === "activity-lab" ? "bg-amber-600 text-white" : "text-amber-300"
-          }`}
-        >
-          School Project
-        </button>
-        <button
-          onClick={() => setActiveTab("notebook")}
-          className={`px-3 py-1.5 rounded-lg whitespace-nowrap font-bold ${
-            activeTab === "notebook" ? "bg-amber-800 text-amber-100" : "text-slate-300"
-          }`}
-        >
-          Notebook
         </button>
       </div>
     </header>

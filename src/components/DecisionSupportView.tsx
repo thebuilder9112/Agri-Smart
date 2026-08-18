@@ -27,7 +27,6 @@ interface DecisionSupportViewProps {
   language: string;
   onOpenCropDoctor: () => void;
   onOpenSoilAdvisor: () => void;
-  onOpenActivityLab: () => void;
 }
 
 export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
@@ -36,7 +35,6 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
   language,
   onOpenCropDoctor,
   onOpenSoilAdvisor,
-  onOpenActivityLab,
 }) => {
   const [selectedFieldId, setSelectedFieldId] = useState<string>(fields[0]?.id || "field-1");
   const [isCalculatingAdvisory, setIsCalculatingAdvisory] = useState(false);
@@ -173,13 +171,6 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
             >
               <Sliders className="w-4 h-4 text-amber-300" />
               Fertilizer Calculator
-            </button>
-            <button
-              onClick={onOpenActivityLab}
-              className="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold transition-all flex items-center gap-2 shadow-sm cursor-pointer hover:scale-105 active:scale-95"
-            >
-              <Sparkles className="w-4 h-4 text-amber-200" />
-              School AI Project
             </button>
           </div>
         </div>

@@ -4,8 +4,6 @@ import { DecisionSupportView } from "./components/DecisionSupportView";
 import { CropDoctorView } from "./components/CropDoctorView";
 import { SoilNutrientView } from "./components/SoilNutrientView";
 import { FarmDataView } from "./components/FarmDataView";
-import { ActivityLabView } from "./components/ActivityLabView";
-import { ReferenceNotebookView } from "./components/ReferenceNotebookView";
 import { AgronomistChatModal } from "./components/AgronomistChatModal";
 import { INITIAL_FIELDS } from "./data/mockData";
 import { FieldRecord } from "./types/agriculture";
@@ -13,7 +11,7 @@ import { Sprout, MessageSquareQuote } from "lucide-react";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<
-    "dss" | "crop-doctor" | "soil" | "farm-data" | "activity-lab" | "notebook"
+    "dss" | "crop-doctor" | "soil" | "farm-data"
   >("dss");
   const [language, setLanguage] = useState<string>("en");
   const [fields, setFields] = useState<FieldRecord[]>(INITIAL_FIELDS);
@@ -58,7 +56,6 @@ export default function App() {
             language={language}
             onOpenCropDoctor={() => setActiveTab("crop-doctor")}
             onOpenSoilAdvisor={() => setActiveTab("soil")}
-            onOpenActivityLab={() => setActiveTab("activity-lab")}
           />
         )}
 
@@ -72,16 +69,6 @@ export default function App() {
             onAddField={handleAddField}
             onUpdateField={handleUpdateField}
             onDeleteField={handleDeleteField}
-          />
-        )}
-
-        {activeTab === "activity-lab" && <ActivityLabView />}
-
-        {activeTab === "notebook" && (
-          <ReferenceNotebookView
-            onGoToStep={() => {
-              setActiveTab("activity-lab");
-            }}
           />
         )}
       </main>
@@ -111,10 +98,10 @@ export default function App() {
           <div className="flex items-center gap-2">
             <Sprout className="w-4 h-4 text-emerald-600" />
             <span className="font-bold text-slate-900">AgriVision AI</span>
-            <span>— Simple Farming & Irrigation Assistant</span>
+            <span>— Precision Agriculture & Irrigation Decision Support System</span>
           </div>
           <div className="text-center sm:text-right text-[11px] text-slate-500">
-            S.S Agriculture School Activity • 4-Step Student Innovation Project
+            Automated Farm Management • AI Diagnostic Doctor • Real-time Sensors
           </div>
         </div>
       </footer>
