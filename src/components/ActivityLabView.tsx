@@ -130,50 +130,47 @@ export const ActivityLabView: React.FC = () => {
   return (
     <div className="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       {/* Step Pipeline Hero Bar */}
-      <div className="relative overflow-hidden bg-slate-950 text-white rounded-2xl p-6 border border-slate-800 shadow-xl space-y-5">
-        <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-amber-500/10 blur-2xl pointer-events-none pulse-glow" />
-        
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="relative overflow-hidden bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 shadow-md space-y-4">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <span className="text-[10px] font-extrabold text-amber-400 bg-amber-950/80 px-2.5 py-1 rounded-md border border-amber-500/40 uppercase tracking-widest inline-flex items-center gap-1.5 mb-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
-              S.S Agriculture Activity Studio • Deadline: 17th August 2026
+            <span className="text-[10px] font-bold text-amber-300 bg-amber-950 px-2.5 py-1 rounded-md border border-amber-500/40 uppercase tracking-wider inline-flex items-center gap-1.5 mb-1.5">
+              School Project Activity • Deadline: 17th August 2026
             </span>
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-              Agricultural A.I Innovation Challenge
+              Agriculture AI Project & School Activities
             </h1>
-            <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl">
-              Complete 4-step framework from real problem survey to interactive AI prototypes, blueprints, and poster presentation models.
+            <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
+              4 simple steps from farmer problem survey to AI idea blueprints, cardboard models, and project exhibition posters.
             </p>
           </div>
 
           {/* Quick jump to page note */}
-          <div className="flex items-center gap-2 bg-slate-900 px-4 py-2 rounded-xl border border-slate-800 shrink-0 float-slow">
+          <div className="flex items-center gap-2 bg-slate-800 px-4 py-2 rounded-xl border border-slate-700 shrink-0">
             <BookOpen className="w-4 h-4 text-amber-400" />
             <div className="text-xs">
-              <span className="text-slate-400 text-[10px] block">Notebook Subject:</span>
+              <span className="text-slate-400 text-[10px] block">Subject:</span>
               <strong className="text-white">S.S Agriculture Chapter</strong>
             </div>
           </div>
         </div>
 
-        {/* 4 Interactive Step Tabs with Smooth Selection Animation */}
+        {/* 4 Interactive Step Tabs */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 pt-3 border-t border-slate-800">
           {[
-            { step: 1, title: "Step 1: Problem Survey", sub: "Survey Local Farming Issues" },
-            { step: 2, title: "Step 2: A.I Exploration", sub: "Compare Tools & ROI" },
-            { step: 3, title: "Step 3: Design Challenge", sub: "AI Solution Prototypes" },
-            { step: 4, title: "Step 4: Model Creation", sub: "Flowcharts, Posters & Rubric" },
+            { step: 1, title: "Step 1: Farmer Survey", sub: "Find Real Farm Problems" },
+            { step: 2, title: "Step 2: AI Tools", sub: "Compare Cost & Benefits" },
+            { step: 3, title: "Step 3: Solution Ideas", sub: "AI Idea Blueprints" },
+            { step: 4, title: "Step 4: Models & Poster", sub: "Flowchart, Model & Score" },
           ].map((item) => {
             const isActive = activeStep === item.step;
             return (
               <button
                 key={item.step}
                 onClick={() => setActiveStep(item.step as any)}
-                className={`p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer hover:scale-[1.02] active:scale-[0.98] ${
+                className={`p-3 rounded-xl border text-left transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98] ${
                   isActive
-                    ? "bg-amber-500 text-slate-950 border-amber-400 shadow-md font-bold ring-2 ring-amber-400/30"
-                    : "bg-slate-900/80 text-slate-300 border-slate-800 hover:bg-slate-800 hover:text-white"
+                    ? "bg-amber-500 text-slate-950 border-amber-400 shadow-sm font-bold"
+                    : "bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-white"
                 }`}
               >
                 <div className="text-xs font-black truncate">{item.title}</div>
@@ -568,7 +565,7 @@ export const ActivityLabView: React.FC = () => {
                 }`}
               >
                 <Workflow className="w-3.5 h-3.5" />
-                1. System FlowChart Architecture
+                1. System Flowchart
               </button>
 
               <button
@@ -580,7 +577,7 @@ export const ActivityLabView: React.FC = () => {
                 }`}
               >
                 <Box className="w-3.5 h-3.5 text-amber-600" />
-                2. Cardboard Prototype DIY Blueprint
+                2. Cardboard Model Guide
               </button>
 
               <button
@@ -592,7 +589,7 @@ export const ActivityLabView: React.FC = () => {
                 }`}
               >
                 <Printer className="w-3.5 h-3.5 text-emerald-600" />
-                3. Print-Ready Digital Concept Poster
+                3. School Project Poster
               </button>
 
               <button
@@ -604,7 +601,7 @@ export const ActivityLabView: React.FC = () => {
                 }`}
               >
                 <Award className="w-3.5 h-3.5 text-amber-300" />
-                4. AI Rubric Evaluator & Certificate
+                4. Score Project & Certificate
               </button>
             </div>
 
@@ -763,7 +760,7 @@ export const ActivityLabView: React.FC = () => {
                     className="px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-extrabold rounded-xl text-xs transition-all flex items-center gap-2 shadow-md disabled:opacity-50 cursor-pointer hover:scale-105 active:scale-95"
                   >
                     {isGrading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Award className="w-4 h-4" />}
-                    Evaluate Model with AI Rubric
+                    Check My Score (AI Grading)
                   </button>
                 </div>
 

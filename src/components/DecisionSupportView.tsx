@@ -9,19 +9,15 @@ import {
   ShieldCheck,
   Send,
   Zap,
-  Gauge,
   Sliders,
   Sparkles,
   Loader2,
   Volume2,
-  Activity,
-  ArrowRight,
-  TrendingDown,
+  MapPin,
   Clock,
-  Compass,
-  Radio,
   Waves,
   Cpu,
+  Power,
 } from "lucide-react";
 import { FieldRecord, IrrigationAdvisoryResult } from "../types/agriculture";
 
@@ -123,7 +119,7 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
       setAgronomistAnswer(data.reply || data.fallbackReply);
     } catch (err) {
       console.error(err);
-      setAgronomistAnswer("Optimal soil moisture for wheat at vegetative stage is 55-65%. Ensure drainage to prevent root rot.");
+      setAgronomistAnswer("For wheat in growing stage, maintain soil moisture between 55% and 65%. Water in the early morning to save water.");
     } finally {
       setIsQueryingAgronomist(false);
     }
@@ -146,101 +142,93 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      {/* TOP COMMAND HERO COCKPIT */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-900 text-white p-6 sm:p-8 border border-emerald-800/60 shadow-2xl">
-        {/* Animated Background Pulse Waves */}
-        <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none pulse-glow" />
-        <div className="absolute right-1/3 -bottom-16 w-48 h-48 rounded-full bg-teal-500/10 blur-2xl pointer-events-none" />
-
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-          <div className="space-y-2 max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider border border-emerald-400/30">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              Automated Decision Support System (DSS)
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-              Precision Hydrology & Agronomic Command
+      {/* SIMPLE HEADER HERO */}
+      <div className="rounded-2xl bg-gradient-to-br from-emerald-900 to-slate-900 text-white p-6 sm:p-7 border border-emerald-800/60 shadow-lg space-y-4">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <div className="space-y-1.5 max-w-3xl">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider border border-emerald-400/30">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              Smart Farm Water Guide
+            </span>
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+              Smart Water & Irrigation Guide
             </h1>
-            <p className="text-xs sm:text-sm text-emerald-100/80 leading-relaxed">
-              Eliminating groundwater wastage, timing automated valves against upcoming rainfall, and optimizing
-              crop yields through closed-loop IoT root telemetry & Gemini AI.
+            <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed">
+              Know exactly when to turn on water, save groundwater, and prepare before rain arrives.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+          {/* Quick Action Shortcuts with plain text */}
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
             <button
               onClick={onOpenCropDoctor}
-              className="px-4 py-2.5 rounded-xl bg-emerald-700/80 hover:bg-emerald-600 text-white text-xs font-bold border border-emerald-400/30 transition-all flex items-center gap-2 shadow-sm hover:scale-105 active:scale-95 cursor-pointer"
+              className="px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold transition-all flex items-center gap-2 shadow-sm cursor-pointer hover:scale-105 active:scale-95"
             >
               <ShieldCheck className="w-4 h-4 text-emerald-300" />
-              Crop Doctor AI
+              Check Leaf Disease
             </button>
             <button
               onClick={onOpenSoilAdvisor}
-              className="px-4 py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-white text-xs font-bold border border-slate-600 transition-all flex items-center gap-2 shadow-sm hover:scale-105 active:scale-95 cursor-pointer"
+              className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition-all flex items-center gap-2 shadow-sm border border-slate-700 cursor-pointer hover:scale-105 active:scale-95"
             >
               <Sliders className="w-4 h-4 text-amber-300" />
-              Soil & NPK Plan
+              Fertilizer Calculator
             </button>
             <button
               onClick={onOpenActivityLab}
-              className="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-extrabold transition-all flex items-center gap-2 shadow-md shadow-amber-950/50 hover:scale-105 active:scale-95 cursor-pointer"
+              className="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold transition-all flex items-center gap-2 shadow-sm cursor-pointer hover:scale-105 active:scale-95"
             >
               <Sparkles className="w-4 h-4 text-amber-200" />
-              Student Activity Hub
+              School AI Project
             </button>
           </div>
         </div>
 
-        {/* Micro Telemetry Bar with Animated Metrics */}
-        <div className="mt-6 pt-5 border-t border-emerald-800/60 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-          <div className="bg-slate-900/60 backdrop-blur-xs p-3 rounded-xl border border-emerald-800/40 hover:border-emerald-500/50 transition-colors">
-            <span className="text-[10px] text-emerald-300/70 block uppercase font-bold">Soil Water Saved</span>
-            <span className="text-lg font-black text-emerald-300 flex items-center gap-1.5">
-              <Droplets className="w-4 h-4 text-emerald-400 animate-bounce" />
-              45% Conserved
+        {/* 4 Simple Farm Summary Boxes */}
+        <div className="pt-3 border-t border-emerald-800/60 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          <div className="bg-slate-900/70 p-3 rounded-xl border border-emerald-800/40">
+            <span className="text-[11px] text-emerald-300/80 block font-semibold">Water Saved</span>
+            <span className="text-base font-black text-emerald-300 flex items-center gap-1.5 mt-0.5">
+              <Droplets className="w-4 h-4 text-emerald-400" />
+              45% Saved
             </span>
           </div>
-          <div className="bg-slate-900/60 backdrop-blur-xs p-3 rounded-xl border border-emerald-800/40 hover:border-emerald-500/50 transition-colors">
-            <span className="text-[10px] text-emerald-300/70 block uppercase font-bold">Active Valve Mesh</span>
-            <span className="text-lg font-black text-white flex items-center gap-1.5">
-              <Cpu className="w-4 h-4 text-emerald-400" />
-              4 IoT Solenoids
+          <div className="bg-slate-900/70 p-3 rounded-xl border border-emerald-800/40">
+            <span className="text-[11px] text-emerald-300/80 block font-semibold">Water Valves</span>
+            <span className="text-base font-black text-white flex items-center gap-1.5 mt-0.5">
+              <Power className="w-4 h-4 text-emerald-400" />
+              4 Valves Ready
             </span>
           </div>
-          <div className="bg-slate-900/60 backdrop-blur-xs p-3 rounded-xl border border-emerald-800/40 hover:border-emerald-500/50 transition-colors">
-            <span className="text-[10px] text-emerald-300/70 block uppercase font-bold">Rainfall Probability</span>
-            <span className="text-lg font-black text-sky-300 flex items-center gap-1.5">
-              <CloudRain className={`w-4 h-4 ${forecastRainMm > 0 ? "text-sky-400 animate-pulse" : "text-slate-400"}`} />
-              {forecastRainMm > 0 ? "75% (72h)" : "0% Clear"}
+          <div className="bg-slate-900/70 p-3 rounded-xl border border-emerald-800/40">
+            <span className="text-[11px] text-emerald-300/80 block font-semibold">Rain Expected</span>
+            <span className="text-base font-black text-sky-300 flex items-center gap-1.5 mt-0.5">
+              <CloudRain className="w-4 h-4 text-sky-400" />
+              {forecastRainMm > 0 ? `${forecastRainMm} mm (Next 3 Days)` : "Clear Weather"}
             </span>
           </div>
-          <div className="bg-slate-900/60 backdrop-blur-xs p-3 rounded-xl border border-emerald-800/40 hover:border-emerald-500/50 transition-colors">
-            <span className="text-[10px] text-emerald-300/70 block uppercase font-bold">Evapotranspiration</span>
-            <span className="text-lg font-black text-amber-300 flex items-center gap-1.5">
+          <div className="bg-slate-900/70 p-3 rounded-xl border border-emerald-800/40">
+            <span className="text-[11px] text-emerald-300/80 block font-semibold">Sun Evaporation</span>
+            <span className="text-base font-black text-amber-300 flex items-center gap-1.5 mt-0.5">
               <Sun className="w-4 h-4 text-amber-400" />
-              4.8 mm/day
+              4.8 mm / day
             </span>
           </div>
         </div>
       </div>
 
-      {/* MAIN TWO-COLUMN WORKSPACE */}
+      {/* TWO COLUMN WORKSPACE */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* LEFT COLUMN (4 Cols): Field Grid & Actuator State */}
+        {/* LEFT COLUMN: Field Selector & Valve Controls */}
         <div className="lg:col-span-4 space-y-4">
-          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-3.5">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
               <h2 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
-                <Gauge className="w-4 h-4 text-emerald-600" />
-                Active Field Plots ({fields.length})
+                <MapPin className="w-4 h-4 text-emerald-600" />
+                Select Field ({fields.length} Fields)
               </h2>
-              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
-                Live Probes Active
+              <span className="text-[10px] font-bold text-slate-500">
+                Click a field to test
               </span>
             </div>
 
@@ -256,49 +244,46 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
                       setCustomMoisture(field.currentMoisture);
                       setAdvisoryResult(null);
                     }}
-                    className={`p-3.5 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+                    className={`p-3.5 rounded-xl border-2 cursor-pointer transition-all ${
                       isSelected
-                        ? "border-emerald-600 bg-emerald-50/60 shadow-md ring-2 ring-emerald-500/20 scale-[1.01]"
-                        : "border-slate-200/80 bg-slate-50/60 hover:bg-white hover:border-slate-300 hover:shadow-sm"
+                        ? "border-emerald-600 bg-emerald-50/70 shadow-sm"
+                        : "border-slate-200 bg-slate-50 hover:bg-white"
                     }`}
                   >
                     <div className="flex items-start justify-between">
                       <div>
-                        <div className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
-                          {field.name}
-                          <span className="text-[10px] font-semibold text-slate-500">
-                            ({field.areaAcre} Acres)
-                          </span>
+                        <div className="font-bold text-xs text-slate-900">
+                          {field.name} ({field.areaAcre} Acres)
                         </div>
-                        <div className="text-[11px] text-slate-500 mt-0.5">
-                          {field.crop} • {field.stage}
+                        <div className="text-[11px] text-slate-500 mt-0.5 font-medium">
+                          Crop: {field.crop} • {field.stage}
                         </div>
                       </div>
 
                       {isLowMoisture ? (
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1 animate-pulse">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1">
                           <AlertTriangle className="w-3 h-3 text-amber-600" />
-                          Dry Alert
+                          Needs Water
                         </span>
                       ) : (
                         <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 flex items-center gap-1">
                           <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                          Optimal
+                          Moisture OK
                         </span>
                       )}
                     </div>
 
-                    {/* Progress moisture bar with animated transition */}
+                    {/* Progress Bar */}
                     <div className="mt-3 space-y-1">
                       <div className="flex justify-between text-[10px] font-semibold text-slate-600">
-                        <span>Soil Moisture</span>
+                        <span>Soil Moisture:</span>
                         <span className={isLowMoisture ? "text-amber-600 font-bold" : "text-emerald-700 font-bold"}>
                           {field.currentMoisture}%
                         </span>
                       </div>
                       <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
                         <div
-                          className={`h-full transition-all duration-500 ease-out rounded-full ${
+                          className={`h-full rounded-full transition-all duration-300 ${
                             isLowMoisture ? "bg-amber-500" : "bg-emerald-600"
                           }`}
                           style={{ width: `${field.currentMoisture}%` }}
@@ -306,46 +291,29 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
                       </div>
                     </div>
 
-                    {/* Micro Valve Controller with Flow Animation */}
+                    {/* Simple Valve Button */}
                     <div className="mt-3 pt-2.5 border-t border-slate-200/80 flex items-center justify-between">
-                      <div className="text-[11px] text-slate-600 font-medium flex items-center gap-1.5">
-                        {field.valveOpen && (
-                          <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
-                          </span>
-                        )}
-                        <span>Solenoid Valve:</span>
-                        <strong className={field.valveOpen ? "text-emerald-600 font-extrabold" : "text-slate-500"}>
-                          {field.valveOpen ? "RUNNING" : "STANDBY"}
+                      <span className="text-[11px] text-slate-600 font-medium">
+                        Water Tap / Valve:{" "}
+                        <strong className={field.valveOpen ? "text-emerald-600 font-bold" : "text-slate-500"}>
+                          {field.valveOpen ? "RUNNING (ON)" : "CLOSED (OFF)"}
                         </strong>
-                      </div>
+                      </span>
 
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleValve(field);
                         }}
-                        className={`px-2.5 py-1 rounded text-[10px] font-bold transition-all cursor-pointer shadow-xs active:scale-95 ${
+                        className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                           field.valveOpen
                             ? "bg-rose-600 hover:bg-rose-700 text-white"
-                            : "bg-slate-900 hover:bg-slate-800 text-white"
+                            : "bg-emerald-700 hover:bg-emerald-800 text-white"
                         }`}
                       >
-                        {field.valveOpen ? "Close Valve" : "Manual Override"}
+                        {field.valveOpen ? "Turn Water OFF" : "Turn Water ON"}
                       </button>
                     </div>
-
-                    {/* Animated water pipe graphic if valve open */}
-                    {field.valveOpen && (
-                      <div className="mt-2.5 p-2 rounded-lg bg-sky-50 border border-sky-200 flex items-center justify-between text-[10px] text-sky-800 font-bold">
-                        <span className="flex items-center gap-1">
-                          <Waves className="w-3.5 h-3.5 text-sky-600 animate-spin" />
-                          Drip Water Emitting (1.8 L/hr)
-                        </span>
-                        <span className="water-drip">💧</span>
-                      </div>
-                    )}
                   </div>
                 );
               })}
@@ -353,36 +321,35 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
           </div>
         </div>
 
-        {/* RIGHT COLUMN (8 Cols): Interactive Hydrology Engine & AI Decision Matrix */}
-        <div className="lg:col-span-8 space-y-6">
-          {/* SMART IRRIGATION & HYDROLOGY SIMULATOR */}
-          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 space-y-5">
+        {/* RIGHT COLUMN: Interactive Water Need Checker */}
+        <div className="lg:col-span-8 space-y-5">
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-5">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 pb-3">
               <div>
-                <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                <h2 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
                   <Droplets className="w-5 h-5 text-teal-600" />
-                  Smart Irrigation Alarm & Hydrology Simulator
+                  Water Need Checker
                 </h2>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Selected Target: <strong className="text-slate-900">{selectedField?.name}</strong> • Crop: <strong className="text-emerald-700">{selectedField?.crop} ({selectedField?.stage})</strong>
+                  Field: <strong className="text-slate-900">{selectedField?.name}</strong> • Crop: <strong className="text-emerald-700">{selectedField?.crop} ({selectedField?.stage})</strong>
                 </p>
               </div>
               <span className="text-xs font-semibold text-slate-600 bg-slate-100 px-3 py-1 rounded-lg">
-                Method: {selectedField?.irrigationType}
+                Water Method: {selectedField?.irrigationType}
               </span>
             </div>
 
-            {/* Interactive Sliders Grid */}
+            {/* Sliders */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
-              {/* Soil Moisture Sensor Probe */}
+              {/* Soil Moisture Slider */}
               <div>
                 <div className="flex justify-between text-xs mb-1.5 font-bold">
                   <span className="text-slate-700 flex items-center gap-1.5">
                     <Droplets className="w-4 h-4 text-teal-600" />
-                    Root Moisture Probe:
+                    Soil Moisture in Field:
                   </span>
                   <span className={customMoisture < 45 ? "text-amber-600 font-extrabold" : "text-emerald-700 font-extrabold"}>
-                    {customMoisture}% {customMoisture < 45 ? "(Deficit Alarm)" : "(Adequate)"}
+                    {customMoisture}% {customMoisture < 45 ? "(Dry / Needs Water)" : "(Sufficient)"}
                   </span>
                 </div>
                 <input
@@ -391,21 +358,21 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
                   max={95}
                   value={customMoisture}
                   onChange={(e) => setCustomMoisture(Number(e.target.value))}
-                  className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-teal-600 transition-all"
+                  className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
                 />
                 <div className="flex justify-between text-[10px] text-slate-500 mt-1 font-medium">
-                  <span>10% (Severe Drought)</span>
-                  <span>45% (Critical Threshold)</span>
-                  <span>95% (Saturated)</span>
+                  <span>10% (Dry Ground)</span>
+                  <span>45% (Watering Mark)</span>
+                  <span>95% (Wet / Saturated)</span>
                 </div>
               </div>
 
-              {/* Rain Forecast (Next 72 Hours) */}
+              {/* Rain Slider */}
               <div>
                 <div className="flex justify-between text-xs mb-1.5 font-bold">
                   <span className="text-slate-700 flex items-center gap-1.5">
                     <CloudRain className="w-4 h-4 text-sky-600" />
-                    Rain Forecast (Next 72h):
+                    Expected Rain (Next 3 Days):
                   </span>
                   <span className="text-sky-700 font-extrabold">{forecastRainMm} mm</span>
                 </div>
@@ -415,101 +382,105 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
                   max={60}
                   value={forecastRainMm}
                   onChange={(e) => setForecastRainMm(Number(e.target.value))}
-                  className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-sky-600 transition-all"
+                  className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-sky-600"
                 />
                 <div className="flex justify-between text-[10px] text-slate-500 mt-1 font-medium">
-                  <span>0 mm (Clear)</span>
-                  <span>20 mm (Moderate Rain)</span>
-                  <span>60 mm (Downpour)</span>
+                  <span>0 mm (Sunny / Dry)</span>
+                  <span>20 mm (Medium Rain)</span>
+                  <span>60 mm (Heavy Rain)</span>
                 </div>
               </div>
             </div>
 
-            {/* Run Hydrology Decision Engine Button */}
+            {/* Check Button */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="text-xs text-slate-600 flex items-center gap-2">
                 <Thermometer className="w-4 h-4 text-orange-500" />
-                <span>Ambient Temp: <strong>{selectedField?.currentTemp}°C</strong> | Humidity: <strong>{selectedField?.currentHumidity}%</strong></span>
+                <span>Air Temp: <strong>{selectedField?.currentTemp}°C</strong> | Humidity: <strong>{selectedField?.currentHumidity}%</strong></span>
               </div>
 
               <button
                 onClick={handleCalculateAdvisory}
                 disabled={isCalculatingAdvisory}
-                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold transition-all shadow-md shadow-teal-950/30 flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer hover:scale-105 active:scale-95"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer hover:scale-105 active:scale-95"
               >
                 {isCalculatingAdvisory ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin text-teal-200" />
-                    Computing Hydrology Model...
+                    <Loader2 className="w-4 h-4 animate-spin text-emerald-200" />
+                    Checking Weather & Moisture...
                   </>
                 ) : (
                   <>
-                    <Zap className="w-4 h-4 text-teal-200 animate-pulse" />
-                    Calculate Automated Irrigation Decision
+                    <Zap className="w-4 h-4 text-emerald-200" />
+                    Check When to Water Crop
                   </>
                 )}
               </button>
             </div>
 
-            {/* AI Advisory Result Card with Smooth Transition */}
+            {/* Advisory Result */}
             {advisoryResult && (
-              <div className="p-5 rounded-2xl bg-emerald-50/80 border border-emerald-200 space-y-4 shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300">
+              <div className="p-5 rounded-2xl bg-emerald-50/90 border border-emerald-200 space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-3 border-b border-emerald-200/80 pb-3">
                   <div className="flex items-center gap-2">
                     <span
-                      className={`px-3 py-1 rounded-lg text-xs font-extrabold tracking-wide uppercase ${
+                      className={`px-3 py-1 rounded-lg text-xs font-extrabold uppercase ${
                         advisoryResult.irrigationStatus === "TRIGGER_NOW"
-                          ? "bg-rose-600 text-white animate-pulse"
+                          ? "bg-rose-600 text-white"
                           : advisoryResult.irrigationStatus === "HOLD_DUE_TO_RAIN"
                           ? "bg-sky-600 text-white"
                           : "bg-emerald-600 text-white"
                       }`}
                     >
-                      Status: {advisoryResult.irrigationStatus.replace(/_/g, " ")}
+                      {advisoryResult.irrigationStatus === "TRIGGER_NOW"
+                        ? "WATER NOW (IRRIGATE)"
+                        : advisoryResult.irrigationStatus === "HOLD_DUE_TO_RAIN"
+                        ? "WAIT - RAIN COMING"
+                        : "MOISTURE IS GOOD"}
                     </span>
                     <span className="text-xs font-bold text-slate-700">
-                      Urgency: <strong className="text-slate-900">{advisoryResult.urgencyLevel}</strong>
+                      Urgency: <strong>{advisoryResult.urgencyLevel}</strong>
                     </span>
                   </div>
 
-                  <div className="text-xs font-extrabold text-emerald-900 bg-white px-3 py-1 rounded-lg border border-emerald-200 shadow-xs">
-                    💧 {advisoryResult.waterSavingsVsFloodPercent}% Water Conserved vs Flood Irrigation
+                  <div className="text-xs font-extrabold text-emerald-900 bg-white px-3 py-1 rounded-lg border border-emerald-200">
+                    💧 {advisoryResult.waterSavingsVsFloodPercent}% Water Saved
                   </div>
                 </div>
 
                 <div className="bg-white p-3.5 rounded-xl border border-emerald-200 text-xs text-slate-800 leading-relaxed space-y-1">
-                  <span className="font-bold text-emerald-950 block">AI Smart Alarm Reasoning:</span>
+                  <span className="font-bold text-emerald-950 block">Recommendation for Farmer:</span>
                   <p>{advisoryResult.smartAlarmReasoning}</p>
                 </div>
 
-                {/* Key Metrics Grid */}
+                {/* Plain Numbers Grid */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center text-xs">
-                  <div className="bg-white p-3 rounded-xl border border-emerald-200 shadow-xs">
-                    <span className="text-[10px] font-bold text-slate-500 block uppercase">Recommended Water</span>
+                  <div className="bg-white p-3 rounded-xl border border-emerald-200">
+                    <span className="text-[10px] font-bold text-slate-500 block uppercase">Water Needed</span>
                     <span className="text-base font-extrabold text-teal-800">{advisoryResult.recommendedWaterMm} mm</span>
                   </div>
-                  <div className="bg-white p-3 rounded-xl border border-emerald-200 shadow-xs">
-                    <span className="text-[10px] font-bold text-slate-500 block uppercase">Valve Run Duration</span>
-                    <span className="text-base font-extrabold text-teal-800">{advisoryResult.recommendedDurationMinutes} mins</span>
+                  <div className="bg-white p-3 rounded-xl border border-emerald-200">
+                    <span className="text-[10px] font-bold text-slate-500 block uppercase">Time to Run Water</span>
+                    <span className="text-base font-extrabold text-teal-800">{advisoryResult.recommendedDurationMinutes} Minutes</span>
                   </div>
-                  <div className="bg-white p-3 rounded-xl border border-emerald-200 shadow-xs">
-                    <span className="text-[10px] font-bold text-slate-500 block uppercase">Daily ETc</span>
-                    <span className="text-base font-extrabold text-slate-800">{advisoryResult.dailyEvapotranspirationMm} mm/d</span>
+                  <div className="bg-white p-3 rounded-xl border border-emerald-200">
+                    <span className="text-[10px] font-bold text-slate-500 block uppercase">Sun Evaporation</span>
+                    <span className="text-base font-extrabold text-slate-800">{advisoryResult.dailyEvapotranspirationMm} mm/day</span>
                   </div>
-                  <div className="bg-white p-3 rounded-xl border border-emerald-200 shadow-xs">
-                    <span className="text-[10px] font-bold text-slate-500 block uppercase">Optimal Time</span>
+                  <div className="bg-white p-3 rounded-xl border border-emerald-200">
+                    <span className="text-[10px] font-bold text-slate-500 block uppercase">Best Time to Water</span>
                     <span className="text-xs font-extrabold text-slate-800">{advisoryResult.bestTimeToIrrigate.split(" ")[0]}</span>
                   </div>
                 </div>
 
-                {/* Action Checklist */}
+                {/* Checklist */}
                 <div className="space-y-1.5">
-                  <span className="text-[11px] font-extrabold text-slate-700 uppercase tracking-wider block">
-                    Execution Action Plan:
+                  <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block">
+                    What to Do (Step-by-Step):
                   </span>
                   <ul className="space-y-1 text-xs text-slate-700">
                     {advisoryResult.actionChecklist.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-2 bg-white/70 p-2 rounded-lg border border-emerald-100">
+                      <li key={idx} className="flex items-start gap-2 bg-white/80 p-2 rounded-lg border border-emerald-100">
                         <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                         <span>{item}</span>
                       </li>
@@ -520,42 +491,40 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
             )}
           </div>
 
-          {/* QUICK DIRECT AGRONOMIST AI ADVISORY CONSOLE */}
-          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-black text-sm float-slow">
-                  🌾
-                </div>
-                <div>
-                  <h3 className="text-sm font-extrabold text-slate-900">Direct Agronomist AI Query Console</h3>
-                  <p className="text-xs text-slate-500">
-                    Instant advice for crops, pests, and soil in {language === "hi" ? "हिंदी" : language === "pa" ? "ਪੰਜਾਬੀ" : "your selected language"}.
-                  </p>
-                </div>
+          {/* ASK FARM QUESTION CONSOLE */}
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-sm">
+                🌾
+              </div>
+              <div>
+                <h3 className="text-sm font-extrabold text-slate-900">Ask Any Farming Question</h3>
+                <p className="text-xs text-slate-500">
+                  Ask about crops, disease, fertilizer, or water in {language === "hi" ? "हिंदी" : language === "pa" ? "ਪੰਜਾਬੀ" : "simple words"}.
+                </p>
               </div>
             </div>
 
             {/* Quick suggested chips */}
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider shrink-0">Quick Queries:</span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider shrink-0">Quick Questions:</span>
               <button
                 onClick={() => {
-                  setQuickQuery("How to treat yellow rust in wheat organically?");
-                  handleAskAgronomist("How to treat yellow rust in wheat organically?");
+                  setQuickQuery("How to save wheat crop from yellow rust organically?");
+                  handleAskAgronomist("How to save wheat crop from yellow rust organically?");
                 }}
                 className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 text-slate-700 border border-slate-200 whitespace-nowrap shrink-0 transition-colors"
               >
-                Organic Yellow Rust in Wheat
+                Yellow Rust in Wheat
               </button>
               <button
                 onClick={() => {
-                  setQuickQuery("What is the optimal NPK split for Basmati paddy?");
-                  handleAskAgronomist("What is the optimal NPK split for Basmati paddy?");
+                  setQuickQuery("When is the best time to put Urea in Basmati paddy?");
+                  handleAskAgronomist("When is the best time to put Urea in Basmati paddy?");
                 }}
                 className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 text-slate-700 border border-slate-200 whitespace-nowrap shrink-0 transition-colors"
               >
-                Basmati Paddy NPK Split
+                Urea Timing for Paddy
               </button>
             </div>
 
@@ -570,42 +539,33 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
                 type="text"
                 value={quickQuery}
                 onChange={(e) => setQuickQuery(e.target.value)}
-                placeholder="Ask e.g. 'How much urea to apply at flowering?' or in Hindi / Punjabi..."
+                placeholder="Ask e.g. 'How much urea to put in wheat?' or type in Hindi / Punjabi..."
                 className="flex-1 px-4 py-2.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               />
               <button
                 type="submit"
                 disabled={isQueryingAgronomist || !quickQuery.trim()}
-                className="px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-2 disabled:opacity-50 shadow-sm cursor-pointer hover:scale-105 active:scale-95"
+                className="px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer hover:scale-105 active:scale-95"
               >
                 {isQueryingAgronomist ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                 Ask
               </button>
             </form>
 
-            {/* Answer Display with Audio Equalizer Animation */}
+            {/* Answer Display */}
             {agronomistAnswer && (
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 animate-in fade-in duration-300">
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
                 <div className="flex items-center justify-between text-xs text-emerald-800 font-bold border-b border-slate-200 pb-2">
                   <span className="flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                    Agronomist Guidance:
+                    Answer & Advice:
                   </span>
                   <button
                     onClick={() => handleTextToSpeech(agronomistAnswer)}
-                    className="flex items-center gap-2 text-xs text-slate-600 hover:text-emerald-700 font-semibold cursor-pointer bg-white px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs"
-                    title="Audio Readout"
+                    className="flex items-center gap-1.5 text-xs text-slate-700 hover:text-emerald-700 font-semibold cursor-pointer bg-white px-2.5 py-1 rounded-lg border border-slate-200"
                   >
-                    {isSpeaking ? (
-                      <div className="flex items-center gap-0.5 h-3">
-                        <span className="w-0.5 h-full bg-emerald-600 animate-pulse" />
-                        <span className="w-0.5 h-2 bg-emerald-600 animate-ping" />
-                        <span className="w-0.5 h-full bg-emerald-600 animate-pulse" />
-                      </div>
-                    ) : (
-                      <Volume2 className="w-4 h-4" />
-                    )}
-                    {isSpeaking ? "Stop Voice" : "Listen (TTS)"}
+                    <Volume2 className="w-4 h-4" />
+                    {isSpeaking ? "Stop Voice" : "Listen in Voice"}
                   </button>
                 </div>
                 <div className="text-xs text-slate-800 leading-relaxed whitespace-pre-wrap font-medium">

@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import {
-  Upload,
   Camera,
   CheckCircle2,
   AlertTriangle,
@@ -10,11 +9,8 @@ import {
   Bug,
   Shield,
   Leaf,
-  Activity,
   Scan,
-  RefreshCw,
   Sparkles,
-  Zap,
 } from "lucide-react";
 import { CropDiagnosisResult } from "../types/agriculture";
 import { SAMPLE_DISEASE_CASES } from "../data/mockData";
@@ -91,44 +87,44 @@ export const CropDoctorView: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 text-emerald-700 text-xs font-bold uppercase tracking-wider mb-1">
-              <Leaf className="w-4 h-4 text-emerald-600 animate-bounce" />
-              AI Phytopathology & Pest Diagnostics
+              <Leaf className="w-4 h-4 text-emerald-600" />
+              Plant & Crop Health
             </div>
-            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">
-              Crop Doctor & Visual Disease Scanner
+            <h1 className="text-2xl font-black tracking-tight text-slate-900">
+              Leaf Disease Doctor & Medicine Guide
             </h1>
             <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-3xl leading-relaxed">
-              Upload close-up crop leaf photos or select common disease samples. Gemini AI detects pathogens,
-              infestation severity, and provides immediate 24-48h emergency action with organic and chemical remedies.
+              Take a clear picture of the sick crop leaf or try one of the example samples below.
+              The AI will identify the disease and give you immediate spray medicines and low-cost home remedies.
             </p>
           </div>
 
           {diagnosis && (
             <button
               onClick={handlePrintPrescription}
-              className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 shadow-sm cursor-pointer hover:scale-105 active:scale-95"
+              className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 cursor-pointer hover:scale-105 active:scale-95"
             >
               <Printer className="w-4 h-4" />
-              Print Farmer Prescription
+              Print Medicine Guide
             </button>
           )}
         </div>
       </div>
 
-      {/* Main Grid: Input / Upload vs Diagnosis Results */}
+      {/* Main Grid: Upload vs Results */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Form: Image Upload & Symptom description */}
+        {/* Left Form: Upload Photo */}
         <div className="lg:col-span-5 space-y-5">
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6 space-y-4">
             <h2 className="text-sm font-extrabold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
               <Camera className="w-4 h-4 text-emerald-600" />
-              Step 1: Upload or Snap Crop Image
+              Step 1: Take Photo or Pick a Sample
             </h2>
 
-            {/* Upload Area with Viewfinder & Laser Scanner Animation */}
+            {/* Upload Area */}
             <div
               onClick={() => fileInputRef.current?.click()}
-              className="relative border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl p-4 text-center cursor-pointer transition-all bg-slate-50/70 hover:bg-emerald-50/40 group overflow-hidden"
+              className="relative border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl p-4 text-center cursor-pointer transition-all bg-slate-50 hover:bg-emerald-50/40 group overflow-hidden"
             >
               <input
                 type="file"
@@ -141,56 +137,45 @@ export const CropDoctorView: React.FC = () => {
                 <div className="relative rounded-xl overflow-hidden max-h-56 bg-slate-950 flex items-center justify-center">
                   <img
                     src={previewImage}
-                    alt="Uploaded crop leaf"
-                    className="max-h-56 w-full object-contain transition-transform duration-500 group-hover:scale-105"
+                    alt="Uploaded leaf"
+                    className="max-h-56 w-full object-contain"
                   />
-                  {/* Viewfinder reticles */}
-                  <div className="absolute inset-2 border border-emerald-400/40 rounded-lg pointer-events-none" />
-                  
-                  {/* Animated laser scanning line */}
-                  <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-lg shadow-emerald-400/80 scanner-line" />
-
-                  {/* High-tech target corner markers */}
-                  <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-emerald-400" />
-                  <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-emerald-400" />
-                  <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-emerald-400" />
-                  <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-emerald-400" />
-
-                  <div className="absolute bottom-2 right-2 bg-slate-900/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-md backdrop-blur-xs">
-                    Click to change photo
+                  <div className="absolute inset-x-0 h-1 bg-emerald-400 shadow-md shadow-emerald-400 scanner-line" />
+                  <div className="absolute bottom-2 right-2 bg-slate-900/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-md">
+                    Click to change picture
                   </div>
                 </div>
               ) : (
                 <div className="py-8 space-y-2">
-                  <div className="w-12 h-12 mx-auto rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center group-hover:scale-110 transition-transform float-slow">
+                  <div className="w-12 h-12 mx-auto rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
                     <Scan className="w-6 h-6" />
                   </div>
                   <div className="text-xs font-bold text-slate-800">
-                    Click to upload leaf photograph
+                    Click to Upload Leaf Photo (or Take Picture)
                   </div>
                   <p className="text-[11px] text-slate-400 max-w-xs mx-auto">
-                    Clear close-up of spots, discoloration, or pests on leaves (JPG, PNG, WEBP)
+                    Take a close picture of spots, yellow marks, or bugs on the leaf
                   </p>
                 </div>
               )}
             </div>
 
-            {/* Quick Sample Library */}
+            {/* Common samples */}
             <div>
               <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2">
-                Or Select a Common Field Case Sample:
+                Or Try an Example Crop Leaf:
               </label>
               <div className="grid grid-cols-2 gap-2">
                 {SAMPLE_DISEASE_CASES.slice(0, 4).map((sample) => (
                   <button
                     key={sample.id}
                     onClick={() => handleSelectSampleCase(sample)}
-                    className="p-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-400 text-left transition-all duration-200 flex items-center gap-2.5 group cursor-pointer hover:shadow-sm"
+                    className="p-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-400 text-left transition-all flex items-center gap-2.5 cursor-pointer"
                   >
                     <img
                       src={sample.image}
                       alt={sample.title}
-                      className="w-10 h-10 rounded-lg object-cover shrink-0 border border-slate-200 group-hover:scale-110 transition-transform duration-300"
+                      className="w-10 h-10 rounded-lg object-cover shrink-0 border border-slate-200"
                     />
                     <div className="overflow-hidden">
                       <div className="text-[11px] font-extrabold text-slate-900 truncate">{sample.crop}</div>
@@ -201,11 +186,11 @@ export const CropDoctorView: React.FC = () => {
               </div>
             </div>
 
-            {/* Form Inputs */}
+            {/* Inputs */}
             <div className="space-y-3 pt-2 border-t border-slate-100">
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Crop Type:
+                  Which Crop is this?
                 </label>
                 <select
                   value={selectedCrop}
@@ -226,80 +211,80 @@ export const CropDoctorView: React.FC = () => {
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Visual Symptoms Observed:
+                  What do you see on the leaf? (Optional):
                 </label>
                 <textarea
                   value={symptomsInput}
                   onChange={(e) => setSymptomsInput(e.target.value)}
                   rows={2}
-                  placeholder="e.g. Yellow powdery pustules under leaves, wilting tips..."
+                  placeholder="e.g. Yellow powder on leaf, dry brown spots, wilting..."
                   className="w-full text-xs px-3.5 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
             </div>
 
-            {/* Submit Diagnose Button */}
+            {/* Submit Button */}
             <button
               onClick={handleDiagnose}
               disabled={isAnalyzing || (!previewImage && !symptomsInput.trim())}
-              className="w-full py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-extrabold transition-all flex items-center justify-center gap-2 shadow-md shadow-emerald-950/30 disabled:opacity-50 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-extrabold transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
             >
               {isAnalyzing ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin text-emerald-200" />
-                  Running AI Phytopathology Engine...
+                  Checking Leaf Disease...
                 </>
               ) : (
                 <>
                   <Bug className="w-4 h-4 text-emerald-200" />
-                  Diagnose Pathogen & Formulate Treatment
+                  Check Disease & Get Medicine
                 </>
               )}
             </button>
           </div>
         </div>
 
-        {/* Right Column: AI Diagnosis Output */}
+        {/* Right Column: Results */}
         <div className="lg:col-span-7">
           {diagnosis ? (
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-7 space-y-5 print:shadow-none print:border-none animate-in fade-in slide-in-from-bottom-2 duration-300">
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-7 space-y-5">
               {/* Header Badge */}
               <div className="border-b border-slate-200 pb-4">
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider ${
+                    className={`px-3 py-1 rounded-full text-xs font-extrabold uppercase ${
                       diagnosis.severity === "Critical" || diagnosis.severity === "Severe"
-                        ? "bg-rose-100 text-rose-800 border border-rose-300 animate-pulse"
+                        ? "bg-rose-100 text-rose-800 border border-rose-300"
                         : diagnosis.severity === "Moderate"
                         ? "bg-amber-100 text-amber-800 border border-amber-300"
                         : "bg-emerald-100 text-emerald-800 border border-emerald-300"
                     }`}
                   >
-                    Severity: {diagnosis.severity}
+                    Danger Level: {diagnosis.severity}
                   </span>
                   <span className="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1 rounded-full flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-                    AI Match Confidence: <strong className="text-emerald-700">{diagnosis.confidenceScore}%</strong>
+                    Accuracy: <strong>{diagnosis.confidenceScore}%</strong>
                   </span>
                 </div>
 
-                <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+                <h2 className="text-xl sm:text-2xl font-black text-slate-900">
                   {diagnosis.diagnosisName}
                 </h2>
                 <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600 mt-1 font-medium">
-                  <span>Cause: <strong className="text-slate-900">{diagnosis.primaryCause}</strong></span>
+                  <span>Main Cause: <strong className="text-slate-900">{diagnosis.primaryCause}</strong></span>
                   <span>•</span>
-                  <span>Target Crop: <strong className="text-slate-900">{diagnosis.cropName || selectedCrop}</strong></span>
+                  <span>Crop: <strong className="text-slate-900">{diagnosis.cropName || selectedCrop}</strong></span>
                   <span>•</span>
                   <span>Affected: <strong className="text-slate-900">{diagnosis.affectedParts.join(", ")}</strong></span>
                 </div>
               </div>
 
               {/* Immediate Emergency Action Box */}
-              <div className="bg-rose-50 border-2 border-rose-200/90 rounded-2xl p-4 sm:p-5 space-y-2">
-                <div className="flex items-center gap-2 text-rose-900 text-xs font-extrabold uppercase tracking-wider">
-                  <AlertTriangle className="w-4 h-4 text-rose-600 animate-pulse" />
-                  Immediate Emergency Action (First 24–48 Hours):
+              <div className="bg-rose-50 border-2 border-rose-200 rounded-2xl p-4 sm:p-5 space-y-2">
+                <div className="flex items-center gap-2 text-rose-900 text-xs font-extrabold uppercase">
+                  <AlertTriangle className="w-4 h-4 text-rose-600" />
+                  What to do First (Next 1–2 Days):
                 </div>
                 <p className="text-xs sm:text-sm text-rose-950 font-semibold leading-relaxed">
                   {diagnosis.immediateAction}
@@ -308,13 +293,12 @@ export const CropDoctorView: React.FC = () => {
 
               {/* Visual Symptoms Identified */}
               <div>
-                <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
-                  <Activity className="w-4 h-4 text-slate-600" />
-                  Visual Diagnosis Criteria:
+                <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-wider mb-2.5">
+                  Signs Found on Leaf:
                 </h3>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
                   {diagnosis.visualFindings.map((finding, idx) => (
-                    <li key={idx} className="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-start gap-2 hover:bg-slate-100 transition-colors">
+                    <li key={idx} className="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-start gap-2">
                       <span className="w-2 h-2 rounded-full bg-emerald-600 mt-1.5 shrink-0" />
                       <span className="font-medium">{finding}</span>
                     </li>
@@ -322,13 +306,13 @@ export const CropDoctorView: React.FC = () => {
                 </ul>
               </div>
 
-              {/* Treatments: Organic vs Chemical */}
+              {/* Treatments */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Organic Remedies */}
-                <div className="bg-emerald-50/80 rounded-2xl border border-emerald-200 p-4 sm:p-5 space-y-2.5">
+                <div className="bg-emerald-50/90 rounded-2xl border border-emerald-200 p-4 sm:p-5 space-y-2.5">
                   <h3 className="text-xs font-extrabold text-emerald-950 uppercase tracking-wider flex items-center gap-1.5">
                     <Leaf className="w-4 h-4 text-emerald-600" />
-                    Organic & Bio-Control Remedies:
+                    Home & Organic Remedies (Safe & Low Cost):
                   </h3>
                   <ul className="space-y-2 text-xs text-emerald-950">
                     {diagnosis.organicTreatment.map((item, idx) => (
@@ -344,7 +328,7 @@ export const CropDoctorView: React.FC = () => {
                 <div className="bg-slate-50 rounded-2xl border border-slate-200 p-4 sm:p-5 space-y-2.5">
                   <h3 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
                     <Shield className="w-4 h-4 text-slate-700" />
-                    Chemical Spray & Exact Dosage:
+                    Market Medicine & Spray Dose:
                   </h3>
                   <ul className="space-y-2 text-xs text-slate-800">
                     {diagnosis.chemicalTreatment.map((item, idx) => (
@@ -360,24 +344,24 @@ export const CropDoctorView: React.FC = () => {
               {/* Yield Impact Footer */}
               <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs bg-slate-50 p-4 rounded-xl border border-slate-200">
                 <div>
-                  <span className="font-bold text-slate-900 block mb-0.5">Estimated Yield Preservation:</span>
+                  <span className="font-bold text-slate-900 block mb-0.5">Crop Saved from Damage:</span>
                   <span className="text-slate-600 font-medium">{diagnosis.impactOnYieldEstimate}</span>
                 </div>
                 <div className="text-right sm:border-l sm:border-slate-200 sm:pl-4">
-                  <span className="text-[10px] text-slate-500 block uppercase font-bold">Prescription Date:</span>
+                  <span className="text-[10px] text-slate-500 block uppercase font-bold">Checked On:</span>
                   <span className="font-bold text-slate-800">{diagnosis.dateAnalyzed || "Today"}</span>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="h-full min-h-[380px] bg-slate-50/80 rounded-2xl border-2 border-dashed border-slate-200 p-8 flex flex-col items-center justify-center text-center">
-              <div className="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center mb-4 shadow-sm float-slow">
-                <FileText className="w-8 h-8" />
+            <div className="h-full min-h-[380px] bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200 p-8 flex flex-col items-center justify-center text-center">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center mb-3">
+                <FileText className="w-7 h-7" />
               </div>
-              <h3 className="text-base font-extrabold text-slate-900">No Active Diagnosis Loaded</h3>
-              <p className="text-xs text-slate-500 max-w-md mt-1.5 leading-relaxed">
-                Choose a crop sample on the left or upload your own leaf photo, then click
-                "Diagnose Pathogen" to generate full treatment prescriptions.
+              <h3 className="text-base font-extrabold text-slate-900">No Leaf Photo Checked Yet</h3>
+              <p className="text-xs text-slate-500 max-w-md mt-1 leading-relaxed">
+                Take a picture on the left or pick a leaf sample, then click
+                "Check Disease & Get Medicine".
               </p>
             </div>
           )}

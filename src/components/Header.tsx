@@ -1,6 +1,5 @@
 import React from "react";
-import { Sprout, BookOpen, ShieldAlert, Globe, Activity, Palette, Radio, Sun, Droplets } from "lucide-react";
-import { ThemeConfig } from "../types/agriculture";
+import { Sprout, BookOpen, Globe, Droplets, Leaf, Sliders, MapPin, Award, HelpCircle } from "lucide-react";
 
 interface HeaderProps {
   activeTab: "dss" | "crop-doctor" | "soil" | "farm-data" | "activity-lab" | "notebook";
@@ -8,9 +7,7 @@ interface HeaderProps {
   language: string;
   setLanguage: (lang: string) => void;
   onOpenQuickAdvisory: () => void;
-  onOpenDesignStudio: () => void;
   unreadAlertCount: number;
-  themeConfig: ThemeConfig;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -19,173 +16,159 @@ export const Header: React.FC<HeaderProps> = ({
   language,
   setLanguage,
   onOpenQuickAdvisory,
-  onOpenDesignStudio,
   unreadAlertCount,
-  themeConfig,
 }) => {
   return (
-    <header className="sticky top-0 z-40 bg-slate-950/95 backdrop-blur-md text-white border-b border-emerald-900/40 shadow-xl transition-all">
-      {/* Micro Status Ticker */}
-      <div className="bg-emerald-950/80 border-b border-emerald-800/40 py-1 px-4 text-[11px] text-emerald-200/90 hidden lg:block">
+    <header className="sticky top-0 z-40 bg-slate-900 text-white border-b border-slate-800 shadow-md">
+      {/* Top Simple Helper Bar */}
+      <div className="bg-emerald-950 border-b border-emerald-900/60 py-1 px-4 text-xs text-emerald-200 hidden md:block">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5 font-semibold text-emerald-400">
-              <Radio className="w-3 h-3 animate-pulse text-emerald-400" />
-              Live IoT Mesh: Connected (4 Nodes Active)
+          <div className="flex items-center gap-3">
+            <span className="font-semibold text-emerald-300 flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              Live Farm Sensors: Connected
             </span>
-            <span className="text-emerald-300/40">•</span>
-            <span className="flex items-center gap-1 text-slate-300">
-              <Sun className="w-3 h-3 text-amber-400" />
-              Micro-Weather: 29.5°C | Solar: 820 W/m² | Evapotranspiration: 4.8 mm/day
+            <span>•</span>
+            <span className="text-emerald-100/90">
+              Weather: 29.5°C | Rain Forecast: Low | Water Savings: 45%
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="text-emerald-300/80 font-medium">
-              S.S Agriculture Activity Chapter • Deadline: <strong className="text-amber-300">17th Aug 2026</strong>
-            </span>
-            <span className="text-emerald-300/40">•</span>
-            <span className="text-xs font-bold text-emerald-400 bg-emerald-900/60 px-2 py-0.5 rounded border border-emerald-700/50">
-              Gemini AI Engine v2.5
+          <div className="flex items-center gap-2 text-emerald-200">
+            <span>S.S Agriculture Project</span>
+            <span>•</span>
+            <span className="bg-emerald-900 text-emerald-300 px-2 py-0.5 rounded font-bold">
+              School Activity
             </span>
           </div>
         </div>
       </div>
 
-      {/* Main Command Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-        {/* Zone 1: Brand Wordmark (Single line) */}
+      {/* Main Top Bar */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+        {/* Brand Name */}
         <div
-          className="flex items-center gap-2.5 shrink-0 cursor-pointer group"
+          className="flex items-center gap-2.5 shrink-0 cursor-pointer"
           onClick={() => setActiveTab("dss")}
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 p-0.5 shadow-md shadow-emerald-950/50 group-hover:scale-105 transition-transform">
-            <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-              <Sprout className="w-5 h-5 text-emerald-400" />
-            </div>
+          <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center shadow-md">
+            <Sprout className="w-6 h-6 text-white" />
           </div>
-          <div className="leading-tight">
-            <span className="font-extrabold text-lg tracking-tight text-white block">
-              AgriVision<span className="text-emerald-400">.AI</span>
+          <div>
+            <span className="font-extrabold text-lg text-white block leading-tight">
+              AgriVision <span className="text-emerald-400">AI</span>
             </span>
-            <span className="text-[10px] font-semibold text-emerald-300/70 tracking-wider uppercase block">
-              Decision Support & Lab
+            <span className="text-[11px] text-slate-400 font-medium block">
+              Farmer & Student Assistant
             </span>
           </div>
         </div>
 
-        {/* Zone 2: Navigation Links (Max 6, single-line with indicator pills) */}
-        <nav className="hidden md:flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800/80 shadow-inner">
+        {/* Simple Navigation Links */}
+        <nav className="hidden lg:flex items-center gap-1 bg-slate-800/90 p-1 rounded-xl border border-slate-700/80">
           <button
             onClick={() => setActiveTab("dss")}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
               activeTab === "dss"
-                ? "bg-emerald-600 text-white shadow-md shadow-emerald-900/40 font-bold"
-                : "text-slate-300 hover:text-white hover:bg-slate-800"
+                ? "bg-emerald-600 text-white shadow-sm"
+                : "text-slate-300 hover:text-white hover:bg-slate-700/60"
             }`}
           >
-            <Droplets className="w-3.5 h-3.5 text-emerald-300" />
-            Decision Support
+            <Droplets className="w-3.5 h-3.5 text-sky-400" />
+            Water & Rain Guide
           </button>
 
           <button
             onClick={() => setActiveTab("crop-doctor")}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap shrink-0 ${
+            className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
               activeTab === "crop-doctor"
-                ? "bg-emerald-600 text-white shadow-md shadow-emerald-900/40 font-bold"
-                : "text-slate-300 hover:text-white hover:bg-slate-800"
+                ? "bg-emerald-600 text-white shadow-sm"
+                : "text-slate-300 hover:text-white hover:bg-slate-700/60"
             }`}
           >
-            Crop Doctor
+            <Leaf className="w-3.5 h-3.5 text-emerald-400" />
+            Leaf Disease Doctor
           </button>
 
           <button
             onClick={() => setActiveTab("soil")}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap shrink-0 ${
+            className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
               activeTab === "soil"
-                ? "bg-emerald-600 text-white shadow-md shadow-emerald-900/40 font-bold"
-                : "text-slate-300 hover:text-white hover:bg-slate-800"
+                ? "bg-emerald-600 text-white shadow-sm"
+                : "text-slate-300 hover:text-white hover:bg-slate-700/60"
             }`}
           >
-            Soil & Nutrients
+            <Sliders className="w-3.5 h-3.5 text-amber-400" />
+            Fertilizer Plan
           </button>
 
           <button
             onClick={() => setActiveTab("farm-data")}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap shrink-0 ${
+            className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
               activeTab === "farm-data"
-                ? "bg-emerald-600 text-white shadow-md shadow-emerald-900/40 font-bold"
-                : "text-slate-300 hover:text-white hover:bg-slate-800"
+                ? "bg-emerald-600 text-white shadow-sm"
+                : "text-slate-300 hover:text-white hover:bg-slate-700/60"
             }`}
           >
-            Farm Data
+            <MapPin className="w-3.5 h-3.5 text-teal-400" />
+            My Fields
           </button>
 
           <button
             onClick={() => setActiveTab("activity-lab")}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
               activeTab === "activity-lab"
-                ? "bg-amber-600 text-white shadow-md shadow-amber-900/40 font-bold"
-                : "text-amber-200/90 hover:text-amber-100 hover:bg-slate-800"
+                ? "bg-amber-600 text-white shadow-sm"
+                : "text-amber-300 hover:text-white hover:bg-slate-700/60"
             }`}
           >
-            <Activity className="w-3.5 h-3.5 text-amber-300" />
-            Activity Lab (Steps 1–4)
+            <Award className="w-3.5 h-3.5 text-amber-300" />
+            School AI Project
           </button>
 
           <button
             onClick={() => setActiveTab("notebook")}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
               activeTab === "notebook"
-                ? "bg-amber-800 text-amber-100 shadow-md border border-amber-600/50 font-bold"
-                : "text-amber-300/80 hover:text-amber-200 hover:bg-slate-800"
+                ? "bg-amber-800 text-amber-100 shadow-sm"
+                : "text-slate-300 hover:text-white hover:bg-slate-700/60"
             }`}
           >
             <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-            Notes
+            Notebook Pages
           </button>
         </nav>
 
-        {/* Zone 3: Actions (Design Studio + Language + Agronomist AI) */}
+        {/* Language & Help Action */}
         <div className="flex items-center gap-2.5 shrink-0">
-          {/* Design Themes Studio Button */}
-          <button
-            onClick={onOpenDesignStudio}
-            className="px-3 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-semibold text-xs transition-all flex items-center gap-1.5 border border-slate-700/80 shadow-sm"
-            title="UI Themes & Prototype Ideas"
-          >
-            <Palette className="w-3.5 h-3.5 text-amber-400" />
-            <span className="hidden sm:inline">UI Themes</span>
-          </button>
-
-          {/* Multilingual Selector */}
+          {/* Language Selector */}
           <div className="relative inline-flex items-center">
             <Globe className="w-3.5 h-3.5 absolute left-2.5 text-emerald-400 pointer-events-none" />
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="bg-slate-900 text-slate-200 text-xs font-semibold pl-7 pr-3 py-1.5 rounded-xl border border-slate-700/90 focus:outline-none focus:ring-1 focus:ring-emerald-400 cursor-pointer appearance-none shadow-sm"
-              title="Select Language for AI Agronomist & Advisory"
+              className="bg-slate-800 text-slate-100 text-xs font-semibold pl-7 pr-3 py-2 rounded-xl border border-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer appearance-none shadow-sm"
+              title="Change Language"
             >
-              <option value="en" className="bg-slate-900 text-white">English (EN)</option>
-              <option value="hi" className="bg-slate-900 text-white">हिंदी (Hindi)</option>
-              <option value="pa" className="bg-slate-900 text-white">ਪੰਜਾਬੀ (Punjabi)</option>
-              <option value="gu" className="bg-slate-900 text-white">ગુજરાતી (Gujarati)</option>
-              <option value="mr" className="bg-slate-900 text-white">मराठी (Marathi)</option>
-              <option value="te" className="bg-slate-900 text-white">తెలుగు (Telugu)</option>
-              <option value="es" className="bg-slate-900 text-white">Español (ES)</option>
+              <option value="en">English</option>
+              <option value="hi">हिंदी (Hindi)</option>
+              <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+              <option value="gu">ગુજરાતી (Gujarati)</option>
+              <option value="mr">मराठी (Marathi)</option>
+              <option value="te">తెలుగు (Telugu)</option>
+              <option value="es">Español</option>
             </select>
           </div>
 
-          {/* AI Agronomist Consultation Button */}
+          {/* Ask AI Question Button */}
           <button
             onClick={onOpenQuickAdvisory}
-            className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs transition-all shadow-md shadow-emerald-950/50 flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer"
+            className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-all shadow-sm flex items-center gap-1.5 cursor-pointer"
           >
-            <ShieldAlert className="w-3.5 h-3.5 text-slate-950" />
-            <span>AI Agronomist</span>
+            <HelpCircle className="w-4 h-4" />
+            <span>Ask Farm Question</span>
             {unreadAlertCount > 0 && (
-              <span className="w-4 h-4 rounded-full bg-rose-600 text-white text-[10px] flex items-center justify-center font-black">
+              <span className="w-4 h-4 rounded-full bg-rose-500 text-white text-[10px] flex items-center justify-center font-bold">
                 {unreadAlertCount}
               </span>
             )}
@@ -193,55 +176,55 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* Mobile Horizontal Nav Bar */}
-      <div className="md:hidden flex items-center overflow-x-auto px-4 py-2 bg-slate-900 border-t border-slate-800 gap-2 text-xs">
+      {/* Mobile Horizontal Navigation Tabs */}
+      <div className="lg:hidden flex items-center overflow-x-auto px-4 py-2 bg-slate-800 border-t border-slate-700 gap-1.5 text-xs">
         <button
           onClick={() => setActiveTab("dss")}
-          className={`px-3 py-1 rounded-lg whitespace-nowrap font-medium ${
-            activeTab === "dss" ? "bg-emerald-600 text-white font-bold" : "text-slate-300"
+          className={`px-3 py-1.5 rounded-lg whitespace-nowrap font-bold ${
+            activeTab === "dss" ? "bg-emerald-600 text-white" : "text-slate-300"
           }`}
         >
-          Decision Support
+          Water & Rain
         </button>
         <button
           onClick={() => setActiveTab("crop-doctor")}
-          className={`px-3 py-1 rounded-lg whitespace-nowrap font-medium ${
-            activeTab === "crop-doctor" ? "bg-emerald-600 text-white font-bold" : "text-slate-300"
+          className={`px-3 py-1.5 rounded-lg whitespace-nowrap font-bold ${
+            activeTab === "crop-doctor" ? "bg-emerald-600 text-white" : "text-slate-300"
           }`}
         >
-          Crop Doctor
+          Leaf Doctor
         </button>
         <button
           onClick={() => setActiveTab("soil")}
-          className={`px-3 py-1 rounded-lg whitespace-nowrap font-medium ${
-            activeTab === "soil" ? "bg-emerald-600 text-white font-bold" : "text-slate-300"
+          className={`px-3 py-1.5 rounded-lg whitespace-nowrap font-bold ${
+            activeTab === "soil" ? "bg-emerald-600 text-white" : "text-slate-300"
           }`}
         >
-          Soil & NPK
+          Fertilizer Plan
         </button>
         <button
           onClick={() => setActiveTab("farm-data")}
-          className={`px-3 py-1 rounded-lg whitespace-nowrap font-medium ${
-            activeTab === "farm-data" ? "bg-emerald-600 text-white font-bold" : "text-slate-300"
+          className={`px-3 py-1.5 rounded-lg whitespace-nowrap font-bold ${
+            activeTab === "farm-data" ? "bg-emerald-600 text-white" : "text-slate-300"
           }`}
         >
-          Farm Data
+          My Fields
         </button>
         <button
           onClick={() => setActiveTab("activity-lab")}
-          className={`px-3 py-1 rounded-lg whitespace-nowrap font-medium ${
-            activeTab === "activity-lab" ? "bg-amber-600 text-white font-bold" : "text-amber-300"
+          className={`px-3 py-1.5 rounded-lg whitespace-nowrap font-bold ${
+            activeTab === "activity-lab" ? "bg-amber-600 text-white" : "text-amber-300"
           }`}
         >
-          Activity Lab
+          School Project
         </button>
         <button
           onClick={() => setActiveTab("notebook")}
-          className={`px-3 py-1 rounded-lg whitespace-nowrap font-medium ${
-            activeTab === "notebook" ? "bg-amber-800 text-amber-100 font-bold" : "text-amber-300"
+          className={`px-3 py-1.5 rounded-lg whitespace-nowrap font-bold ${
+            activeTab === "notebook" ? "bg-amber-800 text-amber-100" : "text-slate-300"
           }`}
         >
-          Notes
+          Notebook
         </button>
       </div>
     </header>

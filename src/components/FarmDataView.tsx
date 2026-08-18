@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import {
-  Layers,
   Plus,
   Trash2,
-  Edit2,
   Download,
   CheckCircle2,
   AlertTriangle,
   Droplets,
   Calendar,
   MapPin,
-  TrendingUp,
   X,
+  Power,
 } from "lucide-react";
 import { FieldRecord } from "../types/agriculture";
 
@@ -37,7 +35,7 @@ export const FarmDataView: React.FC<FarmDataViewProps> = ({
   const [variety, setVariety] = useState("PBW 824");
   const [sowingDate, setSowingDate] = useState("2026-11-10");
   const [stage, setStage] = useState("Vegetative");
-  const [soilType, setSoilType] = useState("Alluvial Loam");
+  const [soilType, setSoilType] = useState("Loam Soil");
   const [areaAcre, setAreaAcre] = useState(4.5);
   const [irrigationType, setIrrigationType] = useState<"Drip" | "Sprinkler" | "Flood / Furrow">("Drip");
   const [targetYield, setTargetYield] = useState("24 Quintals/Acre");
@@ -63,7 +61,7 @@ export const FarmDataView: React.FC<FarmDataViewProps> = ({
       valveOpen: false,
       healthStatus: "Optimal",
       targetYield,
-      notes: "Newly registered plot for automated IoT decision support.",
+      notes: "Registered field plot.",
     };
     onAddField(newField);
     setIsAddModalOpen(false);
@@ -81,7 +79,7 @@ export const FarmDataView: React.FC<FarmDataViewProps> = ({
       "Soil Type",
       "Moisture (%)",
       "Health Status",
-      "Irrigation Method",
+      "Water Method",
     ];
     const rows = fields.map((f) => [
       `"${f.name}"`,
@@ -99,11 +97,15 @@ export const FarmDataView: React.FC<FarmDataViewProps> = ({
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `agrivision_farm_registry_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.setAttribute("download", `My_Farms_Report_${new Date().toISOString().split("T")[0]}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
+
+  const totalAcres = fields.reduce((sum, f) => sum + f.areaAcre, 0);
+  const dryPlots = fields.filter((f) => f.currentMoisture < 45).length;
+  const activeValves = fields.filter((f) => f.valveOpen).length;
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -112,140 +114,194 @@ export const FarmDataView: React.FC<FarmDataViewProps> = ({
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 text-emerald-700 text-xs font-bold uppercase tracking-wider mb-1">
-              <Layers className="w-4 h-4 text-emerald-600" />
-              Plot Lifecycle & Farm Registry
+              <MapPin className="w-4 h-4 text-emerald-600" />
+              Farm Plot Manager
             </div>
-            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">
-              Farm & Crop Data Manager
+            <h1 className="text-2xl font-black tracking-tight text-slate-900">
+              My Fields & Crops
             </h1>
             <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
-              Track crop phenology stages, sowing schedules, soil profiles, and automated valve telemetry
-              across all registered acreage.
+              Track your land, crops, sowing dates, soil moisture, and water valves in one simple list.
             </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex flex-wrap items-center gap-2.5">
             <button
               onClick={handleExportCSV}
-              className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 border border-slate-300 shadow-xs cursor-pointer"
+              className="px-4 py-2.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all flex items-center gap-2 cursor-pointer hover:scale-105 active:scale-95"
             >
-              <Download className="w-4 h-4 text-slate-600" />
-              Export CSV
+              <Download className="w-4 h-4" />
+              Download List (Excel/CSV)
             </button>
+
             <button
               onClick={() => setIsAddModalOpen(true)}
-              className="px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 shadow-md shadow-emerald-950/30 cursor-pointer"
+              className="px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-extrabold transition-all flex items-center gap-2 shadow-sm cursor-pointer hover:scale-105 active:scale-95"
             >
               <Plus className="w-4 h-4" />
-              Add New Plot
+              Add New Field
             </button>
+          </div>
+        </div>
+
+        {/* 4 Simple Stats */}
+        <div className="mt-5 pt-4 border-t border-slate-100 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+            <span className="text-slate-500 font-bold block text-[11px]">Total Farm Land</span>
+            <span className="text-lg font-black text-slate-900 mt-0.5 block">{totalAcres} Acres</span>
+          </div>
+          <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+            <span className="text-slate-500 font-bold block text-[11px]">Active Fields</span>
+            <span className="text-lg font-black text-emerald-700 mt-0.5 block">{fields.length} Fields</span>
+          </div>
+          <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+            <span className="text-slate-500 font-bold block text-[11px]">Needs Water Now</span>
+            <span className={`text-lg font-black mt-0.5 block ${dryPlots > 0 ? "text-amber-600" : "text-slate-800"}`}>
+              {dryPlots} Fields
+            </span>
+          </div>
+          <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+            <span className="text-slate-500 font-bold block text-[11px]">Water Tap Running</span>
+            <span className={`text-lg font-black mt-0.5 block ${activeValves > 0 ? "text-teal-600" : "text-slate-800"}`}>
+              {activeValves} Active
+            </span>
           </div>
         </div>
       </div>
 
-      {/* Filter Toolbar */}
-      <div className="flex items-center justify-between gap-4 bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs text-xs font-semibold">
-        <div className="flex items-center gap-2 overflow-x-auto">
-          <span className="text-slate-500 uppercase tracking-wider text-[10px] font-bold shrink-0">Filter Crop:</span>
-          {["All", "Wheat", "Basmati Paddy", "Bt Cotton", "Hybrid Maize"].map((c) => (
-            <button
-              key={c}
-              onClick={() => setFilterCrop(c)}
-              className={`px-3 py-1 rounded-lg transition-colors whitespace-nowrap ${
-                filterCrop === c
-                  ? "bg-slate-900 text-white font-bold"
-                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-              }`}
-            >
-              {c}
-            </button>
-          ))}
-        </div>
-        <span className="text-slate-500 hidden sm:inline">
-          Showing <strong>{filteredFields.length}</strong> of {fields.length} Plots
-        </span>
-      </div>
-
-      {/* Plots Card Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {filteredFields.map((field) => (
-          <div
-            key={field.id}
-            className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow p-5 space-y-4 flex flex-col justify-between"
+      {/* Filter Bar */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+        <span className="font-bold text-slate-500 uppercase tracking-wider text-[11px] shrink-0">Filter by Crop:</span>
+        {["All", "Wheat", "Rice / Paddy", "Cotton", "Maize"].map((c) => (
+          <button
+            key={c}
+            onClick={() => setFilterCrop(c)}
+            className={`px-3 py-1.5 rounded-lg font-bold transition-all shrink-0 cursor-pointer ${
+              filterCrop === c
+                ? "bg-slate-900 text-white"
+                : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-50"
+            }`}
           >
-            <div className="space-y-3">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="font-extrabold text-sm text-slate-900">{field.name}</h3>
-                  <div className="text-xs text-emerald-700 font-bold mt-0.5">
-                    {field.crop} • <span className="text-slate-600 font-normal">{field.variety}</span>
-                  </div>
-                </div>
-
-                <span
-                  className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase ${
-                    field.healthStatus === "Optimal"
-                      ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
-                      : "bg-amber-100 text-amber-800 border border-amber-300"
-                  }`}
-                >
-                  {field.healthStatus}
-                </span>
-              </div>
-
-              {/* Key Specs */}
-              <div className="grid grid-cols-2 gap-2 text-xs bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <div>
-                  <span className="text-[10px] text-slate-400 block font-semibold">Area:</span>
-                  <span className="font-bold text-slate-800">{field.areaAcre} Acres</span>
-                </div>
-                <div>
-                  <span className="text-[10px] text-slate-400 block font-semibold">Growth Stage:</span>
-                  <span className="font-bold text-slate-800">{field.stage}</span>
-                </div>
-                <div>
-                  <span className="text-[10px] text-slate-400 block font-semibold">Moisture:</span>
-                  <span className={`font-bold ${field.currentMoisture < 45 ? "text-amber-600" : "text-emerald-700"}`}>
-                    {field.currentMoisture}%
-                  </span>
-                </div>
-                <div>
-                  <span className="text-[10px] text-slate-400 block font-semibold">Irrigation:</span>
-                  <span className="font-bold text-slate-800">{field.irrigationType}</span>
-                </div>
-              </div>
-
-              <div className="text-[11px] text-slate-500 leading-relaxed">
-                <strong>Soil:</strong> {field.soilType} • <strong>Sown:</strong> {field.sowingDate}
-              </div>
-            </div>
-
-            {/* Bottom Actions */}
-            <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-              <span className="text-[10px] font-semibold text-slate-400">
-                Target: {field.targetYield}
-              </span>
-              <button
-                onClick={() => onDeleteField(field.id)}
-                className="text-rose-600 hover:text-rose-700 p-1.5 rounded-lg hover:bg-rose-50 transition-colors"
-                title="Delete Plot"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
+            {c}
+          </button>
         ))}
       </div>
 
-      {/* Add Plot Modal */}
+      {/* Field Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {filteredFields.map((field) => {
+          const isDry = field.currentMoisture < 45;
+          return (
+            <div
+              key={field.id}
+              className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4 hover:border-emerald-400 transition-all flex flex-col justify-between"
+            >
+              <div className="space-y-3">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <h3 className="font-black text-sm text-slate-900">{field.name}</h3>
+                    <div className="text-xs text-slate-500 font-medium mt-0.5">
+                      {field.crop} • {field.variety}
+                    </div>
+                  </div>
+
+                  {isDry ? (
+                    <span className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1">
+                      <AlertTriangle className="w-3 h-3 text-amber-600" />
+                      Needs Water
+                    </span>
+                  ) : (
+                    <span className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 flex items-center gap-1">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                      Moisture OK
+                    </span>
+                  )}
+                </div>
+
+                {/* Details Grid */}
+                <div className="grid grid-cols-2 gap-2 text-xs bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+                  <div>
+                    <span className="text-[10px] text-slate-400 font-bold block uppercase">Area</span>
+                    <span className="font-bold text-slate-800">{field.areaAcre} Acres</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-400 font-bold block uppercase">Stage</span>
+                    <span className="font-bold text-slate-800">{field.stage}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-400 font-bold block uppercase">Water Method</span>
+                    <span className="font-bold text-slate-800">{field.irrigationType}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-400 font-bold block uppercase">Sown On</span>
+                    <span className="font-bold text-slate-800">{field.sowingDate}</span>
+                  </div>
+                </div>
+
+                {/* Moisture Bar */}
+                <div className="space-y-1">
+                  <div className="flex justify-between text-xs font-semibold text-slate-600">
+                    <span className="flex items-center gap-1">
+                      <Droplets className="w-3.5 h-3.5 text-teal-600" />
+                      Soil Moisture:
+                    </span>
+                    <span className={isDry ? "text-amber-600 font-extrabold" : "text-emerald-700 font-extrabold"}>
+                      {field.currentMoisture}%
+                    </span>
+                  </div>
+                  <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all ${
+                        isDry ? "bg-amber-500" : "bg-emerald-600"
+                      }`}
+                      style={{ width: `${field.currentMoisture}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions Footer */}
+              <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                <button
+                  onClick={() => {
+                    const updated = { ...field, valveOpen: !field.valveOpen };
+                    if (updated.valveOpen) {
+                      updated.currentMoisture = Math.min(100, updated.currentMoisture + 15);
+                    }
+                    onUpdateField(updated);
+                  }}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                    field.valveOpen
+                      ? "bg-rose-600 hover:bg-rose-700 text-white"
+                      : "bg-emerald-700 hover:bg-emerald-800 text-white"
+                  }`}
+                >
+                  <Power className="w-3.5 h-3.5" />
+                  {field.valveOpen ? "Turn Water OFF" : "Turn Water ON"}
+                </button>
+
+                <button
+                  onClick={() => onDeleteField(field.id)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                  title="Delete field"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Add Field Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden text-slate-900 p-6 space-y-4">
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h3 className="font-extrabold text-base text-slate-900">Register New Farm Plot</h3>
+              <h3 className="text-base font-black text-slate-900">Add New Field Plot</h3>
               <button
                 onClick={() => setIsAddModalOpen(false)}
-                className="text-slate-400 hover:text-slate-700 p-1 rounded-lg"
+                className="p-1 text-slate-400 hover:text-slate-700"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -253,81 +309,86 @@ export const FarmDataView: React.FC<FarmDataViewProps> = ({
 
             <form onSubmit={handleSubmitNewField} className="space-y-3.5 text-xs">
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Plot Name / Identifier:</label>
+                <label className="block font-bold text-slate-700 mb-1">Field Name</label>
                 <input
                   type="text"
+                  required
+                  placeholder="e.g. North Canal Plot"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g. North Acre #4 (Canal Side)"
-                  required
                   className="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Crop Type:</label>
+                  <label className="block font-bold text-slate-700 mb-1">Crop</label>
                   <select
                     value={crop}
                     onChange={(e) => setCrop(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-300 font-semibold"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   >
                     <option value="Wheat">Wheat</option>
-                    <option value="Basmati Paddy">Basmati Paddy</option>
-                    <option value="Bt Cotton">Bt Cotton</option>
-                    <option value="Hybrid Maize">Hybrid Maize</option>
-                    <option value="Tomato">Tomato</option>
+                    <option value="Rice / Paddy">Rice / Paddy</option>
+                    <option value="Cotton">Cotton</option>
+                    <option value="Maize / Corn">Maize</option>
+                    <option value="Mustard">Mustard</option>
+                    <option value="Sugarcane">Sugarcane</option>
+                    <option value="Potato">Potato</option>
                   </select>
                 </div>
+
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Variety / Hybrid:</label>
+                  <label className="block font-bold text-slate-700 mb-1">Area (Acres)</label>
                   <input
-                    type="text"
-                    value={variety}
-                    onChange={(e) => setVariety(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-300"
+                    type="number"
+                    step="0.1"
+                    min="0.1"
+                    value={areaAcre}
+                    onChange={(e) => setAreaAcre(Number(e.target.value))}
+                    className="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Area (Acres):</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={areaAcre}
-                    onChange={(e) => setAreaAcre(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-300"
-                  />
-                </div>
-                <div>
-                  <label className="block font-bold text-slate-700 mb-1">Irrigation Method:</label>
+                  <label className="block font-bold text-slate-700 mb-1">Water Method</label>
                   <select
                     value={irrigationType}
                     onChange={(e) => setIrrigationType(e.target.value as any)}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-300 font-semibold"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   >
-                    <option value="Drip">Drip System</option>
-                    <option value="Sprinkler">Micro Sprinkler</option>
-                    <option value="Flood / Furrow">Flood / Furrow</option>
+                    <option value="Drip">Drip Irrigation (Pipes)</option>
+                    <option value="Sprinkler">Sprinkler (Fountain)</option>
+                    <option value="Flood / Furrow">Flood / Tube-well</option>
                   </select>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Sowing Date</label>
+                  <input
+                    type="date"
+                    value={sowingDate}
+                    onChange={(e) => setSowingDate(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+              <div className="pt-3 border-t border-slate-100 flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200"
+                  className="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 font-bold hover:bg-slate-50 cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold shadow-sm"
+                  className="px-5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold cursor-pointer hover:scale-105 active:scale-95"
                 >
-                  Save Plot
+                  Save Field
                 </button>
               </div>
             </form>
