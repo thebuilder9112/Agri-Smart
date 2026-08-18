@@ -11,6 +11,9 @@ import {
   Shield,
   Leaf,
   Activity,
+  Scan,
+  RefreshCw,
+  QrCode,
 } from "lucide-react";
 import { CropDiagnosisResult } from "../types/agriculture";
 import { SAMPLE_DISEASE_CASES } from "../data/mockData";
@@ -83,26 +86,26 @@ export const CropDoctorView: React.FC = () => {
   return (
     <div className="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       {/* Header */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-7">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 text-emerald-700 text-xs font-semibold uppercase tracking-wider mb-1">
+            <div className="flex items-center gap-2 text-emerald-700 text-xs font-bold uppercase tracking-wider mb-1">
               <Leaf className="w-4 h-4 text-emerald-600" />
               AI Phytopathology & Pest Diagnostics
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">
               Crop Doctor & Visual Disease Scanner
             </h1>
-            <p className="text-sm text-slate-600 mt-1">
-              Upload a photograph of afflicted crop leaves or describe visual symptoms. Gemini AI detects
-              pathogens, pest infestations, and nutrient deficiencies with actionable organic & chemical treatment plans.
+            <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-3xl leading-relaxed">
+              Upload close-up crop leaf photos or select common disease samples. Gemini AI detects pathogens,
+              infestation severity, and provides immediate 24-48h emergency action with organic and chemical remedies.
             </p>
           </div>
 
           {diagnosis && (
             <button
               onClick={handlePrintPrescription}
-              className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold transition-colors flex items-center gap-2 shrink-0 self-start md:self-auto"
+              className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 shadow-sm cursor-pointer"
             >
               <Printer className="w-4 h-4" />
               Print Farmer Prescription
@@ -115,16 +118,16 @@ export const CropDoctorView: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Form: Image Upload & Symptom description */}
         <div className="lg:col-span-5 space-y-5">
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4">
-            <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6 space-y-4">
+            <h2 className="text-sm font-extrabold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
               <Camera className="w-4 h-4 text-emerald-600" />
               Step 1: Upload or Snap Crop Image
             </h2>
 
-            {/* Upload Area */}
+            {/* Upload Area with Viewfinder */}
             <div
               onClick={() => fileInputRef.current?.click()}
-              className="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-xl p-4 text-center cursor-pointer transition-colors bg-slate-50/50 hover:bg-emerald-50/30"
+              className="relative border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl p-4 text-center cursor-pointer transition-all bg-slate-50/70 hover:bg-emerald-50/40 group overflow-hidden"
             >
               <input
                 type="file"
@@ -134,26 +137,31 @@ export const CropDoctorView: React.FC = () => {
                 className="hidden"
               />
               {previewImage ? (
-                <div className="relative rounded-lg overflow-hidden max-h-52 bg-slate-900 flex items-center justify-center">
+                <div className="relative rounded-xl overflow-hidden max-h-56 bg-slate-950 flex items-center justify-center">
                   <img
                     src={previewImage}
                     alt="Uploaded crop leaf"
-                    className="max-h-52 object-contain"
+                    className="max-h-56 w-full object-contain"
                   />
-                  <div className="absolute bottom-2 right-2 bg-slate-900/80 text-white text-[10px] px-2 py-0.5 rounded backdrop-blur-sm">
-                    Click to change image
+                  {/* Viewfinder reticles */}
+                  <div className="absolute inset-2 border border-emerald-400/40 rounded-lg pointer-events-none" />
+                  {isAnalyzing && (
+                    <div className="absolute inset-x-0 h-0.5 bg-emerald-400 shadow-lg shadow-emerald-400 scanner-line" />
+                  )}
+                  <div className="absolute bottom-2 right-2 bg-slate-900/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-md backdrop-blur-xs">
+                    Click to change photo
                   </div>
                 </div>
               ) : (
-                <div className="py-6 space-y-2">
-                  <div className="w-10 h-10 mx-auto rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center">
-                    <Upload className="w-5 h-5" />
+                <div className="py-8 space-y-2">
+                  <div className="w-12 h-12 mx-auto rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Scan className="w-6 h-6" />
                   </div>
-                  <div className="text-xs font-semibold text-slate-700">
-                    Click to upload crop leaf photo
+                  <div className="text-xs font-bold text-slate-800">
+                    Click to upload leaf photograph
                   </div>
-                  <p className="text-[11px] text-slate-400">
-                    Supports JPG, PNG, WEBP (Clear close-up of infected leaves or pests)
+                  <p className="text-[11px] text-slate-400 max-w-xs mx-auto">
+                    Clear close-up of spots, discoloration, or pests on leaves (JPG, PNG, WEBP)
                   </p>
                 </div>
               )}
@@ -162,22 +170,22 @@ export const CropDoctorView: React.FC = () => {
             {/* Quick Sample Library */}
             <div>
               <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2">
-                Or Select a Common Field Disease Sample:
+                Or Select a Common Field Case Sample:
               </label>
               <div className="grid grid-cols-2 gap-2">
                 {SAMPLE_DISEASE_CASES.slice(0, 4).map((sample) => (
                   <button
                     key={sample.id}
                     onClick={() => handleSelectSampleCase(sample)}
-                    className="p-2 rounded-lg border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 text-left transition-colors flex items-center gap-2"
+                    className="p-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-400 text-left transition-all flex items-center gap-2.5 group cursor-pointer"
                   >
                     <img
                       src={sample.image}
                       alt={sample.title}
-                      className="w-9 h-9 rounded object-cover shrink-0 border border-slate-200"
+                      className="w-10 h-10 rounded-lg object-cover shrink-0 border border-slate-200 group-hover:scale-105 transition-transform"
                     />
                     <div className="overflow-hidden">
-                      <div className="text-[11px] font-bold text-slate-800 truncate">{sample.crop}</div>
+                      <div className="text-[11px] font-extrabold text-slate-900 truncate">{sample.crop}</div>
                       <div className="text-[10px] text-slate-500 truncate">{sample.title.split("(")[0]}</div>
                     </div>
                   </button>
@@ -185,18 +193,18 @@ export const CropDoctorView: React.FC = () => {
               </div>
             </div>
 
-            {/* Form Fields */}
+            {/* Form Inputs */}
             <div className="space-y-3 pt-2 border-t border-slate-100">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Crop Type / Variety:
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Crop Type:
                 </label>
                 <select
                   value={selectedCrop}
                   onChange={(e) => setSelectedCrop(e.target.value)}
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                  className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-300 font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >
-                  <option value="Wheat">Wheat (Kanak)</option>
+                  <option value="Wheat">Wheat (Kanak / Gehu)</option>
                   <option value="Rice / Paddy">Rice / Paddy (Dhan)</option>
                   <option value="Cotton">Cotton (Kapas)</option>
                   <option value="Tomato">Tomato (Tamatar)</option>
@@ -209,47 +217,34 @@ export const CropDoctorView: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Observed Symptoms & Plant Condition:
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Visual Symptoms Observed:
                 </label>
                 <textarea
                   value={symptomsInput}
                   onChange={(e) => setSymptomsInput(e.target.value)}
                   rows={2}
-                  placeholder="e.g. Yellow spots on lower leaves with dark brown rings, leaf edges curling..."
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Field Environment / Weather Notes (Optional):
-                </label>
-                <input
-                  type="text"
-                  value={fieldNotes}
-                  onChange={(e) => setFieldNotes(e.target.value)}
-                  placeholder="e.g. High humidity past 4 days, unseasonal rain, furrow irrigated"
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                  placeholder="e.g. Yellow powdery pustules under leaves, wilting tips..."
+                  className="w-full text-xs px-3.5 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
             </div>
 
-            {/* Submit Button */}
+            {/* Submit Diagnose Button */}
             <button
               onClick={handleDiagnose}
               disabled={isAnalyzing || (!previewImage && !symptomsInput.trim())}
-              className="w-full py-2.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition-colors flex items-center justify-center gap-2 shadow-sm disabled:opacity-50"
+              className="w-full py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-extrabold transition-all flex items-center justify-center gap-2 shadow-md shadow-emerald-950/30 disabled:opacity-50 cursor-pointer"
             >
               {isAnalyzing ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Running AI Phytopathology Analysis...
+                  <Loader2 className="w-4 h-4 animate-spin text-emerald-200" />
+                  Running AI Phytopathology Engine...
                 </>
               ) : (
                 <>
-                  <Bug className="w-4 h-4" />
-                  Diagnose Pathogen & Generate Treatment Plan
+                  <Bug className="w-4 h-4 text-emerald-200" />
+                  Diagnose Pathogen & Formulate Treatment
                 </>
               )}
             </button>
@@ -259,12 +254,12 @@ export const CropDoctorView: React.FC = () => {
         {/* Right Column: AI Diagnosis Output */}
         <div className="lg:col-span-7">
           {diagnosis ? (
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-5 print:shadow-none print:border-none">
-              {/* Top Diagnosis Card Header */}
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-7 space-y-5 print:shadow-none print:border-none">
+              {/* Header Badge */}
               <div className="border-b border-slate-200 pb-4">
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+                    className={`px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider ${
                       diagnosis.severity === "Critical" || diagnosis.severity === "Severe"
                         ? "bg-rose-100 text-rose-800 border border-rose-300"
                         : diagnosis.severity === "Moderate"
@@ -274,106 +269,106 @@ export const CropDoctorView: React.FC = () => {
                   >
                     Severity: {diagnosis.severity}
                   </span>
-                  <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
-                    Confidence: <strong>{diagnosis.confidenceScore}%</strong>
+                  <span className="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1 rounded-full">
+                    AI Match Confidence: <strong className="text-emerald-700">{diagnosis.confidenceScore}%</strong>
                   </span>
                 </div>
 
-                <h2 className="text-xl font-bold text-slate-900 tracking-tight">
+                <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
                   {diagnosis.diagnosisName}
                 </h2>
-                <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600 mt-1">
-                  <span>Cause: <strong className="text-slate-800">{diagnosis.primaryCause}</strong></span>
+                <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600 mt-1 font-medium">
+                  <span>Cause: <strong className="text-slate-900">{diagnosis.primaryCause}</strong></span>
                   <span>•</span>
-                  <span>Target Crop: <strong className="text-slate-800">{diagnosis.cropName || selectedCrop}</strong></span>
+                  <span>Target Crop: <strong className="text-slate-900">{diagnosis.cropName || selectedCrop}</strong></span>
                   <span>•</span>
-                  <span>Affected: <strong className="text-slate-800">{diagnosis.affectedParts.join(", ")}</strong></span>
+                  <span>Affected: <strong className="text-slate-900">{diagnosis.affectedParts.join(", ")}</strong></span>
                 </div>
               </div>
 
-              {/* Immediate Action Emergency Box */}
-              <div className="bg-rose-50 border border-rose-200 rounded-xl p-4 space-y-1.5">
-                <div className="flex items-center gap-2 text-rose-800 text-xs font-bold uppercase tracking-wider">
+              {/* Immediate Emergency Action Box */}
+              <div className="bg-rose-50 border-2 border-rose-200/90 rounded-2xl p-4 sm:p-5 space-y-2">
+                <div className="flex items-center gap-2 text-rose-900 text-xs font-extrabold uppercase tracking-wider">
                   <AlertTriangle className="w-4 h-4 text-rose-600" />
-                  Immediate Action (First 24–48 Hours):
+                  Immediate Emergency Action (First 24–48 Hours):
                 </div>
-                <p className="text-xs text-rose-950 font-medium leading-relaxed">
+                <p className="text-xs sm:text-sm text-rose-950 font-semibold leading-relaxed">
                   {diagnosis.immediateAction}
                 </p>
               </div>
 
-              {/* Visual Findings */}
+              {/* Visual Symptoms Identified */}
               <div>
-                <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
                   <Activity className="w-4 h-4 text-slate-600" />
-                  Identified Visual Symptoms:
+                  Visual Diagnosis Criteria:
                 </h3>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
                   {diagnosis.visualFindings.map((finding, idx) => (
-                    <li key={idx} className="bg-slate-50 p-2.5 rounded-lg border border-slate-200 flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 mt-1.5 shrink-0" />
-                      <span>{finding}</span>
+                    <li key={idx} className="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-start gap-2">
+                      <span className="w-2 h-2 rounded-full bg-emerald-600 mt-1.5 shrink-0" />
+                      <span className="font-medium">{finding}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* Treatment Plans: Organic vs Chemical */}
+              {/* Treatments: Organic vs Chemical */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Organic / Eco-friendly Treatment */}
-                <div className="bg-emerald-50/60 rounded-xl border border-emerald-200 p-4 space-y-2">
-                  <h3 className="text-xs font-bold text-emerald-900 uppercase tracking-wider flex items-center gap-1.5">
+                {/* Organic Remedies */}
+                <div className="bg-emerald-50/80 rounded-2xl border border-emerald-200 p-4 sm:p-5 space-y-2.5">
+                  <h3 className="text-xs font-extrabold text-emerald-950 uppercase tracking-wider flex items-center gap-1.5">
                     <Leaf className="w-4 h-4 text-emerald-600" />
                     Organic & Bio-Control Remedies:
                   </h3>
-                  <ul className="space-y-1.5 text-xs text-emerald-950">
+                  <ul className="space-y-2 text-xs text-emerald-950">
                     {diagnosis.organicTreatment.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                        <span>{item}</span>
+                      <li key={idx} className="flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                        <span className="font-medium">{item}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
                 {/* Chemical Treatment */}
-                <div className="bg-slate-50 rounded-xl border border-slate-200 p-4 space-y-2">
-                  <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                <div className="bg-slate-50 rounded-2xl border border-slate-200 p-4 sm:p-5 space-y-2.5">
+                  <h3 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
                     <Shield className="w-4 h-4 text-slate-700" />
-                    Standard Chemical Spray & Dosage:
+                    Chemical Spray & Exact Dosage:
                   </h3>
-                  <ul className="space-y-1.5 text-xs text-slate-800">
+                  <ul className="space-y-2 text-xs text-slate-800">
                     {diagnosis.chemicalTreatment.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-slate-600 mt-1.5 shrink-0" />
-                        <span>{item}</span>
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="w-2 h-2 rounded-full bg-slate-600 mt-1.5 shrink-0" />
+                        <span className="font-medium">{item}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
               </div>
 
-              {/* Prevention & Yield Loss Impact */}
-              <div className="pt-2 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs bg-slate-50/80 p-3.5 rounded-lg border border-slate-200">
+              {/* Yield Impact Footer */}
+              <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs bg-slate-50 p-4 rounded-xl border border-slate-200">
                 <div>
-                  <span className="font-bold text-slate-800 block mb-0.5">Estimated Yield Impact:</span>
-                  <span className="text-slate-600">{diagnosis.impactOnYieldEstimate}</span>
+                  <span className="font-bold text-slate-900 block mb-0.5">Estimated Yield Preservation:</span>
+                  <span className="text-slate-600 font-medium">{diagnosis.impactOnYieldEstimate}</span>
                 </div>
                 <div className="text-right sm:border-l sm:border-slate-200 sm:pl-4">
-                  <span className="text-[11px] text-slate-500 block">Prescription Date:</span>
-                  <span className="font-semibold text-slate-700">{diagnosis.dateAnalyzed || "Today"}</span>
+                  <span className="text-[10px] text-slate-500 block uppercase font-bold">Prescription Date:</span>
+                  <span className="font-bold text-slate-800">{diagnosis.dateAnalyzed || "Today"}</span>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="h-full min-h-[350px] bg-slate-50/70 rounded-xl border-2 border-dashed border-slate-200 p-8 flex flex-col items-center justify-center text-center">
-              <div className="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center mb-3">
-                <FileText className="w-7 h-7" />
+            <div className="h-full min-h-[380px] bg-slate-50/80 rounded-2xl border-2 border-dashed border-slate-200 p-8 flex flex-col items-center justify-center text-center">
+              <div className="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center mb-4 shadow-sm">
+                <FileText className="w-8 h-8" />
               </div>
-              <h3 className="text-base font-bold text-slate-800">No Active Diagnosis Loaded</h3>
-              <p className="text-xs text-slate-500 max-w-md mt-1">
-                Select a sample disease from the left or upload your own leaf photo, then click
-                "Diagnose Pathogen" to generate full phytopathology treatment prescriptions.
+              <h3 className="text-base font-extrabold text-slate-900">No Active Diagnosis Loaded</h3>
+              <p className="text-xs text-slate-500 max-w-md mt-1.5 leading-relaxed">
+                Choose a crop sample on the left or upload your own leaf photo, then click
+                "Diagnose Pathogen" to generate full treatment prescriptions.
               </p>
             </div>
           )}

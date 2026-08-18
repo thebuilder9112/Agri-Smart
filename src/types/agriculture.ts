@@ -8,7 +8,8 @@ export type CropType =
   | "Potato"
   | "Sugarcane"
   | "Mustard"
-  | "Other";
+  | "Other"
+  | string;
 
 export type ProblemType = "Water Wastage" | "Pest attacks" | "Soil quality" | "Low crop yield";
 
@@ -19,24 +20,26 @@ export interface FieldRecord {
   variety: string;
   areaAcre: number;
   sowingDate: string;
-  soilType: "Sandy" | "Loamy" | "Clayey" | "Black Soil" | "Alluvial";
-  irrigationType: "Drip Irrigation" | "Sprinkler" | "Flood / Furrow" | "Rainfed";
-  stage: "Germination" | "Vegetative" | "Flowering" | "Grain Formation" | "Maturity / Harvest Ready";
-  targetYieldTonsPerHa: number;
+  soilType: string;
+  irrigationType: "Drip Irrigation" | "Sprinkler" | "Flood / Furrow" | "Rainfed" | "Drip" | string;
+  stage: string;
+  targetYieldTonsPerHa?: number;
+  targetYield?: string;
   currentMoisture: number; // %
   currentTemp: number; // °C
   currentHumidity: number; // %
-  currentPh: number;
-  npk: { n: number; p: number; k: number }; // mg/kg
-  healthStatus: "Optimal" | "Needs Attention" | "Critical Alert";
+  currentPh?: number;
+  npk?: { n: number; p: number; k: number }; // mg/kg
+  healthStatus: "Optimal" | "Needs Attention" | "Critical Alert" | string;
   valveOpen: boolean;
+  lastIrrigated?: string;
   notes: string;
 }
 
 export interface CropDiagnosisResult {
   diagnosisName: string;
   confidenceScore: number;
-  severity: "Mild" | "Moderate" | "Severe" | "Critical";
+  severity: "Mild" | "Moderate" | "Severe" | "Critical" | string;
   affectedParts: string[];
   primaryCause: string;
   visualFindings: string[];
@@ -48,6 +51,22 @@ export interface CropDiagnosisResult {
   dateAnalyzed?: string;
   imageUrl?: string;
   cropName?: string;
+}
+
+export interface SoilAnalysisResult {
+  soilHealthScore: number;
+  organicCarbonStatus: string;
+  phCorrectionStrategy: string;
+  fertilizerSchedule: Array<{
+    stage: string;
+    timingDays: string;
+    ureaKgPerAcre: number;
+    dapKgPerAcre: number;
+    mopKgPerAcre: number;
+    notes: string;
+  }>;
+  organicAmendments: string[];
+  yieldForecastBoost?: string;
 }
 
 export interface SoilAdviceResult {
@@ -151,11 +170,11 @@ export interface SurveyResponse {
   villageLocation: string;
   acresCultivated: number;
   mainCrops: string;
-  primaryProblem: "Water Wastage" | "Pest attacks" | "Soil quality" | "Low crop yield";
-  severityLevel: "High" | "Medium" | "Low";
+  primaryProblem: "Water Wastage" | "Pest attacks" | "Soil quality" | "Low crop yield" | string;
+  severityLevel: "High" | "Medium" | "Low" | string;
   reportedYieldLossPercent: number;
   traditionalMethodUsed: string;
-  willingnessToAdoptAI: "Very High" | "High" | "Moderate" | "Needs Training";
+  willingnessToAdoptAI: "Very High" | "High" | "Moderate" | "Needs Training" | string;
   recordedDate: string;
 }
 
@@ -181,4 +200,3 @@ export interface ThemeConfig {
   accentColor: string;
   previewBg: string;
 }
-
