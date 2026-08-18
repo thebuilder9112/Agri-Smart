@@ -1,0 +1,6 @@
+{
+  "name": "AgriVision AI - Farm Decision Support & Innovation Hub",
+  "description": "Comprehensive AI Agricultural Platform & Decision Support System (DSS) addressing low crop yields, water wastage, pest attacks, and soil quality with smart irrigation, crop doctor diagnostics, soil nutrient predictor, and student innovation prototype creation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
