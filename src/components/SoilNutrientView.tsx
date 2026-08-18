@@ -24,6 +24,59 @@ export const SoilNutrientView: React.FC = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<SoilAnalysisResult | null>(null);
 
+  const calculateLocalPlan = (): SoilAnalysisResult => {
+    const baseUrea = Math.max(30, Math.min(130, Math.round(95 - (nitrogenN * 0.22))));
+    const baseDap = Math.max(20, Math.min(80, Math.round(55 - (phosphorusP * 0.8))));
+    const baseMop = Math.max(10, Math.min(50, Math.round(42 - (potassiumK * 0.1))));
+
+    return {
+      soilHealthRating: soilPh < 6.4 ? "Acidic Soil (Needs Lime)" : soilPh > 7.9 ? "Alkaline / Saline Soil" : "Moderately Fertile Soil",
+      overallHealthScore: Math.min(95, Math.max(50, Math.round(50 + (nitrogenN / 300) * 20 + (phosphorusP / 50) * 15 + (potassiumK / 350) * 15))),
+      ureaRecommendedKgPerAcre: baseUrea,
+      dapRecommendedKgPerAcre: baseDap,
+      mopRecommendedKgPerAcre: baseMop,
+      splitDoseSchedule: [
+        {
+          growthStage: "Basal Dose (Sowing / Seed Drilling)",
+          timingDays: "Day 0 (At final soil plowing / sowing)",
+          ureaDoseKg: Math.round(baseUrea * 0.3),
+          dapDoseKg: baseDap,
+          mopDoseKg: baseMop,
+        },
+        {
+          growthStage: "First Irrigation (CRI / Tillering Stage)",
+          timingDays: "Day 21–25 after germination",
+          ureaDoseKg: Math.round(baseUrea * 0.4),
+          dapDoseKg: 0,
+          mopDoseKg: 0,
+        },
+        {
+          growthStage: "Late Vegetative / Jointing / Booting",
+          timingDays: "Day 45–55 before flowering",
+          ureaDoseKg: Math.round(baseUrea * 0.3),
+          dapDoseKg: 0,
+          mopDoseKg: 0,
+        },
+      ],
+      bioFertilizers: [
+        "Apply 4–5 tonnes well-decomposed Farm Yard Manure (FYM) or Vermicompost per acre.",
+        "Seed inoculation with Azotobacter / Rhizobium culture (250g per 10kg seed) before sowing.",
+        "Apply Phosphorus Solubilizing Bacteria (PSB) @ 2 kg/acre mixed with moist soil."
+      ],
+      micronutrients: [
+        "Zinc Sulphate (21% Zn) @ 10 kg/acre at basal plowing to prevent leaf khaira/chlorosis.",
+        "Foliar Ferrous Sulphate (19% Fe) @ 0.5% (5g/L) if young leaves show pale yellowing.",
+        "Boron 20% spray @ 1g/L at pre-flowering stage for grain filling."
+      ],
+      soilCorrectionAdvice: soilPh > 7.9 
+        ? "Apply Agricultural Gypsum @ 250 kg/acre to reduce soil sodium and improve water percolation." 
+        : soilPh < 6.4 
+        ? "Incorporate Agricultural Dolomite Lime @ 200 kg/acre to neutralize soil acidity." 
+        : "Soil pH is in the optimal range (6.5–7.5). Maintain regular organic matter addition.",
+      targetYieldNote: `Target harvest: ${targetYield}`
+    };
+  };
+
   const handleAnalyzeSoil = async () => {
     setIsAnalyzing(true);
     try {
@@ -40,14 +93,24 @@ export const SoilNutrientView: React.FC = () => {
           targetYield,
         }),
       });
-      const data = await response.json();
-      setAnalysisResult(data);
+      if (response.ok) {
+        const data = await response.json();
+        setAnalysisResult(data);
+      } else {
+        setAnalysisResult(calculateLocalPlan());
+      }
     } catch (err) {
-      console.error(err);
+      console.warn("Using offline agronomy calculator fallback:", err);
+      setAnalysisResult(calculateLocalPlan());
     } finally {
       setIsAnalyzing(false);
     }
   };
+
+  // Preload initial calculation on first render
+  React.useEffect(() => {
+    handleAnalyzeSoil();
+  }, [cropType]);
 
   const handlePrint = () => {
     window.print();

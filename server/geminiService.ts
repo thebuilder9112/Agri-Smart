@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Shared server-side Gemini client
+// Shared server-side Gemini client using modern @google/genai SDK
 export const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
   httpOptions: {
@@ -13,11 +13,14 @@ export const ai = new GoogleGenAI({
   },
 });
 
-// Resilient model cascade: tries primary model, if 503/429/overload occurs, automatically falls back to secondary models
+// Modern valid model list as per guidelines
+// Basic / multimodal vision: gemini-3.7-flash, gemini-flash-latest, gemini-3.1-flash-lite
+// Complex reasoning / deep STEM: gemini-3.1-pro-preview
 const MODEL_CANDIDATES = [
-  "gemini-2.5-flash",
   "gemini-3.7-flash",
-  "gemini-2.5-pro",
+  "gemini-flash-latest",
+  "gemini-3.1-flash-lite",
+  "gemini-3.1-pro-preview",
 ];
 
 export async function generateContentWithRetry(params: {
@@ -43,8 +46,8 @@ export async function generateContentWithRetry(params: {
       }
     } catch (err: any) {
       lastError = err;
-      console.warn(`Model ${model} temporarily failed (${err?.status || err?.message}). Trying fallback model...`);
-      // Short delay before next model attempt if needed
+      console.warn(`Model ${model} returned error (${err?.status || err?.message || err}). Trying next candidate...`);
+      // Brief pause before trying next fallback model
       await new Promise((resolve) => setTimeout(resolve, 300));
     }
   }

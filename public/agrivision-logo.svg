@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b" />
+      <stop offset="100%" stop-color="#022c22" />
+    </linearGradient>
+
+    <!-- Leaf Green Gradient -->
+    <linearGradient id="leafGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="50%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#6ee7b7" />
+    </linearGradient>
+
+    <!-- Sun Gold Gradient -->
+    <linearGradient id="sunGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="50%" stop-color="#facc15" />
+      <stop offset="100%" stop-color="#eab308" />
+    </linearGradient>
+
+    <!-- AI Precision Glow -->
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Base Rounded Container -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
+
+  <!-- Subtle Sensor Arc Rings -->
+  <circle cx="256" cy="270" r="160" fill="none" stroke="#059669" stroke-width="3" stroke-dasharray="8 8" opacity="0.4" />
+  <circle cx="256" cy="270" r="200" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="4 12" opacity="0.3" />
+
+  <!-- Rising Sun Accent -->
+  <circle cx="340" cy="170" r="42" fill="url(#sunGrad)" opacity="0.9" filter="url(#softGlow)" />
+
+  <!-- Soil Base Curve -->
+  <path d="M128 370 C 180 340, 332 340, 384 370 C 340 395, 172 395, 128 370 Z" fill="#047857" opacity="0.85" />
+  <path d="M150 375 C 200 355, 312 355, 362 375" fill="none" stroke="#34d399" stroke-width="5" stroke-linecap="round" />
+
+  <!-- Main Sprout Stem -->
+  <path d="M256 370 C 256 310, 256 240, 256 160" fill="none" stroke="#10b981" stroke-width="14" stroke-linecap="round" />
+
+  <!-- Left Main Leaf -->
+  <path d="M256 270 C 180 270, 140 210, 150 150 C 210 150, 256 210, 256 270 Z" fill="url(#leafGrad)" />
+  <path d="M256 270 C 200 240, 170 190, 150 150" fill="none" stroke="#065f46" stroke-width="3.5" stroke-linecap="round" opacity="0.6" />
+
+  <!-- Right Secondary Leaf -->
+  <path d="M256 220 C 320 220, 360 170, 350 120 C 295 120, 256 170, 256 220 Z" fill="url(#leafGrad)" />
+  <path d="M256 220 C 300 195, 330 155, 350 120" fill="none" stroke="#065f46" stroke-width="3" stroke-linecap="round" opacity="0.6" />
+
+  <!-- Small Top Growth Sprout -->
+  <path d="M256 165 C 240 135, 245 110, 256 95 C 267 110, 272 135, 256 165 Z" fill="#a7f3d0" />
+
+  <!-- AI / Precision Dots -->
+  <circle cx="150" cy="150" r="7" fill="#ffffff" />
+  <circle cx="350" cy="120" r="7" fill="#ffffff" />
+  <circle cx="256" cy="95" r="8" fill="#fef08a" />
+</svg>

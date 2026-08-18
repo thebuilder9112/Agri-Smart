@@ -38,8 +38,12 @@ export interface FieldRecord {
 
 export interface CropDiagnosisResult {
   diagnosisName: string;
+  plantIdentified?: string;
+  botanicalName?: string;
+  plantHealthCategory?: string;
+  isHealthy?: boolean;
   confidenceScore: number;
-  severity: "Mild" | "Moderate" | "Severe" | "Critical" | string;
+  severity: "Healthy" | "Mild" | "Moderate" | "Severe" | "Critical" | string;
   affectedParts: string[];
   primaryCause: string;
   visualFindings: string[];
@@ -48,25 +52,29 @@ export interface CropDiagnosisResult {
   chemicalTreatment: string[];
   preventionStrategy: string[];
   impactOnYieldEstimate: string;
+  dosageInstructions?: string;
   dateAnalyzed?: string;
   imageUrl?: string;
   cropName?: string;
 }
 
 export interface SoilAnalysisResult {
-  soilHealthScore: number;
-  organicCarbonStatus: string;
-  phCorrectionStrategy: string;
-  fertilizerSchedule: Array<{
-    stage: string;
+  soilHealthRating: string;
+  overallHealthScore: number;
+  ureaRecommendedKgPerAcre: number;
+  dapRecommendedKgPerAcre: number;
+  mopRecommendedKgPerAcre: number;
+  splitDoseSchedule: Array<{
+    growthStage: string;
     timingDays: string;
-    ureaKgPerAcre: number;
-    dapKgPerAcre: number;
-    mopKgPerAcre: number;
-    notes: string;
+    ureaDoseKg: number;
+    dapDoseKg: number;
+    mopDoseKg: number;
   }>;
-  organicAmendments: string[];
-  yieldForecastBoost?: string;
+  bioFertilizers: string[];
+  micronutrients: string[];
+  soilCorrectionAdvice: string;
+  targetYieldNote?: string;
 }
 
 export interface SoilAdviceResult {
@@ -201,6 +209,42 @@ export interface ThemeConfig {
   previewBg: string;
 }
 
+export interface HourlyForecastItem {
+  time: string;
+  hourLabel: string;
+  tempC: number;
+  humidityPercent: number;
+  rainProbPercent: number;
+  rainMm: number;
+  windSpeedKmh: number;
+  weatherCode: number;
+  weatherDescription: string;
+}
+
+export interface DailyForecastItem {
+  date: string;
+  dayName: string;
+  maxTempC: number;
+  minTempC: number;
+  rainMm: number;
+  rainProbPercent: number;
+  et0Mm: number;
+  maxWindKmh: number;
+  uvIndexMax?: number;
+  weatherCode: number;
+  weatherDescription: string;
+}
+
+export interface AgriculturalAdvisory {
+  irrigationAction: string;
+  irrigationReason: string;
+  sprayingSuitable: boolean;
+  sprayingScore: "Optimal" | "Moderate" | "Risky" | "Not Recommended";
+  sprayingReason: string;
+  harvestingWindow: string;
+  extremeWeatherRisk: string;
+}
+
 export interface WeatherData {
   placeName: string;
   region: string;
@@ -213,18 +257,17 @@ export interface WeatherData {
   weatherCode: number;
   weatherDescription: string;
   windSpeedKmh: number;
+  windDirectionDegrees?: number;
+  surfacePressureHpa?: number;
+  uvIndex?: number;
+  dewPointC?: number;
   precipitationTodayMm: number;
   forecastRain3DaysMm: number;
   evapotranspirationMmDay: number;
   lastUpdated: string;
-  dailyForecast: Array<{
-    date: string;
-    maxTempC: number;
-    minTempC: number;
-    rainMm: number;
-    rainProbPercent: number;
-    weatherDescription: string;
-  }>;
+  dailyForecast: DailyForecastItem[];
+  hourlyForecast?: HourlyForecastItem[];
+  agriAdvisory?: AgriculturalAdvisory;
 }
 
 export interface LocationOption {

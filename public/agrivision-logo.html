@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgriVision AI - Logo Asset Showcase</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --primary: #10b981;
+      --primary-hover: #059669;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2.5rem 1rem;
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 1.875rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.5rem;
+    }
+
+    h1 span {
+      color: var(--primary);
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 640px) {
+      .preview-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .preview-box {
+      border-radius: 1rem;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      border: 1px solid var(--border);
+    }
+
+    .preview-box.dark {
+      background: #022c22;
+    }
+
+    .preview-box.light {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+
+    .logo-svg {
+      width: 140px;
+      height: 140px;
+      filter: drop-shadow(0 10px 8px rgba(0,0,0,0.3));
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    button, a.button {
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    button:hover, a.button:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    button.secondary {
+      background: #334155;
+      color: #f8fafc;
+    }
+
+    button.secondary:hover {
+      background: #475569;
+    }
+
+    .code-section {
+      background: #090d16;
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      position: relative;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    pre {
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #34d399;
+      max-height: 250px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      background: #10b981;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.4);
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>AgriVision <span>AI</span></h1>
+      <p class="subtitle">Official Scalable Vector Graphic (SVG) Brand Logo</p>
+    </header>
+
+    <div class="preview-grid">
+      <!-- Dark Background Preview -->
+      <div class="preview-box dark">
+        <!-- SVG Logo Definition -->
+        <svg id="mainLogo" class="logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <defs>
+            <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#064e3b" />
+              <stop offset="100%" stop-color="#022c22" />
+            </linearGradient>
+            <linearGradient id="leafGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#10b981" />
+              <stop offset="50%" stop-color="#34d399" />
+              <stop offset="100%" stop-color="#6ee7b7" />
+            </linearGradient>
+            <linearGradient id="sunGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#fef08a" />
+              <stop offset="50%" stop-color="#facc15" />
+              <stop offset="100%" stop-color="#eab308" />
+            </linearGradient>
+            <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="12" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+          <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
+          <circle cx="256" cy="270" r="160" fill="none" stroke="#059669" stroke-width="3" stroke-dasharray="8 8" opacity="0.4" />
+          <circle cx="256" cy="270" r="200" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="4 12" opacity="0.3" />
+          <circle cx="340" cy="170" r="42" fill="url(#sunGrad)" opacity="0.9" filter="url(#softGlow)" />
+          <path d="M128 370 C 180 340, 332 340, 384 370 C 340 395, 172 395, 128 370 Z" fill="#047857" opacity="0.85" />
+          <path d="M150 375 C 200 355, 312 355, 362 375" fill="none" stroke="#34d399" stroke-width="5" stroke-linecap="round" />
+          <path d="M256 370 C 256 310, 256 240, 256 160" fill="none" stroke="#10b981" stroke-width="14" stroke-linecap="round" />
+          <path d="M256 270 C 180 270, 140 210, 150 150 C 210 150, 256 210, 256 270 Z" fill="url(#leafGrad)" />
+          <path d="M256 270 C 200 240, 170 190, 150 150" fill="none" stroke="#065f46" stroke-width="3.5" stroke-linecap="round" opacity="0.6" />
+          <path d="M256 220 C 320 220, 360 170, 350 120 C 295 120, 256 170, 256 220 Z" fill="url(#leafGrad)" />
+          <path d="M256 220 C 300 195, 330 155, 350 120" fill="none" stroke="#065f46" stroke-width="3.5" stroke-linecap="round" opacity="0.6" />
+          <path d="M256 165 C 240 135, 245 110, 256 95 C 267 110, 272 135, 256 165 Z" fill="#a7f3d0" />
+          <circle cx="150" cy="150" r="7" fill="#ffffff" />
+          <circle cx="350" cy="120" r="7" fill="#ffffff" />
+          <circle cx="256" cy="95" r="8" fill="#fef08a" />
+        </svg>
+        <span style="font-size: 0.8rem; font-weight: 600; color: #a7f3d0;">Dark Background</span>
+      </div>
+
+      <!-- Light Background Preview -->
+      <div class="preview-box light">
+        <svg class="logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <use href="#mainLogo" />
+          <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
+          <circle cx="256" cy="270" r="160" fill="none" stroke="#059669" stroke-width="3" stroke-dasharray="8 8" opacity="0.4" />
+          <circle cx="256" cy="270" r="200" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="4 12" opacity="0.3" />
+          <circle cx="340" cy="170" r="42" fill="url(#sunGrad)" opacity="0.9" filter="url(#softGlow)" />
+          <path d="M128 370 C 180 340, 332 340, 384 370 C 340 395, 172 395, 128 370 Z" fill="#047857" opacity="0.85" />
+          <path d="M150 375 C 200 355, 312 355, 362 375" fill="none" stroke="#34d399" stroke-width="5" stroke-linecap="round" />
+          <path d="M256 370 C 256 310, 256 240, 256 160" fill="none" stroke="#10b981" stroke-width="14" stroke-linecap="round" />
+          <path d="M256 270 C 180 270, 140 210, 150 150 C 210 150, 256 210, 256 270 Z" fill="url(#leafGrad)" />
+          <path d="M256 270 C 200 240, 170 190, 150 150" fill="none" stroke="#065f46" stroke-width="3.5" stroke-linecap="round" opacity="0.6" />
+          <path d="M256 220 C 320 220, 360 170, 350 120 C 295 120, 256 170, 256 220 Z" fill="url(#leafGrad)" />
+          <path d="M256 220 C 300 195, 330 155, 350 120" fill="none" stroke="#065f46" stroke-width="3.5" stroke-linecap="round" opacity="0.6" />
+          <path d="M256 165 C 240 135, 245 110, 256 95 C 267 110, 272 135, 256 165 Z" fill="#a7f3d0" />
+          <circle cx="150" cy="150" r="7" fill="#ffffff" />
+          <circle cx="350" cy="120" r="7" fill="#ffffff" />
+          <circle cx="256" cy="95" r="8" fill="#fef08a" />
+        </svg>
+        <span style="font-size: 0.8rem; font-weight: 600; color: #475569;">Light Background</span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button onclick="copySvgCode()">📋 Copy SVG Code</button>
+      <button class="secondary" onclick="copyHtmlPage()">📄 Copy Full HTML File</button>
+      <a href="/agrivision-logo.svg" download="agrivision-logo.svg" class="button secondary">⬇️ Download .svg File</a>
+    </div>
+
+    <!-- Source Code View -->
+    <div class="code-section">
+      <div class="code-header">
+        <span>Raw SVG Vector Markup</span>
+        <span style="color: var(--primary);">512 × 512 px</span>
+      </div>
+      <pre id="svgCode"><code>&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%"&gt;
+  &lt;defs&gt;
+    &lt;linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%"&gt;
+      &lt;stop offset="0%" stop-color="#064e3b" /&gt;
+      &lt;stop offset="100%" stop-color="#022c22" /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id="leafGrad" x1="0%" y1="100%" x2="100%" y2="0%"&gt;
+      &lt;stop offset="0%" stop-color="#10b981" /&gt;
+      &lt;stop offset="50%" stop-color="#34d399" /&gt;
+      &lt;stop offset="100%" stop-color="#6ee7b7" /&gt;
+    &lt;/linearGradient&gt;
+    &lt;linearGradient id="sunGrad" x1="0%" y1="0%" x2="100%" y2="100%"&gt;
+      &lt;stop offset="0%" stop-color="#fef08a" /&gt;
+      &lt;stop offset="50%" stop-color="#facc15" /&gt;
+      &lt;stop offset="100%" stop-color="#eab308" /&gt;
+    &lt;/linearGradient&gt;
+    &lt;filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%"&gt;
+      &lt;feGaussianBlur stdDeviation="12" result="blur" /&gt;
+      &lt;feComposite in="SourceGraphic" in2="blur" operator="over" /&gt;
+    &lt;/filter&gt;
+  &lt;/defs&gt;
+  &lt;rect width="512" height="512" rx="112" fill="url(#bgGrad)" /&gt;
+  &lt;circle cx="256" cy="270" r="160" fill="none" stroke="#059669" stroke-width="3" stroke-dasharray="8 8" opacity="0.4" /&gt;
+  &lt;circle cx="256" cy="270" r="200" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="4 12" opacity="0.3" /&gt;
+  &lt;circle cx="340" cy="170" r="42" fill="url(#sunGrad)" opacity="0.9" filter="url(#softGlow)" /&gt;
+  &lt;path d="M128 370 C 180 340, 332 340, 384 370 C 340 395, 172 395, 128 370 Z" fill="#047857" opacity="0.85" /&gt;
+  &lt;path d="M150 375 C 200 355, 312 355, 362 375" fill="none" stroke="#34d399" stroke-width="5" stroke-linecap="round" /&gt;
+  &lt;path d="M256 370 C 256 310, 256 240, 256 160" fill="none" stroke="#10b981" stroke-width="14" stroke-linecap="round" /&gt;
+  &lt;path d="M256 270 C 180 270, 140 210, 150 150 C 210 150, 256 210, 256 270 Z" fill="url(#leafGrad)" /&gt;
+  &lt;path d="M256 270 C 200 240, 170 190, 150 150" fill="none" stroke="#065f46" stroke-width="3.5" stroke-linecap="round" opacity="0.6" /&gt;
+  &lt;path d="M256 220 C 320 220, 360 170, 350 120 C 295 120, 256 170, 256 220 Z" fill="url(#leafGrad)" /&gt;
+  &lt;path d="M256 220 C 300 195, 330 155, 350 120" fill="none" stroke="#065f46" stroke-width="3.5" stroke-linecap="round" opacity="0.6" /&gt;
+  &lt;path d="M256 165 C 240 135, 245 110, 256 95 C 267 110, 272 135, 256 165 Z" fill="#a7f3d0" /&gt;
+  &lt;circle cx="150" cy="150" r="7" fill="#ffffff" /&gt;
+  &lt;circle cx="350" cy="120" r="7" fill="#ffffff" /&gt;
+  &lt;circle cx="256" cy="95" r="8" fill="#fef08a" /&gt;
+&lt;/svg&gt;</code></pre>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">Copied to clipboard!</div>
+
+  <script>
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      toast.innerText = msg;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    function copySvgCode() {
+      const svg = document.getElementById("mainLogo").outerHTML;
+      navigator.clipboard.writeText(svg).then(() => {
+        showToast("SVG Code copied to clipboard!");
+      });
+    }
+
+    function copyHtmlPage() {
+      const html = document.documentElement.outerHTML;
+      navigator.clipboard.writeText(html).then(() => {
+        showToast("Full HTML file copied to clipboard!");
+      });
+    }
+  </script>
+</body>
+</html>
