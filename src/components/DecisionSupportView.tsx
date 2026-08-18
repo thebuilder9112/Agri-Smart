@@ -19,6 +19,9 @@ import {
   TrendingDown,
   Clock,
   Compass,
+  Radio,
+  Waves,
+  Cpu,
 } from "lucide-react";
 import { FieldRecord, IrrigationAdvisoryResult } from "../types/agriculture";
 
@@ -134,7 +137,7 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
       return;
     }
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = language === "hi" ? "hi-IN" : language === "es" ? "es-ES" : "en-US";
+    utterance.lang = language === "hi" ? "hi-IN" : language === "pa" ? "pa-IN" : language === "es" ? "es-ES" : "en-US";
     utterance.onend = () => setIsSpeaking(false);
     utterance.onerror = () => setIsSpeaking(false);
     setIsSpeaking(true);
@@ -145,10 +148,17 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
     <div className="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       {/* TOP COMMAND HERO COCKPIT */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-900 text-white p-6 sm:p-8 border border-emerald-800/60 shadow-2xl">
+        {/* Animated Background Pulse Waves */}
+        <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none pulse-glow" />
+        <div className="absolute right-1/3 -bottom-16 w-48 h-48 rounded-full bg-teal-500/10 blur-2xl pointer-events-none" />
+
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div className="space-y-2 max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider border border-emerald-400/30">
-              <Zap className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
               Automated Decision Support System (DSS)
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
@@ -163,21 +173,21 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
           <div className="flex flex-wrap items-center gap-2.5 shrink-0">
             <button
               onClick={onOpenCropDoctor}
-              className="px-4 py-2.5 rounded-xl bg-emerald-700/80 hover:bg-emerald-600 text-white text-xs font-bold border border-emerald-400/30 transition-all flex items-center gap-2 shadow-sm"
+              className="px-4 py-2.5 rounded-xl bg-emerald-700/80 hover:bg-emerald-600 text-white text-xs font-bold border border-emerald-400/30 transition-all flex items-center gap-2 shadow-sm hover:scale-105 active:scale-95 cursor-pointer"
             >
               <ShieldCheck className="w-4 h-4 text-emerald-300" />
               Crop Doctor AI
             </button>
             <button
               onClick={onOpenSoilAdvisor}
-              className="px-4 py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-white text-xs font-bold border border-slate-600 transition-all flex items-center gap-2 shadow-sm"
+              className="px-4 py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-white text-xs font-bold border border-slate-600 transition-all flex items-center gap-2 shadow-sm hover:scale-105 active:scale-95 cursor-pointer"
             >
               <Sliders className="w-4 h-4 text-amber-300" />
               Soil & NPK Plan
             </button>
             <button
               onClick={onOpenActivityLab}
-              className="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-extrabold transition-all flex items-center gap-2 shadow-md shadow-amber-950/50"
+              className="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-extrabold transition-all flex items-center gap-2 shadow-md shadow-amber-950/50 hover:scale-105 active:scale-95 cursor-pointer"
             >
               <Sparkles className="w-4 h-4 text-amber-200" />
               Student Activity Hub
@@ -185,23 +195,35 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
           </div>
         </div>
 
-        {/* Micro Telemetry Bar */}
+        {/* Micro Telemetry Bar with Animated Metrics */}
         <div className="mt-6 pt-5 border-t border-emerald-800/60 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-          <div className="bg-slate-900/60 backdrop-blur-xs p-3 rounded-xl border border-emerald-800/40">
+          <div className="bg-slate-900/60 backdrop-blur-xs p-3 rounded-xl border border-emerald-800/40 hover:border-emerald-500/50 transition-colors">
             <span className="text-[10px] text-emerald-300/70 block uppercase font-bold">Soil Water Saved</span>
-            <span className="text-lg font-black text-emerald-300">45% Conserved</span>
+            <span className="text-lg font-black text-emerald-300 flex items-center gap-1.5">
+              <Droplets className="w-4 h-4 text-emerald-400 animate-bounce" />
+              45% Conserved
+            </span>
           </div>
-          <div className="bg-slate-900/60 backdrop-blur-xs p-3 rounded-xl border border-emerald-800/40">
+          <div className="bg-slate-900/60 backdrop-blur-xs p-3 rounded-xl border border-emerald-800/40 hover:border-emerald-500/50 transition-colors">
             <span className="text-[10px] text-emerald-300/70 block uppercase font-bold">Active Valve Mesh</span>
-            <span className="text-lg font-black text-white">4 IoT Solenoids</span>
+            <span className="text-lg font-black text-white flex items-center gap-1.5">
+              <Cpu className="w-4 h-4 text-emerald-400" />
+              4 IoT Solenoids
+            </span>
           </div>
-          <div className="bg-slate-900/60 backdrop-blur-xs p-3 rounded-xl border border-emerald-800/40">
+          <div className="bg-slate-900/60 backdrop-blur-xs p-3 rounded-xl border border-emerald-800/40 hover:border-emerald-500/50 transition-colors">
             <span className="text-[10px] text-emerald-300/70 block uppercase font-bold">Rainfall Probability</span>
-            <span className="text-lg font-black text-sky-300">{forecastRainMm > 0 ? "75% (72h)" : "0% Clear"}</span>
+            <span className="text-lg font-black text-sky-300 flex items-center gap-1.5">
+              <CloudRain className={`w-4 h-4 ${forecastRainMm > 0 ? "text-sky-400 animate-pulse" : "text-slate-400"}`} />
+              {forecastRainMm > 0 ? "75% (72h)" : "0% Clear"}
+            </span>
           </div>
-          <div className="bg-slate-900/60 backdrop-blur-xs p-3 rounded-xl border border-emerald-800/40">
+          <div className="bg-slate-900/60 backdrop-blur-xs p-3 rounded-xl border border-emerald-800/40 hover:border-emerald-500/50 transition-colors">
             <span className="text-[10px] text-emerald-300/70 block uppercase font-bold">Evapotranspiration</span>
-            <span className="text-lg font-black text-amber-300">4.8 mm/day</span>
+            <span className="text-lg font-black text-amber-300 flex items-center gap-1.5">
+              <Sun className="w-4 h-4 text-amber-400" />
+              4.8 mm/day
+            </span>
           </div>
         </div>
       </div>
@@ -216,7 +238,8 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
                 <Gauge className="w-4 h-4 text-emerald-600" />
                 Active Field Plots ({fields.length})
               </h2>
-              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
                 Live Probes Active
               </span>
             </div>
@@ -233,10 +256,10 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
                       setCustomMoisture(field.currentMoisture);
                       setAdvisoryResult(null);
                     }}
-                    className={`p-3.5 rounded-xl border-2 cursor-pointer transition-all ${
+                    className={`p-3.5 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
                       isSelected
-                        ? "border-emerald-600 bg-emerald-50/60 shadow-sm ring-2 ring-emerald-500/20"
-                        : "border-slate-200/80 bg-slate-50/60 hover:bg-white hover:border-slate-300"
+                        ? "border-emerald-600 bg-emerald-50/60 shadow-md ring-2 ring-emerald-500/20 scale-[1.01]"
+                        : "border-slate-200/80 bg-slate-50/60 hover:bg-white hover:border-slate-300 hover:shadow-sm"
                     }`}
                   >
                     <div className="flex items-start justify-between">
@@ -253,7 +276,7 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
                       </div>
 
                       {isLowMoisture ? (
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1 animate-pulse">
                           <AlertTriangle className="w-3 h-3 text-amber-600" />
                           Dry Alert
                         </span>
@@ -265,7 +288,7 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
                       )}
                     </div>
 
-                    {/* Progress moisture bar */}
+                    {/* Progress moisture bar with animated transition */}
                     <div className="mt-3 space-y-1">
                       <div className="flex justify-between text-[10px] font-semibold text-slate-600">
                         <span>Soil Moisture</span>
@@ -275,7 +298,7 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
                       </div>
                       <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
                         <div
-                          className={`h-full transition-all rounded-full ${
+                          className={`h-full transition-all duration-500 ease-out rounded-full ${
                             isLowMoisture ? "bg-amber-500" : "bg-emerald-600"
                           }`}
                           style={{ width: `${field.currentMoisture}%` }}
@@ -283,11 +306,17 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
                       </div>
                     </div>
 
-                    {/* Micro Valve Controller */}
+                    {/* Micro Valve Controller with Flow Animation */}
                     <div className="mt-3 pt-2.5 border-t border-slate-200/80 flex items-center justify-between">
-                      <div className="text-[11px] text-slate-600 font-medium">
-                        Solenoid Valve:{" "}
-                        <strong className={field.valveOpen ? "text-emerald-600" : "text-slate-500"}>
+                      <div className="text-[11px] text-slate-600 font-medium flex items-center gap-1.5">
+                        {field.valveOpen && (
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
+                          </span>
+                        )}
+                        <span>Solenoid Valve:</span>
+                        <strong className={field.valveOpen ? "text-emerald-600 font-extrabold" : "text-slate-500"}>
                           {field.valveOpen ? "RUNNING" : "STANDBY"}
                         </strong>
                       </div>
@@ -297,7 +326,7 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
                           e.stopPropagation();
                           toggleValve(field);
                         }}
-                        className={`px-2.5 py-1 rounded text-[10px] font-bold transition-all ${
+                        className={`px-2.5 py-1 rounded text-[10px] font-bold transition-all cursor-pointer shadow-xs active:scale-95 ${
                           field.valveOpen
                             ? "bg-rose-600 hover:bg-rose-700 text-white"
                             : "bg-slate-900 hover:bg-slate-800 text-white"
@@ -306,6 +335,17 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
                         {field.valveOpen ? "Close Valve" : "Manual Override"}
                       </button>
                     </div>
+
+                    {/* Animated water pipe graphic if valve open */}
+                    {field.valveOpen && (
+                      <div className="mt-2.5 p-2 rounded-lg bg-sky-50 border border-sky-200 flex items-center justify-between text-[10px] text-sky-800 font-bold">
+                        <span className="flex items-center gap-1">
+                          <Waves className="w-3.5 h-3.5 text-sky-600 animate-spin" />
+                          Drip Water Emitting (1.8 L/hr)
+                        </span>
+                        <span className="water-drip">💧</span>
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -351,7 +391,7 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
                   max={95}
                   value={customMoisture}
                   onChange={(e) => setCustomMoisture(Number(e.target.value))}
-                  className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-teal-600"
+                  className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-teal-600 transition-all"
                 />
                 <div className="flex justify-between text-[10px] text-slate-500 mt-1 font-medium">
                   <span>10% (Severe Drought)</span>
@@ -375,7 +415,7 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
                   max={60}
                   value={forecastRainMm}
                   onChange={(e) => setForecastRainMm(Number(e.target.value))}
-                  className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-sky-600"
+                  className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-sky-600 transition-all"
                 />
                 <div className="flex justify-between text-[10px] text-slate-500 mt-1 font-medium">
                   <span>0 mm (Clear)</span>
@@ -395,7 +435,7 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
               <button
                 onClick={handleCalculateAdvisory}
                 disabled={isCalculatingAdvisory}
-                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold transition-all shadow-md shadow-teal-950/30 flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold transition-all shadow-md shadow-teal-950/30 flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer hover:scale-105 active:scale-95"
               >
                 {isCalculatingAdvisory ? (
                   <>
@@ -404,22 +444,22 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
                   </>
                 ) : (
                   <>
-                    <Zap className="w-4 h-4 text-teal-200" />
+                    <Zap className="w-4 h-4 text-teal-200 animate-pulse" />
                     Calculate Automated Irrigation Decision
                   </>
                 )}
               </button>
             </div>
 
-            {/* AI Advisory Result Card */}
+            {/* AI Advisory Result Card with Smooth Transition */}
             {advisoryResult && (
-              <div className="p-5 rounded-2xl bg-emerald-50/80 border border-emerald-200 space-y-4 shadow-sm animate-in fade-in duration-300">
+              <div className="p-5 rounded-2xl bg-emerald-50/80 border border-emerald-200 space-y-4 shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300">
                 <div className="flex flex-wrap items-center justify-between gap-3 border-b border-emerald-200/80 pb-3">
                   <div className="flex items-center gap-2">
                     <span
                       className={`px-3 py-1 rounded-lg text-xs font-extrabold tracking-wide uppercase ${
                         advisoryResult.irrigationStatus === "TRIGGER_NOW"
-                          ? "bg-rose-600 text-white"
+                          ? "bg-rose-600 text-white animate-pulse"
                           : advisoryResult.irrigationStatus === "HOLD_DUE_TO_RAIN"
                           ? "bg-sky-600 text-white"
                           : "bg-emerald-600 text-white"
@@ -484,7 +524,7 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
           <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-black text-sm">
+                <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-black text-sm float-slow">
                   🌾
                 </div>
                 <div>
@@ -536,24 +576,35 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
               <button
                 type="submit"
                 disabled={isQueryingAgronomist || !quickQuery.trim()}
-                className="px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-2 disabled:opacity-50 shadow-sm cursor-pointer"
+                className="px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-2 disabled:opacity-50 shadow-sm cursor-pointer hover:scale-105 active:scale-95"
               >
                 {isQueryingAgronomist ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                 Ask
               </button>
             </form>
 
-            {/* Answer Display */}
+            {/* Answer Display with Audio Equalizer Animation */}
             {agronomistAnswer && (
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 animate-in fade-in duration-300">
                 <div className="flex items-center justify-between text-xs text-emerald-800 font-bold border-b border-slate-200 pb-2">
-                  <span>Agronomist Guidance:</span>
+                  <span className="flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                    Agronomist Guidance:
+                  </span>
                   <button
                     onClick={() => handleTextToSpeech(agronomistAnswer)}
-                    className="flex items-center gap-1.5 text-xs text-slate-600 hover:text-emerald-700 font-semibold cursor-pointer"
+                    className="flex items-center gap-2 text-xs text-slate-600 hover:text-emerald-700 font-semibold cursor-pointer bg-white px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs"
                     title="Audio Readout"
                   >
-                    <Volume2 className={`w-4 h-4 ${isSpeaking ? "text-emerald-600 animate-pulse" : ""}`} />
+                    {isSpeaking ? (
+                      <div className="flex items-center gap-0.5 h-3">
+                        <span className="w-0.5 h-full bg-emerald-600 animate-pulse" />
+                        <span className="w-0.5 h-2 bg-emerald-600 animate-ping" />
+                        <span className="w-0.5 h-full bg-emerald-600 animate-pulse" />
+                      </div>
+                    ) : (
+                      <Volume2 className="w-4 h-4" />
+                    )}
                     {isSpeaking ? "Stop Voice" : "Listen (TTS)"}
                   </button>
                 </div>

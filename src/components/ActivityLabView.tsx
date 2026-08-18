@@ -20,6 +20,8 @@ import {
   Lightbulb,
   Workflow,
   Box,
+  Radio,
+  Zap,
 } from "lucide-react";
 import {
   INITIAL_SURVEYS,
@@ -128,10 +130,13 @@ export const ActivityLabView: React.FC = () => {
   return (
     <div className="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       {/* Step Pipeline Hero Bar */}
-      <div className="bg-slate-950 text-white rounded-2xl p-6 border border-slate-800 shadow-xl space-y-5">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="relative overflow-hidden bg-slate-950 text-white rounded-2xl p-6 border border-slate-800 shadow-xl space-y-5">
+        <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-amber-500/10 blur-2xl pointer-events-none pulse-glow" />
+        
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <span className="text-[10px] font-extrabold text-amber-400 bg-amber-950/80 px-2.5 py-1 rounded-md border border-amber-500/40 uppercase tracking-widest block w-fit mb-1.5">
+            <span className="text-[10px] font-extrabold text-amber-400 bg-amber-950/80 px-2.5 py-1 rounded-md border border-amber-500/40 uppercase tracking-widest inline-flex items-center gap-1.5 mb-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
               S.S Agriculture Activity Studio • Deadline: 17th August 2026
             </span>
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
@@ -143,7 +148,7 @@ export const ActivityLabView: React.FC = () => {
           </div>
 
           {/* Quick jump to page note */}
-          <div className="flex items-center gap-2 bg-slate-900 px-4 py-2 rounded-xl border border-slate-800 shrink-0">
+          <div className="flex items-center gap-2 bg-slate-900 px-4 py-2 rounded-xl border border-slate-800 shrink-0 float-slow">
             <BookOpen className="w-4 h-4 text-amber-400" />
             <div className="text-xs">
               <span className="text-slate-400 text-[10px] block">Notebook Subject:</span>
@@ -152,7 +157,7 @@ export const ActivityLabView: React.FC = () => {
           </div>
         </div>
 
-        {/* 4 Interactive Step Tabs */}
+        {/* 4 Interactive Step Tabs with Smooth Selection Animation */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 pt-3 border-t border-slate-800">
           {[
             { step: 1, title: "Step 1: Problem Survey", sub: "Survey Local Farming Issues" },
@@ -165,14 +170,14 @@ export const ActivityLabView: React.FC = () => {
               <button
                 key={item.step}
                 onClick={() => setActiveStep(item.step as any)}
-                className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                className={`p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer hover:scale-[1.02] active:scale-[0.98] ${
                   isActive
-                    ? "bg-amber-500 text-slate-950 border-amber-400 shadow-md font-bold"
+                    ? "bg-amber-500 text-slate-950 border-amber-400 shadow-md font-bold ring-2 ring-amber-400/30"
                     : "bg-slate-900/80 text-slate-300 border-slate-800 hover:bg-slate-800 hover:text-white"
                 }`}
               >
                 <div className="text-xs font-black truncate">{item.title}</div>
-                <div className={`text-[10px] truncate ${isActive ? "text-slate-900" : "text-slate-400"}`}>
+                <div className={`text-[10px] truncate ${isActive ? "text-slate-900 font-semibold" : "text-slate-400"}`}>
                   {item.sub}
                 </div>
               </button>
@@ -183,7 +188,7 @@ export const ActivityLabView: React.FC = () => {
 
       {/* STEP 1: PROBLEM IDENTIFICATION */}
       {activeStep === 1 && (
-        <div className="space-y-6 animate-in fade-in duration-300">
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-100 pb-4">
               <div>
@@ -200,18 +205,18 @@ export const ActivityLabView: React.FC = () => {
 
               <button
                 onClick={() => setIsSurveyModalOpen(true)}
-                className="px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm shrink-0 cursor-pointer"
+                className="px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm shrink-0 cursor-pointer hover:scale-105 active:scale-95"
               >
                 <Plus className="w-4 h-4" />
                 Record New Farmer Survey
               </button>
             </div>
 
-            {/* Problem Overview Cards */}
+            {/* Problem Overview Cards with Hover Elevation */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div className="bg-sky-50 p-4 rounded-xl border border-sky-200 space-y-1">
+              <div className="bg-sky-50 p-4 rounded-xl border border-sky-200 space-y-1 hover:shadow-md transition-all duration-200">
                 <div className="flex items-center gap-2 text-sky-900 font-bold text-xs">
-                  <Droplets className="w-4 h-4 text-sky-600" />
+                  <Droplets className="w-4 h-4 text-sky-600 animate-bounce" />
                   1. Water Wastage
                 </div>
                 <p className="text-[11px] text-sky-800 leading-relaxed">
@@ -219,9 +224,9 @@ export const ActivityLabView: React.FC = () => {
                 </p>
               </div>
 
-              <div className="bg-rose-50 p-4 rounded-xl border border-rose-200 space-y-1">
+              <div className="bg-rose-50 p-4 rounded-xl border border-rose-200 space-y-1 hover:shadow-md transition-all duration-200">
                 <div className="flex items-center gap-2 text-rose-900 font-bold text-xs">
-                  <Bug className="w-4 h-4 text-rose-600" />
+                  <Bug className="w-4 h-4 text-rose-600 animate-pulse" />
                   2. Pest Attacks
                 </div>
                 <p className="text-[11px] text-rose-800 leading-relaxed">
@@ -229,7 +234,7 @@ export const ActivityLabView: React.FC = () => {
                 </p>
               </div>
 
-              <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-200 space-y-1">
+              <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-200 space-y-1 hover:shadow-md transition-all duration-200">
                 <div className="flex items-center gap-2 text-emerald-900 font-bold text-xs">
                   <Layers className="w-4 h-4 text-emerald-600" />
                   3. Soil Quality
@@ -255,7 +260,7 @@ export const ActivityLabView: React.FC = () => {
                 </thead>
                 <tbody className="divide-y divide-slate-200">
                   {surveys.map((s) => (
-                    <tr key={s.id} className="hover:bg-slate-50/80">
+                    <tr key={s.id} className="hover:bg-slate-50/80 transition-colors">
                       <td className="p-3 font-bold text-slate-900">
                         {s.farmerName}
                         <span className="block text-[10px] text-slate-400 font-normal">{s.villageLocation}</span>
@@ -291,7 +296,7 @@ export const ActivityLabView: React.FC = () => {
             <div className="pt-2 flex justify-end">
               <button
                 onClick={() => setActiveStep(2)}
-                className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer"
+                className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer hover:scale-105 active:scale-95"
               >
                 Proceed to Step 2: A.I Exploration <ArrowRight className="w-4 h-4" />
               </button>
@@ -302,7 +307,7 @@ export const ActivityLabView: React.FC = () => {
 
       {/* STEP 2: A.I EXPLORATION */}
       {activeStep === 2 && (
-        <div className="space-y-6 animate-in fade-in duration-300">
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-5">
             <div className="border-b border-slate-100 pb-3">
               <span className="text-xs font-bold text-teal-700 uppercase tracking-wider block">
@@ -321,7 +326,7 @@ export const ActivityLabView: React.FC = () => {
               {AI_EXPLORATION_COMPARISONS.map((tool, idx) => (
                 <div
                   key={idx}
-                  className="bg-slate-50 rounded-2xl border border-slate-200 p-5 space-y-4 flex flex-col justify-between"
+                  className="bg-slate-50 rounded-2xl border border-slate-200 p-5 space-y-4 flex flex-col justify-between hover:shadow-md transition-all duration-200"
                 >
                   <div className="space-y-3">
                     <div className="flex items-start justify-between">
@@ -347,7 +352,7 @@ export const ActivityLabView: React.FC = () => {
 
                   <button
                     onClick={() => setActiveStep(3)}
-                    className="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                    className="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer hover:scale-105 active:scale-95"
                   >
                     Select for Prototype Design <ArrowRight className="w-3.5 h-3.5" />
                   </button>
@@ -358,7 +363,7 @@ export const ActivityLabView: React.FC = () => {
             {/* Classroom Synthesis Callout */}
             <div className="bg-amber-50 rounded-2xl border border-amber-200 p-5 space-y-2">
               <h4 className="text-xs font-extrabold text-amber-950 uppercase tracking-wider flex items-center gap-2">
-                <Lightbulb className="w-4 h-4 text-amber-600" />
+                <Lightbulb className="w-4 h-4 text-amber-600 animate-pulse" />
                 Classroom Discussion Synthesis:
               </h4>
               <p className="text-xs text-amber-900 leading-relaxed font-medium">
@@ -371,7 +376,7 @@ export const ActivityLabView: React.FC = () => {
 
       {/* STEP 3: INNOVATION DESIGN CHALLENGE */}
       {activeStep === 3 && (
-        <div className="space-y-6 animate-in fade-in duration-300">
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-5">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
@@ -391,7 +396,7 @@ export const ActivityLabView: React.FC = () => {
               </span>
             </div>
 
-            {/* 4 Prototype Selector Pills */}
+            {/* 4 Prototype Selector Pills with Animated Hover */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
               {[
                 { key: "drone-doctor", title: "AI Green Drone", icon: "🛸", desc: "Crop Doctor" },
@@ -407,7 +412,7 @@ export const ActivityLabView: React.FC = () => {
                       setGeneratedPrototype(null);
                       setSelectedPrototypeKey(p.key);
                     }}
-                    className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                    className={`p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer hover:scale-[1.02] active:scale-[0.98] ${
                       isSelected
                         ? "border-emerald-600 bg-emerald-50 text-emerald-950 shadow-sm font-bold ring-2 ring-emerald-500/20"
                         : "border-slate-200 bg-slate-50 hover:bg-white text-slate-700"
@@ -424,7 +429,7 @@ export const ActivityLabView: React.FC = () => {
             {/* Custom AI Prototype Generator Bar */}
             <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
               <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-amber-500" />
+                <Sparkles className="w-4 h-4 text-amber-500 animate-pulse" />
                 Want to invent a new prototype idea? Let Gemini AI formulate it:
               </span>
               <div className="flex gap-2">
@@ -438,7 +443,7 @@ export const ActivityLabView: React.FC = () => {
                 <button
                   onClick={handleGenerateCustomPrototype}
                   disabled={isGeneratingPrototype || !customProblem.trim()}
-                  className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
+                  className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer hover:scale-105 active:scale-95"
                 >
                   {isGeneratingPrototype ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
                   Generate Blueprint
@@ -464,7 +469,7 @@ export const ActivityLabView: React.FC = () => {
                     setActiveStep(4);
                     setModelSubTab("flowchart");
                   }}
-                  className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold rounded-xl text-xs transition-all flex items-center gap-1.5 shadow-md cursor-pointer"
+                  className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold rounded-xl text-xs transition-all flex items-center gap-1.5 shadow-md cursor-pointer hover:scale-105 active:scale-95"
                 >
                   Build Step 4 Models <ArrowRight className="w-4 h-4" />
                 </button>
@@ -477,7 +482,7 @@ export const ActivityLabView: React.FC = () => {
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                   {activePrototype.howItWorks.map((step) => (
-                    <div key={step.stepNumber} className="bg-slate-800 p-3.5 rounded-xl border border-slate-700 space-y-1">
+                    <div key={step.stepNumber} className="bg-slate-800 p-3.5 rounded-xl border border-slate-700 space-y-1 hover:border-emerald-500/50 transition-colors">
                       <div className="font-bold text-emerald-300">
                         Step {step.stepNumber}: {step.title}
                       </div>
@@ -526,7 +531,7 @@ export const ActivityLabView: React.FC = () => {
 
       {/* STEP 4: MODEL CREATION (FLOWCHART, CARDBOARD, POSTER, RUBRIC) */}
       {activeStep === 4 && (
-        <div className="space-y-6 animate-in fade-in duration-300">
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-5">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
@@ -603,37 +608,40 @@ export const ActivityLabView: React.FC = () => {
               </button>
             </div>
 
-            {/* 1. FLOWCHART SUBTAB */}
+            {/* 1. FLOWCHART SUBTAB WITH ANIMATED DATA WAVE */}
             {modelSubTab === "flowchart" && (
               <div className="bg-slate-950 text-white rounded-2xl p-6 space-y-6 border border-slate-800 shadow-xl">
                 <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                   <h3 className="text-sm font-bold text-emerald-400 flex items-center gap-2">
-                    <Workflow className="w-4 h-4" />
+                    <Workflow className="w-4 h-4 animate-spin" />
                     End-to-End System Flowchart: {activePrototype.solutionName}
                   </h3>
-                  <span className="text-[10px] text-slate-400 font-mono">Signal Propagation: Closed-Loop</span>
+                  <span className="text-[10px] text-emerald-400/80 font-mono flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                    Signal Propagation: Closed-Loop Active
+                  </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-center">
-                  <div className="bg-slate-900 p-4 rounded-xl border border-sky-500/40 space-y-1.5">
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-center relative">
+                  <div className="bg-slate-900 p-4 rounded-xl border border-sky-500/40 space-y-1.5 hover:border-sky-400 transition-colors">
                     <div className="w-8 h-8 rounded-full bg-sky-500/20 text-sky-400 mx-auto flex items-center justify-center font-bold text-xs">1</div>
                     <div className="font-extrabold text-xs text-sky-300">Data Sensing Layer</div>
                     <p className="text-[10px] text-slate-300">Soil Probes / Multispectral Optical Camera inputs telemetry.</p>
                   </div>
 
-                  <div className="bg-slate-900 p-4 rounded-xl border border-amber-500/40 space-y-1.5">
+                  <div className="bg-slate-900 p-4 rounded-xl border border-amber-500/40 space-y-1.5 hover:border-amber-400 transition-colors">
                     <div className="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 mx-auto flex items-center justify-center font-bold text-xs">2</div>
                     <div className="font-extrabold text-xs text-amber-300">Edge Pre-processing</div>
                     <p className="text-[10px] text-slate-300">ESP32 / Raspberry Pi filters noise & packages encrypted packets.</p>
                   </div>
 
-                  <div className="bg-slate-900 p-4 rounded-xl border border-emerald-500/40 space-y-1.5">
-                    <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 mx-auto flex items-center justify-center font-bold text-xs">3</div>
+                  <div className="bg-slate-900 p-4 rounded-xl border border-emerald-500/40 space-y-1.5 hover:border-emerald-400 transition-colors">
+                    <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 mx-auto flex items-center justify-center font-bold text-xs pulse-glow">3</div>
                     <div className="font-extrabold text-xs text-emerald-300">Gemini AI Model</div>
                     <p className="text-[10px] text-slate-300">Phytopathology & Hydrology inference calculates exact dosage / valve run-time.</p>
                   </div>
 
-                  <div className="bg-slate-900 p-4 rounded-xl border border-purple-500/40 space-y-1.5">
+                  <div className="bg-slate-900 p-4 rounded-xl border border-purple-500/40 space-y-1.5 hover:border-purple-400 transition-colors">
                     <div className="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 mx-auto flex items-center justify-center font-bold text-xs">4</div>
                     <div className="font-extrabold text-xs text-purple-300">Actuator & Farmer Push</div>
                     <p className="text-[10px] text-slate-300">Solenoid valve opens & WhatsApp advisory sent in local language.</p>
@@ -647,7 +655,7 @@ export const ActivityLabView: React.FC = () => {
               <div className="bg-amber-950 text-amber-50 rounded-2xl p-6 space-y-4 border border-amber-800 shadow-xl">
                 <div className="flex items-center justify-between border-b border-amber-800 pb-3">
                   <h3 className="text-sm font-bold text-amber-300 flex items-center gap-2">
-                    <Box className="w-4 h-4" />
+                    <Box className="w-4 h-4 float-slow" />
                     DIY Cardboard Prototype Maker Guide (For Science Fair Booth)
                   </h3>
                   <span className="text-[10px] bg-amber-900 px-2 py-0.5 rounded font-bold">Materials Budget: &lt; $5</span>
@@ -727,7 +735,7 @@ export const ActivityLabView: React.FC = () => {
                 <div className="flex justify-end pt-2">
                   <button
                     onClick={() => window.print()}
-                    className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-extrabold rounded-xl text-xs transition-all flex items-center gap-2 cursor-pointer"
+                    className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-extrabold rounded-xl text-xs transition-all flex items-center gap-2 cursor-pointer hover:scale-105 active:scale-95"
                   >
                     <Printer className="w-4 h-4" />
                     Print Digital Poster
@@ -752,7 +760,7 @@ export const ActivityLabView: React.FC = () => {
                   <button
                     onClick={handleGradeWithRubric}
                     disabled={isGrading}
-                    className="px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-extrabold rounded-xl text-xs transition-all flex items-center gap-2 shadow-md disabled:opacity-50 cursor-pointer"
+                    className="px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-extrabold rounded-xl text-xs transition-all flex items-center gap-2 shadow-md disabled:opacity-50 cursor-pointer hover:scale-105 active:scale-95"
                   >
                     {isGrading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Award className="w-4 h-4" />}
                     Evaluate Model with AI Rubric
@@ -760,10 +768,11 @@ export const ActivityLabView: React.FC = () => {
                 </div>
 
                 {rubricResult && (
-                  <div className="bg-white rounded-2xl border-2 border-emerald-600 p-6 space-y-5 shadow-lg animate-in fade-in duration-300">
+                  <div className="bg-white rounded-2xl border-2 border-emerald-600 p-6 space-y-5 shadow-lg animate-in fade-in slide-in-from-bottom-2 duration-300">
                     <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
                       <div>
-                        <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded uppercase">
+                        <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded uppercase flex items-center gap-1 w-fit">
+                          <Sparkles className="w-3 h-3 text-emerald-600" />
                           Certificate of Excellence
                         </span>
                         <h4 className="text-xl font-black text-slate-900 mt-1">
@@ -771,26 +780,26 @@ export const ActivityLabView: React.FC = () => {
                         </h4>
                       </div>
                       <div className="text-right">
-                        <span className="text-3xl font-black text-emerald-700">
+                        <span className="text-3xl font-black text-emerald-700 animate-pulse">
                           {rubricResult.totalScore}/100
                         </span>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-xs">
-                      <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                      <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 hover:border-emerald-400 transition-colors">
                         <span className="text-[10px] text-slate-400 block font-bold">Concept Understanding</span>
                         <span className="text-base font-extrabold text-slate-800">{rubricResult.scores.understandingOfAIConcept}/25</span>
                       </div>
-                      <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                      <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 hover:border-emerald-400 transition-colors">
                         <span className="text-[10px] text-slate-400 block font-bold">Creativity & Design</span>
                         <span className="text-base font-extrabold text-slate-800">{rubricResult.scores.creativity}/25</span>
                       </div>
-                      <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                      <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 hover:border-emerald-400 transition-colors">
                         <span className="text-[10px] text-slate-400 block font-bold">Problem Solving</span>
                         <span className="text-base font-extrabold text-slate-800">{rubricResult.scores.problemSolving}/25</span>
                       </div>
-                      <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                      <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 hover:border-emerald-400 transition-colors">
                         <span className="text-[10px] text-slate-400 block font-bold">Presentation Quality</span>
                         <span className="text-base font-extrabold text-slate-800">{rubricResult.scores.presentationQuality}/25</span>
                       </div>
@@ -809,8 +818,8 @@ export const ActivityLabView: React.FC = () => {
 
       {/* Record Survey Modal */}
       {isSurveyModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full border border-slate-200 p-6 space-y-4 text-slate-900 text-xs">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full border border-slate-200 p-6 space-y-4 text-slate-900 text-xs animate-in zoom-in-95 duration-200">
             <h3 className="text-base font-extrabold text-slate-900 border-b border-slate-100 pb-2">
               Record Local Farmer Survey (Step 1)
             </h3>

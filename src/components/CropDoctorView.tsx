@@ -13,7 +13,8 @@ import {
   Activity,
   Scan,
   RefreshCw,
-  QrCode,
+  Sparkles,
+  Zap,
 } from "lucide-react";
 import { CropDiagnosisResult } from "../types/agriculture";
 import { SAMPLE_DISEASE_CASES } from "../data/mockData";
@@ -90,7 +91,7 @@ export const CropDoctorView: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 text-emerald-700 text-xs font-bold uppercase tracking-wider mb-1">
-              <Leaf className="w-4 h-4 text-emerald-600" />
+              <Leaf className="w-4 h-4 text-emerald-600 animate-bounce" />
               AI Phytopathology & Pest Diagnostics
             </div>
             <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">
@@ -105,7 +106,7 @@ export const CropDoctorView: React.FC = () => {
           {diagnosis && (
             <button
               onClick={handlePrintPrescription}
-              className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 shadow-sm cursor-pointer"
+              className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 shadow-sm cursor-pointer hover:scale-105 active:scale-95"
             >
               <Printer className="w-4 h-4" />
               Print Farmer Prescription
@@ -124,7 +125,7 @@ export const CropDoctorView: React.FC = () => {
               Step 1: Upload or Snap Crop Image
             </h2>
 
-            {/* Upload Area with Viewfinder */}
+            {/* Upload Area with Viewfinder & Laser Scanner Animation */}
             <div
               onClick={() => fileInputRef.current?.click()}
               className="relative border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl p-4 text-center cursor-pointer transition-all bg-slate-50/70 hover:bg-emerald-50/40 group overflow-hidden"
@@ -141,20 +142,27 @@ export const CropDoctorView: React.FC = () => {
                   <img
                     src={previewImage}
                     alt="Uploaded crop leaf"
-                    className="max-h-56 w-full object-contain"
+                    className="max-h-56 w-full object-contain transition-transform duration-500 group-hover:scale-105"
                   />
                   {/* Viewfinder reticles */}
                   <div className="absolute inset-2 border border-emerald-400/40 rounded-lg pointer-events-none" />
-                  {isAnalyzing && (
-                    <div className="absolute inset-x-0 h-0.5 bg-emerald-400 shadow-lg shadow-emerald-400 scanner-line" />
-                  )}
+                  
+                  {/* Animated laser scanning line */}
+                  <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-lg shadow-emerald-400/80 scanner-line" />
+
+                  {/* High-tech target corner markers */}
+                  <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-emerald-400" />
+                  <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-emerald-400" />
+                  <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-emerald-400" />
+                  <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-emerald-400" />
+
                   <div className="absolute bottom-2 right-2 bg-slate-900/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-md backdrop-blur-xs">
                     Click to change photo
                   </div>
                 </div>
               ) : (
                 <div className="py-8 space-y-2">
-                  <div className="w-12 h-12 mx-auto rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 mx-auto rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center group-hover:scale-110 transition-transform float-slow">
                     <Scan className="w-6 h-6" />
                   </div>
                   <div className="text-xs font-bold text-slate-800">
@@ -177,12 +185,12 @@ export const CropDoctorView: React.FC = () => {
                   <button
                     key={sample.id}
                     onClick={() => handleSelectSampleCase(sample)}
-                    className="p-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-400 text-left transition-all flex items-center gap-2.5 group cursor-pointer"
+                    className="p-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-400 text-left transition-all duration-200 flex items-center gap-2.5 group cursor-pointer hover:shadow-sm"
                   >
                     <img
                       src={sample.image}
                       alt={sample.title}
-                      className="w-10 h-10 rounded-lg object-cover shrink-0 border border-slate-200 group-hover:scale-105 transition-transform"
+                      className="w-10 h-10 rounded-lg object-cover shrink-0 border border-slate-200 group-hover:scale-110 transition-transform duration-300"
                     />
                     <div className="overflow-hidden">
                       <div className="text-[11px] font-extrabold text-slate-900 truncate">{sample.crop}</div>
@@ -234,7 +242,7 @@ export const CropDoctorView: React.FC = () => {
             <button
               onClick={handleDiagnose}
               disabled={isAnalyzing || (!previewImage && !symptomsInput.trim())}
-              className="w-full py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-extrabold transition-all flex items-center justify-center gap-2 shadow-md shadow-emerald-950/30 disabled:opacity-50 cursor-pointer"
+              className="w-full py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-extrabold transition-all flex items-center justify-center gap-2 shadow-md shadow-emerald-950/30 disabled:opacity-50 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
             >
               {isAnalyzing ? (
                 <>
@@ -254,14 +262,14 @@ export const CropDoctorView: React.FC = () => {
         {/* Right Column: AI Diagnosis Output */}
         <div className="lg:col-span-7">
           {diagnosis ? (
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-7 space-y-5 print:shadow-none print:border-none">
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-7 space-y-5 print:shadow-none print:border-none animate-in fade-in slide-in-from-bottom-2 duration-300">
               {/* Header Badge */}
               <div className="border-b border-slate-200 pb-4">
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider ${
                       diagnosis.severity === "Critical" || diagnosis.severity === "Severe"
-                        ? "bg-rose-100 text-rose-800 border border-rose-300"
+                        ? "bg-rose-100 text-rose-800 border border-rose-300 animate-pulse"
                         : diagnosis.severity === "Moderate"
                         ? "bg-amber-100 text-amber-800 border border-amber-300"
                         : "bg-emerald-100 text-emerald-800 border border-emerald-300"
@@ -269,7 +277,8 @@ export const CropDoctorView: React.FC = () => {
                   >
                     Severity: {diagnosis.severity}
                   </span>
-                  <span className="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1 rounded-full">
+                  <span className="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1 rounded-full flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
                     AI Match Confidence: <strong className="text-emerald-700">{diagnosis.confidenceScore}%</strong>
                   </span>
                 </div>
@@ -289,7 +298,7 @@ export const CropDoctorView: React.FC = () => {
               {/* Immediate Emergency Action Box */}
               <div className="bg-rose-50 border-2 border-rose-200/90 rounded-2xl p-4 sm:p-5 space-y-2">
                 <div className="flex items-center gap-2 text-rose-900 text-xs font-extrabold uppercase tracking-wider">
-                  <AlertTriangle className="w-4 h-4 text-rose-600" />
+                  <AlertTriangle className="w-4 h-4 text-rose-600 animate-pulse" />
                   Immediate Emergency Action (First 24–48 Hours):
                 </div>
                 <p className="text-xs sm:text-sm text-rose-950 font-semibold leading-relaxed">
@@ -305,7 +314,7 @@ export const CropDoctorView: React.FC = () => {
                 </h3>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
                   {diagnosis.visualFindings.map((finding, idx) => (
-                    <li key={idx} className="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-start gap-2">
+                    <li key={idx} className="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-start gap-2 hover:bg-slate-100 transition-colors">
                       <span className="w-2 h-2 rounded-full bg-emerald-600 mt-1.5 shrink-0" />
                       <span className="font-medium">{finding}</span>
                     </li>
@@ -362,7 +371,7 @@ export const CropDoctorView: React.FC = () => {
             </div>
           ) : (
             <div className="h-full min-h-[380px] bg-slate-50/80 rounded-2xl border-2 border-dashed border-slate-200 p-8 flex flex-col items-center justify-center text-center">
-              <div className="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center mb-4 shadow-sm">
+              <div className="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center mb-4 shadow-sm float-slow">
                 <FileText className="w-8 h-8" />
               </div>
               <h3 className="text-base font-extrabold text-slate-900">No Active Diagnosis Loaded</h3>

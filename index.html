@@ -3,16 +3,65 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
-    <meta name="description" content="An application built with Google AI Studio." />
-    <meta property="og:title" content="My Google AI Studio App" />
-    <meta property="og:description" content="An application built with Google AI Studio." />
+    <title>AgriVision DSS &amp; Agricultural A.I Studio</title>
+    <meta
+      name="description"
+      content="Automated Decision Support System (DSS), Crop Doctor Diagnostics, Hydrology Simulator, and 4-Step Innovation Challenge Studio."
+    />
+    <meta name="theme-color" content="#047857" />
+
+    <!-- Open Graph / Meta -->
+    <meta property="og:title" content="AgriVision DSS &amp; Agricultural A.I Studio" />
+    <meta
+      property="og:description"
+      content="Precision Hydrology, Crop Disease Scanner, Soil Nutrient Formulator, and Student Activity Studio."
+    />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- SVG Favicon to avoid 404 on favicon.ico -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌾</text></svg>"
+    />
+
+    <!-- Google Fonts for Dynamic Theme Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Single Page App GitHub Pages 404 Redirect Handler -->
+    <script type="text/javascript">
+      // Handles redirection from 404.html on GitHub Pages
+      (function (l) {
+        if (l.search[1] === "/") {
+          var decoded = l.search
+            .slice(1)
+            .split("&")
+            .map(function (s) {
+              return s.replace(/~and~/g, "&");
+            })
+            .join("?");
+          window.history.replaceState(
+            null,
+            null,
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      })(window.location);
+    </script>
   </head>
-  <body>
+  <body class="bg-slate-50 text-slate-900 antialiased selection:bg-emerald-500 selection:text-white">
     <div id="root"></div>
+    <noscript>
+      <div style="padding: 2rem; text-align: center; font-family: system-ui, sans-serif;">
+        <h2>JavaScript Required</h2>
+        <p>Please enable JavaScript in your browser to run AgriVision DSS & Agricultural A.I Studio.</p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-
