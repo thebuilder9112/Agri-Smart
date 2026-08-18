@@ -4,18 +4,17 @@ import { DecisionSupportView } from "./components/DecisionSupportView";
 import { CropDoctorView } from "./components/CropDoctorView";
 import { SoilNutrientView } from "./components/SoilNutrientView";
 import { FarmDataView } from "./components/FarmDataView";
-import { AgronomistChatModal } from "./components/AgronomistChatModal";
+import { AskFarmAiView } from "./components/AskFarmAiView";
 import { INITIAL_FIELDS } from "./data/mockData";
 import { FieldRecord } from "./types/agriculture";
-import { Sprout, MessageSquareQuote } from "lucide-react";
+import { Sprout } from "lucide-react";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<
-    "dss" | "crop-doctor" | "soil" | "farm-data"
+    "dss" | "crop-doctor" | "soil" | "farm-data" | "ask-ai"
   >("dss");
   const [language, setLanguage] = useState<string>("en");
   const [fields, setFields] = useState<FieldRecord[]>(INITIAL_FIELDS);
-  const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
 
   // Field handlers
   const handleUpdateField = (updated: FieldRecord) => {
@@ -43,7 +42,6 @@ export default function App() {
         setActiveTab={setActiveTab}
         language={language}
         setLanguage={setLanguage}
-        onOpenQuickAdvisory={() => setIsChatOpen(true)}
         unreadAlertCount={unreadAlertCount}
       />
 
@@ -71,26 +69,9 @@ export default function App() {
             onDeleteField={handleDeleteField}
           />
         )}
+
+        {activeTab === "ask-ai" && <AskFarmAiView language={language} />}
       </main>
-
-      {/* Floating Ask Farm Question Button */}
-      <div className="fixed bottom-5 right-5 z-40">
-        <button
-          onClick={() => setIsChatOpen(true)}
-          className="px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-2 text-xs font-bold border border-emerald-600 cursor-pointer hover:scale-105 active:scale-95"
-          title="Ask any farming question"
-        >
-          <MessageSquareQuote className="w-4 h-4 text-emerald-200" />
-          <span>Ask Farm Question (AI)</span>
-        </button>
-      </div>
-
-      {/* Floating Chat Modal */}
-      <AgronomistChatModal
-        isOpen={isChatOpen}
-        onClose={() => setIsChatOpen(false)}
-        language={language}
-      />
 
       {/* Clean Footer */}
       <footer className="bg-white border-t border-slate-200 py-6 text-xs text-slate-600">
