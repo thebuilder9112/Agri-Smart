@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Home,
   Globe,
   Droplets,
   Leaf,
@@ -17,6 +18,7 @@ import {
 
 interface HeaderProps {
   activeTab:
+    | "home"
     | "dss"
     | "crop-doctor"
     | "agrismart-guard"
@@ -25,6 +27,7 @@ interface HeaderProps {
     | "ask-ai";
   setActiveTab: (
     tab:
+      | "home"
       | "dss"
       | "crop-doctor"
       | "agrismart-guard"
@@ -135,7 +138,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Brand Name with Custom Vector Logo */}
           <div
             className="flex items-center gap-2.5 shrink-0 cursor-pointer group"
-            onClick={() => setActiveTab("dss")}
+            onClick={() => setActiveTab("home")}
           >
             <div className="w-10 h-10 rounded-xl overflow-hidden shadow-md group-hover:scale-105 transition-transform flex items-center justify-center bg-emerald-950 border border-emerald-700/60">
               <img

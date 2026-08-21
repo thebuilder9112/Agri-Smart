@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Header } from "./components/Header";
+import { HomeView } from "./components/HomeView";
 import { DecisionSupportView } from "./components/DecisionSupportView";
 import { CropDoctorView } from "./components/CropDoctorView";
 import { AgriSmartGuardView } from "./components/AgriSmartGuardView";
@@ -10,8 +11,8 @@ import { Info, Sparkles, BookOpen, Landmark } from "lucide-react";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<
-    "dss" | "crop-doctor" | "agrismart-guard" | "govt-schemes" | "farming-guides" | "ask-ai"
-  >("dss");
+    "home" | "dss" | "crop-doctor" | "agrismart-guard" | "govt-schemes" | "farming-guides" | "ask-ai"
+  >("home");
   const [language, setLanguage] = useState<string>("en");
 
   return (
@@ -27,6 +28,13 @@ export default function App() {
 
       {/* Main Content Area */}
       <main className="flex-1 pb-12 space-y-6">
+        {activeTab === "home" && (
+          <HomeView
+            onNavigate={(tab) => setActiveTab(tab)}
+            language={language}
+          />
+        )}
+
         {activeTab === "dss" && (
           <DecisionSupportView
             language={language}
@@ -66,7 +74,10 @@ export default function App() {
 
         {/* Footer Brand & Navigation Credits */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600">
-          <div className="flex items-center gap-2.5">
+          <div
+            className="flex items-center gap-2.5 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={() => setActiveTab("home")}
+          >
             <img
               src="/agrivision-logo.svg"
               alt="AgriVision Logo"
