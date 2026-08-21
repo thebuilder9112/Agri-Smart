@@ -430,17 +430,6 @@ export const GovtSchemesView: React.FC = () => {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      {/* ACADEMIC STUDY DISCLAIMER BANNER */}
-      <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-amber-950 flex items-start gap-3 shadow-2xs">
-        <Info className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
-        <div className="text-xs leading-relaxed">
-          <strong className="font-bold text-amber-900 block mb-0.5">
-            Student Study & Educational Purpose Disclaimer:
-          </strong>
-          This portal provides structured educational references of Government of India agricultural policies, schemes, and subsidies for academic learning, project presentations, and research studies. Real-world farmers are advised to verify latest state-specific eligibility rules, guidelines, and document submission deadlines on official portals (e.g. pmkisan.gov.in, pmfby.gov.in) or by visiting their local Block Agriculture Office / Krishi Vigyan Kendra (KVK).
-        </div>
-      </div>
-
       {/* HEADER BANNER */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-7">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -891,6 +880,17 @@ export const GovtSchemesView: React.FC = () => {
             </div>
           );
         })}
+      </div>
+
+      {/* ACADEMIC STUDY & GOVT SCHEMES DISCLAIMER AT BOTTOM OF PAGE */}
+      <div className="bg-amber-50/90 border border-amber-200 rounded-2xl p-4 text-amber-950 flex items-start gap-3 shadow-2xs">
+        <Info className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
+        <div className="text-xs leading-relaxed">
+          <strong className="font-bold text-amber-900 block mb-0.5">
+            Student Study & Educational Purpose Disclaimer:
+          </strong>
+          This portal provides structured educational references of Government of India agricultural policies, schemes, and subsidies for academic learning, project presentations, and research studies. Real-world farmers are advised to verify latest state-specific eligibility rules, guidelines, and document submission deadlines on official portals (e.g. pmkisan.gov.in, pmfby.gov.in, gem.gov.in) or by visiting their local Block Agriculture Office / Krishi Vigyan Kendra (KVK).
+        </div>
       </div>
     </div>
   );
