@@ -34,7 +34,8 @@ import { WeatherData, LocationOption } from "../types/agriculture";
 interface DecisionSupportViewProps {
   language: string;
   onOpenCropDoctor: () => void;
-  onOpenSoilAdvisor: () => void;
+  onOpenGovtSchemes?: () => void;
+  onOpenGuides?: () => void;
 }
 
 const PRESET_FARMING_REGIONS: (LocationOption & { continent: string })[] = [
@@ -81,7 +82,8 @@ const PRESET_FARMING_REGIONS: (LocationOption & { continent: string })[] = [
 export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
   language,
   onOpenCropDoctor,
-  onOpenSoilAdvisor,
+  onOpenGovtSchemes,
+  onOpenGuides,
 }) => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [isWeatherLoading, setIsWeatherLoading] = useState(false);
@@ -882,18 +884,20 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={onOpenCropDoctor}
-              className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+              className="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold transition-all flex items-center gap-1 cursor-pointer border border-emerald-200"
             >
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
               Leaf Disease Doctor
             </button>
-            <button
-              onClick={onOpenSoilAdvisor}
-              className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
-            >
-              <FlaskConical className="w-3.5 h-3.5 text-amber-600" />
-              Fertilizer Calculator
-            </button>
+            {onOpenGovtSchemes && (
+              <button
+                onClick={onOpenGovtSchemes}
+                className="px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-bold transition-all flex items-center gap-1 cursor-pointer border border-amber-200"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                Govt Schemes & GeM
+              </button>
+            )}
           </div>
         </div>
 

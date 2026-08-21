@@ -19,7 +19,6 @@ interface HeaderProps {
   activeTab:
     | "dss"
     | "crop-doctor"
-    | "soil"
     | "agrismart-guard"
     | "govt-schemes"
     | "farming-guides"
@@ -28,7 +27,6 @@ interface HeaderProps {
     tab:
       | "dss"
       | "crop-doctor"
-      | "soil"
       | "agrismart-guard"
       | "govt-schemes"
       | "farming-guides"
@@ -186,18 +184,6 @@ export const Header: React.FC<HeaderProps> = ({
               Leaf Doctor
             </button>
 
-            <button
-              onClick={() => setActiveTab("soil")}
-              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
-                activeTab === "soil"
-                  ? "bg-emerald-600 text-white shadow-sm"
-                  : "text-slate-300 hover:text-white hover:bg-slate-700/60"
-              }`}
-            >
-              <Sliders className="w-3.5 h-3.5 text-amber-400" />
-              Fertilizer
-            </button>
-
             {/* AgriSmart Guard Challenge Tab */}
             <button
               onClick={() => setActiveTab("agrismart-guard")}
@@ -221,7 +207,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <Landmark className="w-3.5 h-3.5 text-amber-400" />
-              Govt Schemes
+              Govt Schemes & GeM
             </button>
 
             {/* Farming Guides & Agro-Blogs Tab */}
@@ -311,14 +297,6 @@ export const Header: React.FC<HeaderProps> = ({
             Leaf Doctor
           </button>
           <button
-            onClick={() => setActiveTab("soil")}
-            className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap font-bold ${
-              activeTab === "soil" ? "bg-emerald-600 text-white" : "text-slate-300"
-            }`}
-          >
-            Fertilizer
-          </button>
-          <button
             onClick={() => setActiveTab("agrismart-guard")}
             className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap font-bold ${
               activeTab === "agrismart-guard" ? "bg-emerald-600 text-white" : "text-slate-300"
@@ -332,7 +310,7 @@ export const Header: React.FC<HeaderProps> = ({
               activeTab === "govt-schemes" ? "bg-emerald-600 text-white" : "text-amber-300"
             }`}
           >
-            Govt Schemes
+            Govt Schemes & GeM
           </button>
           <button
             onClick={() => setActiveTab("farming-guides")}

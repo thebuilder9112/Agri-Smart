@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Header } from "./components/Header";
 import { DecisionSupportView } from "./components/DecisionSupportView";
 import { CropDoctorView } from "./components/CropDoctorView";
-import { SoilNutrientView } from "./components/SoilNutrientView";
 import { AgriSmartGuardView } from "./components/AgriSmartGuardView";
 import { GovtSchemesView } from "./components/GovtSchemesView";
 import { FarmingGuidesView } from "./components/FarmingGuidesView";
@@ -11,7 +10,7 @@ import { Info, Sparkles, BookOpen, Landmark } from "lucide-react";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<
-    "dss" | "crop-doctor" | "soil" | "agrismart-guard" | "govt-schemes" | "farming-guides" | "ask-ai"
+    "dss" | "crop-doctor" | "agrismart-guard" | "govt-schemes" | "farming-guides" | "ask-ai"
   >("dss");
   const [language, setLanguage] = useState<string>("en");
 
@@ -47,13 +46,12 @@ export default function App() {
           <DecisionSupportView
             language={language}
             onOpenCropDoctor={() => setActiveTab("crop-doctor")}
-            onOpenSoilAdvisor={() => setActiveTab("soil")}
+            onOpenGovtSchemes={() => setActiveTab("govt-schemes")}
+            onOpenGuides={() => setActiveTab("farming-guides")}
           />
         )}
 
         {activeTab === "crop-doctor" && <CropDoctorView />}
-
-        {activeTab === "soil" && <SoilNutrientView />}
 
         {activeTab === "agrismart-guard" && <AgriSmartGuardView />}
 
@@ -78,7 +76,7 @@ export default function App() {
             <span>Precision Agriculture & Irrigation Decision Support System</span>
           </div>
           <div className="flex flex-col sm:flex-row items-center sm:items-end gap-1 text-[11px] text-slate-500">
-            <span>Automated Weather • Leaf Doctor • Soil Fertilizer • AgriSmart Guard • Govt Schemes • Farming Guides</span>
+            <span>Automated Weather • Leaf Doctor • AgriSmart Guard • Govt Schemes & GeM • Farming Guides</span>
             <span className="text-[10px] text-amber-800 font-medium">
               *Designed for Student Academic Study & Demonstration
             </span>

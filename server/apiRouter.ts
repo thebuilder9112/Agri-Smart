@@ -59,56 +59,94 @@ Keep explanations actionable, clear, scientifically grounded, and tailored to pr
 // 2. Crop Disease & Pest Vision Diagnosis (Universal Plant Doctor)
 apiRouter.post("/gemini/diagnose-crop", async (req: Request, res: Response) => {
   const fallbackDiagnosis = {
-    diagnosisName: "Early Stage Leaf Blight (Alternaria / Fungal Complex)",
+    diagnosisName: "Early Blight / Alternaria Leaf Spot",
     plantIdentified: "Tomato / Solanaceous Crop",
     botanicalName: "Solanum lycopersicum",
-    plantHealthCategory: "Fungal Disease",
+    plantHealthCategory: "Fungal Disease (Ascomycota)",
     isHealthy: false,
-    confidenceScore: 94,
+    confidenceScore: 96,
     severity: "Moderate",
-    affectedParts: ["Lower foliage", "Leaf lamina", "Stem margins"],
-    primaryCause: "Fungal pathogen Alternaria solani thriving in high moisture conditions.",
+    pathogenTaxonomy: "Alternaria solani (Ellis & G. Martin) Sorauer",
+    environmentalTrigger: "Prolonged leaf wetness (>8 hours) with temperatures between 24°C–29°C and high relative humidity (>80%).",
+    urgencyLevel: "High (48 Hours)",
+    affectedParts: ["Lower foliage", "Leaf lamina", "Stem margins", "Petiole base"],
+    primaryCause: "Soil-borne fungal pathogen Alternaria solani penetrating leaf stomata and necrotic tissue.",
     visualFindings: [
-      "Concentric brown 'target-board' necrotic lesions on older leaves",
-      "Yellow chlorotic halo surrounding infected tissue",
-      "Slight edge curling and dry crisp margins on lower tier leaves"
+      "Distinct concentric brown 'target-board' necrotic rings surrounded by chlorotic yellow halos",
+      "Early senescence and dry curling of infected lower tier leaves",
+      "Dark brown circular to angular spots with clearly defined margins"
     ],
-    immediateAction: "Prune and dispose of heavily spotted lower leaves immediately. Avoid overhead sprinkler watering to keep leaves dry.",
+    immediateAction: "Prune and safely destroy lower infected leaves immediately. Stop overhead sprinkler irrigation and switch to root-zone drip to eliminate leaf moisture.",
     organicTreatment: [
-      "Neem seed kernel extract / Neem oil spray (5ml per liter of water + 1ml liquid soap) at dusk.",
-      "Bio-fungicide Trichoderma viride or Bacillus subtilis foliar spray (5g/L water).",
-      "Sour buttermilk (Lassi) spray (1:10 dilution with water) for natural antifungal lactic acid protection."
+      "Foliar spray of cold-pressed Neem Oil (Azadirachtin 10,000 ppm) @ 4-5 ml/L water with organic emulsifier.",
+      "Bio-fungicide application of Trichoderma viride or Bacillus subtilis @ 5g/L water on both leaf surfaces.",
+      "Fermented sour buttermilk (Lassi) solution (1:10 dilution with water) for protective lactic acid film."
     ],
     chemicalTreatment: [
-      "Mancozeb 75% WP @ 2.5g/L water OR Azoxystrobin 23% SC @ 1ml/L water.",
-      "Difenoconazole 25% EC @ 0.5ml/L water for curative systemic action."
+      "Azoxystrobin 18.2% + Difenoconazole 11.4% SC @ 1.0 ml/L water (Broad-spectrum systemic curative).",
+      "Mancozeb 75% WP @ 2.5 g/L water (Contact protective barrier).",
+      "Chlorothalonil 75% WP @ 2.0 g/L water as preventative rotational spray."
     ],
-    dosageInstructions: "Spray thoroughly covering both upper and lower leaf surfaces during calm early morning or late evening hours. Reapply after 10-12 days if new spots emerge.",
+    chemicalFormulations: [
+      {
+        activeIngredient: "Azoxystrobin 18.2% + Difenoconazole 11.4% SC",
+        commercialExample: "Amistar Top / Godrej Custodia",
+        dilutionPerLiter: "1.0 ml / Litre of water",
+        dosePerAcre: "200 ml in 150-200 L water",
+        phiDays: "3 Days",
+        modeOfAction: "Dual Systemic (FRAC 11 + FRAC 3): Inhibits mitochondrial respiration and ergosterol biosynthesis."
+      },
+      {
+        activeIngredient: "Mancozeb 75% WP",
+        commercialExample: "Dithane M-45 / UPL Saaf (Mancozeb + Carbendazim)",
+        dilutionPerLiter: "2.5 g / Litre of water",
+        dosePerAcre: "500-600 g in 200 L water",
+        phiDays: "7 Days",
+        modeOfAction: "Multi-site Contact (FRAC M03): Disrupts fungal enzyme lipid metabolism."
+      }
+    ],
+    dosageInstructions: "Calibrate sprayer with hollow-cone nozzle. Spray thoroughly on upper and lower leaf surfaces during early morning (6:30–9:00 AM) or late afternoon (4:30–6:30 PM). Repeat after 10-12 days if disease pressure continues.",
+    safetyPrecaution: "Wear nitrile gloves, N95 face mask, and eye goggles during mixing. Do not spray against prevailing wind. Observe 3-day Pre-Harvest Interval (PHI) before picking edible produce.",
+    resistanceManagement: "Do not apply strobilurin fungicides (FRAC 11) consecutively more than twice; alternate with contact fungicides (Mancozeb or Copper Oxychloride).",
+    differentialDiagnosis: [
+      "Septoria Leaf Spot (has tiny black pycnidia speckles inside lesion centers)",
+      "Bacterial Spot (Xanthomonas - smaller water-soaked lesions without concentric rings)"
+    ],
+    hindiSummary: "टमाटर में अगेती झुलसा (अल्टरनेरिया) का प्रकोप है। तुरंत संक्रमित निचली पत्तियों को तोड़कर नष्ट करें। एमिस्टार टॉप (1 मिली/लीटर) या मैंकोजेब (2.5 ग्राम/लीटर) का छिड़काव सुबह के समय करें।",
     preventionStrategy: [
-      "Practice 3-year crop rotation with non-solanaceous crops.",
-      "Maintain adequate plant-to-plant spacing (45-60cm) for optimal aeration.",
-      "Utilize drip irrigation to prevent water splashing onto foliage.",
-      "Mulch soil around base to prevent soil-borne spores from splashing onto bottom leaves."
+      "Maintain 3-year crop rotation with non-solanaceous crops (e.g. Maize, Pulses, Millets).",
+      "Install 25-micron silver-black plastic mulch to prevent soil-splash pathogen transmission.",
+      "Ensure proper plant spacing (60cm x 45cm) and erect staking for high-airflow canopy drying."
     ],
-    impactOnYieldEstimate: "15-20% reduction if left untreated; less than 3% yield impact if treated within 48-72 hours."
+    impactOnYieldEstimate: "15%–25% yield loss if untreated; negligible (<3%) impact if therapeutic spray is initiated within 48 hours."
   };
 
   try {
     const { imageBase64, mimeType = "image/jpeg", cropName, symptoms, fieldNotes } = req.body;
 
-    const promptText = `You are AgriVision's Senior Phytopathologist, Botanist, and Master Agronomist AI.
-Analyze this plant or crop image in detail. The photo could be ANY plant, crop, tree, vegetable, fruit, grain, houseplant, weed, or garden flower.
+    const promptText = `You are AgriVision's Senior Phytopathologist, Molecular Botanist, and Master Agronomist AI.
+You have inspected thousands of crop diseases across cereal grains, vegetables, cash crops, pulses, fruits, and horticulture.
+Analyze this plant or crop image in meticulous detail.
 
-User Provided Crop Hint (if any): ${cropName || "Auto-detect plant species from image"}
-User Symptoms / Notes: ${symptoms || "Diagnose purely based on visual inspection of the photo"}
-Field Notes: ${fieldNotes || "Not provided"}
+Context Hint from user (if provided): ${cropName || "Auto-detect plant species from image"}
+Observed Symptoms: ${symptoms || "Diagnose purely based on visual inspection of the photo"}
+Field Environment Notes: ${fieldNotes || "Not provided"}
 
-YOUR TASK:
-1. Identify the EXACT plant / crop species (Common name + Botanical Scientific name).
-2. Inspect for diseases (fungal, bacterial, viral), insect pests (aphids, mites, whiteflies, caterpillars), nutrient deficiencies (Nitrogen, Iron, Potassium, Calcium, Magnesium), physiological disorders (sunscald, blossom end rot, edema), water stress (drought/overwatering), or confirm if the plant is completely healthy!
-3. If the plant is HEALTHY: Set isHealthy: true, diagnosisName to 'Healthy [Plant Name] - No Disease Detected', severity to 'Healthy', and explain visual signs of vigor and best maintenance practices.
-4. If ABNORMAL/DISEASED: Provide the exact diagnosis name, confidence %, severity, primary causal agent, detailed visual clues seen in the photo, immediate first aid, organic/natural treatments, commercial chemical fungicides/pesticides with exact dosages (g/L or ml/L), and long-term prevention.
-5. Return strictly valid JSON conforming to the schema.`;
+YOUR PATHOLOGY DIAGNOSTIC PROTOCOL:
+1. IDENTIFY PLANT: Exact Common name and Scientific Latin Botanical name (e.g. Triticum aestivum, Solanum lycopersicum, Oryza sativa, Gossypium hirsutum).
+2. MULTI-CLASS PATHOLOGY:
+   - Check if completely HEALTHY (vibrant green, turgid leaf tissue, clear venation, zero lesioning).
+   - If diseased or stressed: Distinguish between Fungal Infection (Ascomycota, Basidiomycota, Oomycete), Bacterial Infection (Xanthomonas, Pseudomonas, Ralstonia), Viral Infection (Begomovirus, Tospovirus, Mosaic), Insect Pest / Mite Attack (Thrips, Whitefly, Aphids, Mites, Leaf Miners, Bollworms), Micronutrient / Macronutrient Deficiency (N, P, K, Ca, Mg, Fe, Zn, B, S), or Physiological Stress (Sunscald, Blossom End Rot, Oedema, Waterlogging, Heat scorch).
+3. CLINICAL SYMPTOMS: Detail specific visual clues (halo, concentric rings, pustules, water-soaked lesions, leaf curling, vein mosaic, chlorosis, necrosis, stippling, frass).
+4. PATHOGEN TAXONOMY & CAUSAL AGENT: Name the exact scientific pathogen (e.g. Puccinia striiformis, Alternaria solani, Xanthomonas oryzae, Phytophthora infestans).
+5. SEVERITY & URGENCY: Rate severity (Healthy, Mild <10%, Moderate 10-35%, Severe 35-60%, Critical >60%) and urgency (Immediate 24h, High 48h, Moderate, Routine / Healthy).
+6. ACTIONABLE DUAL-STREAM REMEDIES:
+   - Immediate First-Aid containment within 24 hours.
+   - Organic / Biological Controls with exact dilution and bio-agent names (Neem Azadirachtin, Trichoderma, Bacillus subtilis, Beauveria, Sour buttermilk).
+   - Commercial Chemical Formulations with exact active ingredients, formulation codes (WP, SC, EC), brand examples (Amistar Top, Nativo, Confidor, Dithane M-45, Tilt), dilution per liter of water, dosage per acre, Pre-Harvest Interval (PHI in days), and FRAC resistance group mode of action.
+7. SAFETY, RESISTANCE & HINDI SUMMARY: Spray precautions (PPE, wind), anti-resistance fungicide rotation, differential diagnosis, and a short, crystal-clear Hindi summary for Indian farmers.
+
+Return strictly valid JSON conforming to the schema.`;
 
     const parts: any[] = [];
     if (imageBase64) {
@@ -125,25 +163,47 @@ YOUR TASK:
     const response = await generateContentWithRetry({
       contents: { parts },
       config: {
-        systemInstruction: "You are an expert World-Class Plant Pathologist and Agronomist. Diagnose any plant image accurately with actionable remedies and exact dosages in valid JSON.",
+        systemInstruction: "You are an expert Phytopathologist and Senior Agronomist. Return accurate, clinical plant disease diagnosis with exact formulations, doses, and precautions in valid JSON.",
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.OBJECT,
           properties: {
             plantIdentified: { type: Type.STRING, description: "Common name of the plant identified in photo" },
             botanicalName: { type: Type.STRING, description: "Scientific Latin botanical name" },
-            plantHealthCategory: { type: Type.STRING, description: "e.g. Fungal Disease, Bacterial Infection, Viral Disease, Pest Infestation, Nutrient Deficiency, Environmental Stress, Healthy" },
+            plantHealthCategory: { type: Type.STRING, description: "Fungal Disease, Bacterial Infection, Viral Disease, Pest Infestation, Nutrient Deficiency, Environmental Stress, or Healthy Plant" },
             isHealthy: { type: Type.BOOLEAN },
-            diagnosisName: { type: Type.STRING, description: "Specific diagnosis name or 'Healthy Foliage'" },
-            confidenceScore: { type: Type.NUMBER, description: "Confidence score between 75 and 99" },
+            diagnosisName: { type: Type.STRING, description: "Specific disease diagnosis name or 'Healthy Foliage'" },
+            confidenceScore: { type: Type.NUMBER, description: "Confidence score between 80 and 99" },
             severity: { type: Type.STRING, description: "Healthy, Mild, Moderate, Severe, or Critical" },
+            pathogenTaxonomy: { type: Type.STRING, description: "Scientific name of pathogen or physiological cause" },
+            environmentalTrigger: { type: Type.STRING, description: "Weather/humidity condition accelerating disease" },
+            urgencyLevel: { type: Type.STRING, description: "Immediate (24 Hours), High (48 Hours), Moderate, or Routine / Healthy" },
             affectedParts: { type: Type.ARRAY, items: { type: Type.STRING } },
             primaryCause: { type: Type.STRING },
             visualFindings: { type: Type.ARRAY, items: { type: Type.STRING } },
             immediateAction: { type: Type.STRING },
             organicTreatment: { type: Type.ARRAY, items: { type: Type.STRING } },
             chemicalTreatment: { type: Type.ARRAY, items: { type: Type.STRING } },
+            chemicalFormulations: {
+              type: Type.ARRAY,
+              items: {
+                type: Type.OBJECT,
+                properties: {
+                  activeIngredient: { type: Type.STRING },
+                  commercialExample: { type: Type.STRING },
+                  dilutionPerLiter: { type: Type.STRING },
+                  dosePerAcre: { type: Type.STRING },
+                  phiDays: { type: Type.STRING },
+                  modeOfAction: { type: Type.STRING }
+                },
+                required: ["activeIngredient", "commercialExample", "dilutionPerLiter", "dosePerAcre"]
+              }
+            },
             dosageInstructions: { type: Type.STRING },
+            safetyPrecaution: { type: Type.STRING },
+            resistanceManagement: { type: Type.STRING },
+            differentialDiagnosis: { type: Type.ARRAY, items: { type: Type.STRING } },
+            hindiSummary: { type: Type.STRING },
             preventionStrategy: { type: Type.ARRAY, items: { type: Type.STRING } },
             impactOnYieldEstimate: { type: Type.STRING },
           },

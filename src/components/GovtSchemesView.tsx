@@ -23,6 +23,10 @@ import {
   Calculator,
   ArrowRight,
   Printer,
+  ShoppingBag,
+  Store,
+  Truck,
+  Building2,
 } from "lucide-react";
 
 interface GovtScheme {
@@ -339,6 +343,38 @@ const GOVT_SCHEMES_DATA: GovtScheme[] = [
     helpline: "011-23381012 (AIF Project Management Unit)",
     recentUpdate: "Expanded to cover primary processing machinery and drone service hubs under community infrastructure.",
   },
+  {
+    id: "gem-gov",
+    name: "GeM - Government e-Marketplace (National Procurement Portal)",
+    hindiName: "गवर्नमेंट ई-मार्केटप्लेस (सरकारी खरीद एवं बिक्री पोर्टल)",
+    category: "market",
+    categoryLabel: "Govt Direct Buy & Sell Portal",
+    tagline: "Official Government of India portal for farmers & FPOs to buy subsidized equipment & sell farm produce directly to Govt.",
+    primaryBenefit: "Direct purchase of certified tractors, solar pumps, drip kits & direct sale of agricultural produce to Central/State Govt bodies with 0% middleman commission.",
+    subsidyRate: "Transparent Govt Contract Wholesale Rates + 100% DBT Payment",
+    targetGroup: "Individual Farmers, Farmer Producer Organisations (FPOs), Primary Agriculture Credit Societies (PACS), SHGs, and Rural Artisans.",
+    eligibility: [
+      "Farmers seeking to buy government-certified agricultural implements, solar pumps, and greenhouse equipment.",
+      "FPOs and farmers wanting to register as verified sellers to supply food grains, pulses, millets, fresh vegetables, and fruits to Indian Railways, Defence Canteens, Kendriya Vidyalayas, and State Hostels.",
+      "Requires active Aadhaar, Bank Account, PAN / Udyam / FPO Registration number.",
+    ],
+    documentsRequired: [
+      "Aadhaar Card of applicant / FPO Director.",
+      "Bank Account details (Cancelled Cheque with IFSC).",
+      "PAN Card (Individual or FPO/Society PAN).",
+      "Land Record / FSSAI License (for selling food items) or Farmer ID.",
+    ],
+    applicationSteps: [
+      "Visit the official Government e-Marketplace portal at https://gem.gov.in.",
+      "Click on 'Sign Up' and select 'Buyer' (for institutional/scheme purchase) or 'Seller' -> 'Farmer/FPO/Self Help Group'.",
+      "Complete Aadhaar-based OTP verification and create your user profile.",
+      "List your agricultural commodities or browse registered OEM equipment catalogs.",
+      "Receive guaranteed government payments directly into your bank account within 10 days of delivery.",
+    ],
+    officialPortal: "https://gem.gov.in",
+    helpline: "1800-419-3436 / 1800-102-3436 (GeM Helpdesk Toll-Free)",
+    recentUpdate: "Special onboarding track launched for 10,000+ FPOs to supply directly to Indian Armed Forces and Railway Catering.",
+  },
 ];
 
 export const GovtSchemesView: React.FC = () => {
@@ -536,6 +572,149 @@ export const GovtSchemesView: React.FC = () => {
             </div>
           </div>
         )}
+      </div>
+
+      {/* GOVERNMENT E-MARKETPLACE (GeM) OFFICIAL PORTAL SPOTLIGHT */}
+      <div className="bg-white rounded-2xl border-2 border-emerald-500/40 shadow-md overflow-hidden">
+        <div className="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-600 border border-emerald-400/50 flex items-center justify-center text-white shrink-0 shadow-sm">
+              <ShoppingBag className="w-6 h-6" />
+            </div>
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-500 text-slate-950 px-2.5 py-0.5 rounded-full">
+                  Official Government Marketplace
+                </span>
+                <span className="text-xs text-emerald-300 font-semibold">
+                  gem.gov.in • Ministry of Commerce & Industry
+                </span>
+              </div>
+              <h2 className="text-lg font-black text-white mt-0.5">
+                Government e-Marketplace (GeM) — Direct Portal for Farmers
+              </h2>
+              <p className="text-xs text-slate-300">
+                Buy government-approved farm equipment at wholesale capped rates or sell your crops directly to government institutions without middlemen.
+              </p>
+            </div>
+          </div>
+
+          <div className="shrink-0 flex items-center gap-2">
+            <a
+              href="https://gem.gov.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black transition-all flex items-center gap-2 shadow-md hover:scale-105 active:scale-95 cursor-pointer"
+            >
+              <span>Open GeM Portal</span>
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+
+        {/* GeM Dual Feature Breakdown */}
+        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50/50">
+          {/* Box 1: Buying from Govt */}
+          <div className="bg-white p-5 rounded-2xl border border-slate-200 space-y-3 shadow-2xs">
+            <div className="flex items-center gap-2.5 text-emerald-800">
+              <div className="w-8 h-8 rounded-xl bg-emerald-100 flex items-center justify-center font-bold">
+                <Store className="w-4 h-4 text-emerald-700" />
+              </div>
+              <div>
+                <h3 className="text-sm font-extrabold text-slate-900">1. Buy Farm Equipment from Government Vendors</h3>
+                <span className="text-[11px] text-emerald-700 font-semibold">Capped wholesale prices & subsidy integration</span>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-600 leading-relaxed">
+              On <strong>GeM (Government e-Marketplace)</strong>, farmers and cooperatives can purchase tested, certified machinery directly from original equipment manufacturers (OEMs) at government-negotiated rates:
+            </p>
+
+            <ul className="space-y-1.5 text-xs text-slate-700">
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                <span><strong>Solar Water Pumps:</strong> Subsidized 3HP–10HP solar pumps under PM-KUSUM Component B & C.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                <span><strong>Micro-Irrigation Kits:</strong> Precision drip lines, inline drippers, micro-sprinklers, and disc filters.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                <span><strong>Tractors & Implements:</strong> Power tillers, rotavators, multi-crop seed drills, and laser land levelers.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                <span><strong>Greenhouse & Mulching:</strong> UV-stabilized polyhouse film, shade nets, and biodegradable mulch sheets.</span>
+              </li>
+            </ul>
+
+            <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+              <span>Direct Link: <strong className="text-slate-900">gem.gov.in</strong></span>
+              <span className="text-emerald-700 font-bold">100% Quality Inspected</span>
+            </div>
+          </div>
+
+          {/* Box 2: Selling to Govt */}
+          <div className="bg-white p-5 rounded-2xl border border-slate-200 space-y-3 shadow-2xs">
+            <div className="flex items-center gap-2.5 text-sky-800">
+              <div className="w-8 h-8 rounded-xl bg-sky-100 flex items-center justify-center font-bold">
+                <Building2 className="w-4 h-4 text-sky-700" />
+              </div>
+              <div>
+                <h3 className="text-sm font-extrabold text-slate-900">2. Sell Farm Produce Directly to Government</h3>
+                <span className="text-[11px] text-sky-700 font-semibold">Defence, Railways, Schools & Canteens (0% commission)</span>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Individual farmers, <strong>FPOs (Farmer Producer Organisations)</strong>, and SHGs can register as sellers to supply agricultural produce directly to government departments:
+            </p>
+
+            <ul className="space-y-1.5 text-xs text-slate-700">
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 text-sky-600 shrink-0 mt-0.5" />
+                <span><strong>Direct Institutional Buyers:</strong> Supply to Indian Armed Forces, Railway Canteens (IRCTC), and Central Schools.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 text-sky-600 shrink-0 mt-0.5" />
+                <span><strong>No Middlemen or Brokerage:</strong> Receive the full invoice payment with zero commission deducted.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 text-sky-600 shrink-0 mt-0.5" />
+                <span><strong>Guaranteed Timely Settlement:</strong> Government portal mandates DBT payment into farmer's bank account within 10 days.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 text-sky-600 shrink-0 mt-0.5" />
+                <span><strong>Special FPO Quota:</strong> Preference given to organic produce, millets (Shree Anna), and certified farmer clusters.</span>
+              </li>
+            </ul>
+
+            <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+              <span>GeM Helpdesk: <strong className="text-slate-900">1800-419-3436</strong></span>
+              <span className="text-sky-700 font-bold">Direct DBT Transfer</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick How to Get Started Footer */}
+        <div className="bg-emerald-950 text-emerald-100 px-6 py-3 text-xs flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-emerald-800">
+          <div className="flex items-center gap-2">
+            <Info className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span>
+              <strong>How to Register:</strong> Visit <strong>https://gem.gov.in</strong> &gt; Click <em>'Sign Up'</em> &gt; Choose <em>'Seller &gt; Farmer / FPO / SHG'</em> &gt; Verify via Aadhaar OTP and link Bank Account.
+            </span>
+          </div>
+          <a
+            href="https://gem.gov.in"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white font-extrabold underline hover:text-emerald-300 shrink-0 flex items-center gap-1"
+          >
+            <span>Visit gem.gov.in</span>
+            <ExternalLink className="w-3 h-3" />
+          </a>
+        </div>
       </div>
 
       {/* SCHEME SEARCH & CATEGORY FILTER TABS */}
