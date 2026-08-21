@@ -11,11 +11,29 @@ import {
   Image as ImageIcon,
   Sparkles,
   ShieldAlert,
+  Landmark,
+  BookOpen,
 } from "lucide-react";
 
 interface HeaderProps {
-  activeTab: "dss" | "crop-doctor" | "soil" | "agrismart-guard" | "ask-ai";
-  setActiveTab: (tab: "dss" | "crop-doctor" | "soil" | "agrismart-guard" | "ask-ai") => void;
+  activeTab:
+    | "dss"
+    | "crop-doctor"
+    | "soil"
+    | "agrismart-guard"
+    | "govt-schemes"
+    | "farming-guides"
+    | "ask-ai";
+  setActiveTab: (
+    tab:
+      | "dss"
+      | "crop-doctor"
+      | "soil"
+      | "agrismart-guard"
+      | "govt-schemes"
+      | "farming-guides"
+      | "ask-ai"
+  ) => void;
   language: string;
   setLanguage: (lang: string) => void;
   unreadAlertCount: number;
@@ -146,44 +164,44 @@ export const Header: React.FC<HeaderProps> = ({
           <nav className="hidden md:flex items-center gap-1 bg-slate-800/90 p-1 rounded-xl border border-slate-700/80">
             <button
               onClick={() => setActiveTab("dss")}
-              className={`px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
                 activeTab === "dss"
                   ? "bg-emerald-600 text-white shadow-sm"
                   : "text-slate-300 hover:text-white hover:bg-slate-700/60"
               }`}
             >
               <Droplets className="w-3.5 h-3.5 text-sky-400" />
-              Live Weather & Forecast
+              Live Weather
             </button>
 
             <button
               onClick={() => setActiveTab("crop-doctor")}
-              className={`px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
                 activeTab === "crop-doctor"
                   ? "bg-emerald-600 text-white shadow-sm"
                   : "text-slate-300 hover:text-white hover:bg-slate-700/60"
               }`}
             >
               <Leaf className="w-3.5 h-3.5 text-emerald-400" />
-              Leaf Disease Doctor
+              Leaf Doctor
             </button>
 
             <button
               onClick={() => setActiveTab("soil")}
-              className={`px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
                 activeTab === "soil"
                   ? "bg-emerald-600 text-white shadow-sm"
                   : "text-slate-300 hover:text-white hover:bg-slate-700/60"
               }`}
             >
               <Sliders className="w-3.5 h-3.5 text-amber-400" />
-              Fertilizer Plan
+              Fertilizer
             </button>
 
             {/* AgriSmart Guard Challenge Tab */}
             <button
               onClick={() => setActiveTab("agrismart-guard")}
-              className={`px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
                 activeTab === "agrismart-guard"
                   ? "bg-emerald-600 text-white shadow-sm"
                   : "text-slate-300 hover:text-white hover:bg-slate-700/60"
@@ -193,17 +211,43 @@ export const Header: React.FC<HeaderProps> = ({
               AgriSmart Guard
             </button>
 
-            {/* Ask Farm Question Tab */}
+            {/* Indian Govt Schemes & Policies Tab */}
             <button
-              onClick={() => setActiveTab("ask-ai")}
-              className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                activeTab === "ask-ai"
+              onClick={() => setActiveTab("govt-schemes")}
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
+                activeTab === "govt-schemes"
+                  ? "bg-emerald-600 text-white shadow-sm"
+                  : "text-amber-300 hover:text-white hover:bg-slate-700/60"
+              }`}
+            >
+              <Landmark className="w-3.5 h-3.5 text-amber-400" />
+              Govt Schemes
+            </button>
+
+            {/* Farming Guides & Agro-Blogs Tab */}
+            <button
+              onClick={() => setActiveTab("farming-guides")}
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
+                activeTab === "farming-guides"
                   ? "bg-emerald-600 text-white shadow-sm"
                   : "text-emerald-300 hover:text-white hover:bg-slate-700/60"
               }`}
             >
+              <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
+              Farming Guides
+            </button>
+
+            {/* Ask Farm Question Tab */}
+            <button
+              onClick={() => setActiveTab("ask-ai")}
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
+                activeTab === "ask-ai"
+                  ? "bg-emerald-600 text-white shadow-sm"
+                  : "text-slate-300 hover:text-white hover:bg-slate-700/60"
+              }`}
+            >
               <MessageSquareQuote className="w-3.5 h-3.5 text-emerald-400" />
-              Ask Farm AI
+              Ask AI
             </button>
           </nav>
 
@@ -231,7 +275,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Direct Tab Switch for Ask Farm AI */}
             <button
               onClick={() => setActiveTab("ask-ai")}
-              className={`hidden sm:flex px-3.5 py-2 rounded-xl font-bold text-xs transition-all shadow-sm items-center gap-1.5 cursor-pointer ${
+              className={`hidden lg:flex px-3 py-2 rounded-xl font-bold text-xs transition-all shadow-sm items-center gap-1.5 cursor-pointer ${
                 activeTab === "ask-ai"
                   ? "bg-emerald-500 text-slate-950 shadow-md"
                   : "bg-emerald-600 hover:bg-emerald-500 text-white"
@@ -248,19 +292,19 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* Mobile Horizontal Navigation Tabs (Without My Fields) */}
-        <div className="md:hidden flex items-center overflow-x-auto px-4 py-2 bg-slate-800 border-t border-slate-700 gap-1.5 text-xs">
+        {/* Mobile Horizontal Navigation Tabs */}
+        <div className="md:hidden flex items-center overflow-x-auto px-3 py-2 bg-slate-800 border-t border-slate-700 gap-1.5 text-xs">
           <button
             onClick={() => setActiveTab("dss")}
-            className={`px-3 py-1.5 rounded-lg whitespace-nowrap font-bold ${
+            className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap font-bold ${
               activeTab === "dss" ? "bg-emerald-600 text-white" : "text-slate-300"
             }`}
           >
-            Live Weather
+            Weather
           </button>
           <button
             onClick={() => setActiveTab("crop-doctor")}
-            className={`px-3 py-1.5 rounded-lg whitespace-nowrap font-bold ${
+            className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap font-bold ${
               activeTab === "crop-doctor" ? "bg-emerald-600 text-white" : "text-slate-300"
             }`}
           >
@@ -268,27 +312,43 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
           <button
             onClick={() => setActiveTab("soil")}
-            className={`px-3 py-1.5 rounded-lg whitespace-nowrap font-bold ${
+            className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap font-bold ${
               activeTab === "soil" ? "bg-emerald-600 text-white" : "text-slate-300"
             }`}
           >
-            Fertilizer Plan
+            Fertilizer
           </button>
           <button
             onClick={() => setActiveTab("agrismart-guard")}
-            className={`px-3 py-1.5 rounded-lg whitespace-nowrap font-bold ${
+            className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap font-bold ${
               activeTab === "agrismart-guard" ? "bg-emerald-600 text-white" : "text-slate-300"
             }`}
           >
             AgriSmart Guard
           </button>
           <button
-            onClick={() => setActiveTab("ask-ai")}
-            className={`px-3 py-1.5 rounded-lg whitespace-nowrap font-bold ${
-              activeTab === "ask-ai" ? "bg-emerald-600 text-white" : "text-emerald-300"
+            onClick={() => setActiveTab("govt-schemes")}
+            className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap font-bold ${
+              activeTab === "govt-schemes" ? "bg-emerald-600 text-white" : "text-amber-300"
             }`}
           >
-            Ask Farm AI
+            Govt Schemes
+          </button>
+          <button
+            onClick={() => setActiveTab("farming-guides")}
+            className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap font-bold ${
+              activeTab === "farming-guides" ? "bg-emerald-600 text-white" : "text-emerald-300"
+            }`}
+          >
+            Farming Guides
+          </button>
+          <button
+            onClick={() => setActiveTab("ask-ai")}
+            className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap font-bold ${
+              activeTab === "ask-ai" ? "bg-emerald-600 text-white" : "text-slate-300"
+            }`}
+          >
+            Ask AI
           </button>
         </div>
       </header>

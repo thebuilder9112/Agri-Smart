@@ -37,14 +37,45 @@ interface DecisionSupportViewProps {
   onOpenSoilAdvisor: () => void;
 }
 
-const PRESET_FARMING_REGIONS: LocationOption[] = [
-  { name: "Ludhiana", region: "Punjab", country: "India", latitude: 30.901, longitude: 75.8573 },
-  { name: "Karnal", region: "Haryana", country: "India", latitude: 29.6857, longitude: 76.9905 },
-  { name: "Anand", region: "Gujarat", country: "India", latitude: 22.5645, longitude: 72.9289 },
-  { name: "Nashik", region: "Maharashtra", country: "India", latitude: 19.9975, longitude: 73.7898 },
-  { name: "Guntur", region: "Andhra Pradesh", country: "India", latitude: 16.3067, longitude: 80.4365 },
-  { name: "Indore", region: "Madhya Pradesh", country: "India", latitude: 22.7196, longitude: 75.8577 },
-  { name: "Fresno", region: "California", country: "United States", latitude: 36.7468, longitude: -119.7726 },
+const PRESET_FARMING_REGIONS: (LocationOption & { continent: string })[] = [
+  // Asia
+  { name: "Ludhiana", region: "Punjab", country: "India", latitude: 30.901, longitude: 75.8573, continent: "Asia" },
+  { name: "Karnal", region: "Haryana", country: "India", latitude: 29.6857, longitude: 76.9905, continent: "Asia" },
+  { name: "Anand", region: "Gujarat", country: "India", latitude: 22.5645, longitude: 72.9289, continent: "Asia" },
+  { name: "Nashik", region: "Maharashtra", country: "India", latitude: 19.9975, longitude: 73.7898, continent: "Asia" },
+  { name: "Guntur", region: "Andhra Pradesh", country: "India", latitude: 16.3067, longitude: 80.4365, continent: "Asia" },
+  { name: "Indore", region: "Madhya Pradesh", country: "India", latitude: 22.7196, longitude: 75.8577, continent: "Asia" },
+  { name: "Chengdu", region: "Sichuan", country: "China", latitude: 30.5728, longitude: 104.0668, continent: "Asia" },
+  { name: "Chiang Mai", region: "North", country: "Thailand", latitude: 18.7883, longitude: 98.9853, continent: "Asia" },
+  { name: "Lahore", region: "Punjab", country: "Pakistan", latitude: 31.5204, longitude: 74.3587, continent: "Asia" },
+  { name: "Kyoto", region: "Kansai", country: "Japan", latitude: 35.0116, longitude: 135.7681, continent: "Asia" },
+  
+  // Americas
+  { name: "Fresno", region: "California", country: "United States", latitude: 36.7468, longitude: -119.7726, continent: "Americas" },
+  { name: "Des Moines", region: "Iowa", country: "United States", latitude: 41.5868, longitude: -93.625, continent: "Americas" },
+  { name: "Lubbock", region: "Texas", country: "United States", latitude: 33.5779, longitude: -101.8552, continent: "Americas" },
+  { name: "Regina", region: "Saskatchewan", country: "Canada", latitude: 50.4547, longitude: -104.6067, continent: "Americas" },
+  { name: "Mato Grosso", region: "Cuiabá", country: "Brazil", latitude: -15.6014, longitude: -56.0979, continent: "Americas" },
+  { name: "Rosario", region: "Santa Fe", country: "Argentina", latitude: -32.9468, longitude: -60.6393, continent: "Americas" },
+  { name: "Sinaloa", region: "Culiacán", country: "Mexico", latitude: 24.8091, longitude: -107.394, continent: "Americas" },
+
+  // Europe
+  { name: "Seville", region: "Andalusia", country: "Spain", latitude: 37.3891, longitude: -5.9845, continent: "Europe" },
+  { name: "Bologna", region: "Emilia-Romagna", country: "Italy", latitude: 44.4949, longitude: 11.3426, continent: "Europe" },
+  { name: "Bordeaux", region: "Nouvelle-Aquitaine", country: "France", latitude: 44.8378, longitude: -0.5792, continent: "Europe" },
+  { name: "Munich", region: "Bavaria", country: "Germany", latitude: 48.1351, longitude: 11.582, continent: "Europe" },
+  { name: "Kyiv", region: "Chernozem Belt", country: "Ukraine", latitude: 50.4501, longitude: 30.5234, continent: "Europe" },
+
+  // Africa
+  { name: "Eldoret", region: "Rift Valley", country: "Kenya", latitude: 0.5143, longitude: 35.2698, continent: "Africa" },
+  { name: "Cairo", region: "Nile Delta", country: "Egypt", latitude: 30.0444, longitude: 31.2357, continent: "Africa" },
+  { name: "Stellenbosch", region: "Western Cape", country: "South Africa", latitude: -33.9321, longitude: 18.8602, continent: "Africa" },
+  { name: "Kano", region: "North", country: "Nigeria", latitude: 12.0022, longitude: 8.592, continent: "Africa" },
+
+  // Oceania
+  { name: "Wagga Wagga", region: "New South Wales", country: "Australia", latitude: -35.1082, longitude: 147.3598, continent: "Oceania" },
+  { name: "Shepparton", region: "Victoria", country: "Australia", latitude: -36.3813, longitude: 145.3984, continent: "Oceania" },
+  { name: "Hawke's Bay", region: "Hastings", country: "New Zealand", latitude: -39.6385, longitude: 176.8406, continent: "Oceania" },
 ];
 
 export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
@@ -67,6 +98,13 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<LocationOption[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [selectedContinent, setSelectedContinent] = useState<string>("All");
+  
+  // Custom GPS Coordinates input
+  const [isCustomCoordOpen, setIsCustomCoordOpen] = useState(false);
+  const [customLat, setCustomLat] = useState("");
+  const [customLon, setCustomLon] = useState("");
+  const [customPlaceName, setCustomPlaceName] = useState("");
 
   // Selected forecast tab / day
   const [selectedForecastIndex, setSelectedForecastIndex] = useState<number>(0);
@@ -272,12 +310,19 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
 
       {/* SEARCH MODAL / POPUP */}
       {isSearchOpen && (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-5 space-y-3 animate-in fade-in duration-200">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
-            <span className="text-xs font-bold text-slate-800 flex items-center gap-2">
-              <Search className="w-4 h-4 text-emerald-600" />
-              Search Any City, District or Farm Location:
-            </span>
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-xl p-5 sm:p-6 space-y-4 animate-in fade-in duration-200">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div className="flex items-center gap-2">
+              <Compass className="w-5 h-5 text-emerald-600" />
+              <div>
+                <span className="text-sm font-extrabold text-slate-900 block">
+                  Global Weather Station Locator (Worldwide 195+ Countries)
+                </span>
+                <span className="text-[11px] text-slate-500 font-medium">
+                  Search any city, village, district, province or exact GPS coordinates anywhere on Earth.
+                </span>
+              </div>
+            </div>
             <button
               onClick={() => setIsSearchOpen(false)}
               className="text-xs font-bold text-slate-400 hover:text-slate-700 cursor-pointer"
@@ -286,23 +331,100 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
             </button>
           </div>
 
+          {/* Search Box */}
           <div className="relative">
-            <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
+            <Search className="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Type place name e.g. 'Patiala', 'Nagpur', 'Amritsar', 'Visakhapatnam'..."
-              className="w-full pl-9 pr-4 py-2.5 text-xs bg-slate-50 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              placeholder="Type any village, city, country (e.g. 'Patiala', 'Nairobi', 'Iowa', 'São Paulo', 'Cairo', or '30.90, 75.85')..."
+              className="w-full pl-10 pr-10 py-3 text-xs bg-slate-50 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium text-slate-900"
               autoFocus
             />
             {isSearching && (
-              <Loader2 className="w-4 h-4 absolute right-3 top-3 animate-spin text-emerald-600" />
+              <Loader2 className="w-4 h-4 absolute right-3.5 top-3.5 animate-spin text-emerald-600" />
             )}
           </div>
 
+          {/* Quick Actions: Auto-GPS & Manual Lat/Lon */}
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <button
+              onClick={() => {
+                handleUseCurrentLocation();
+                setIsSearchOpen(false);
+              }}
+              className="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+            >
+              <Navigation className="w-3.5 h-3.5 text-emerald-700" />
+              <span>Use My Device GPS (Auto-Detect Anywhere)</span>
+            </button>
+
+            <button
+              onClick={() => setIsCustomCoordOpen(!isCustomCoordOpen)}
+              className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+            >
+              <MapPin className="w-3.5 h-3.5 text-slate-600" />
+              <span>{isCustomCoordOpen ? "Hide Custom Lat/Lon" : "Enter Exact Lat / Long Coordinates"}</span>
+            </button>
+          </div>
+
+          {/* Custom Lat/Lon Form */}
+          {isCustomCoordOpen && (
+            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+              <span className="text-xs font-bold text-slate-800 block">
+                Enter Custom Field GPS Coordinates (For Remote Farms):
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <input
+                  type="text"
+                  placeholder="Latitude (e.g. 30.9010)"
+                  value={customLat}
+                  onChange={(e) => setCustomLat(e.target.value)}
+                  className="px-3 py-2 text-xs rounded-lg border border-slate-300 bg-white font-mono"
+                />
+                <input
+                  type="text"
+                  placeholder="Longitude (e.g. 75.8573)"
+                  value={customLon}
+                  onChange={(e) => setCustomLon(e.target.value)}
+                  className="px-3 py-2 text-xs rounded-lg border border-slate-300 bg-white font-mono"
+                />
+                <input
+                  type="text"
+                  placeholder="Farm / Plot Name (Optional)"
+                  value={customPlaceName}
+                  onChange={(e) => setCustomPlaceName(e.target.value)}
+                  className="px-3 py-2 text-xs rounded-lg border border-slate-300 bg-white"
+                />
+              </div>
+              <button
+                onClick={() => {
+                  const latNum = parseFloat(customLat);
+                  const lonNum = parseFloat(customLon);
+                  if (isNaN(latNum) || isNaN(lonNum)) {
+                    alert("Please enter valid numeric latitude and longitude coordinates.");
+                    return;
+                  }
+                  fetchWeatherForLocation({
+                    name: customPlaceName.trim() || `Farm (${latNum.toFixed(3)}, ${lonNum.toFixed(3)})`,
+                    region: "Custom Coordinates",
+                    country: "Global Plot",
+                    latitude: latNum,
+                    longitude: lonNum,
+                  });
+                  setIsSearchOpen(false);
+                }}
+                className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold cursor-pointer"
+              >
+                Fetch Weather for These Coordinates
+              </button>
+            </div>
+          )}
+
+          {/* Dynamic Search Results */}
           {searchResults.length > 0 && (
-            <div className="bg-slate-50 rounded-xl border border-slate-200 divide-y divide-slate-200 max-h-48 overflow-y-auto">
+            <div className="bg-slate-50 rounded-xl border border-slate-200 divide-y divide-slate-200 max-h-56 overflow-y-auto">
               {searchResults.map((res, i) => (
                 <div
                   key={i}
@@ -314,40 +436,70 @@ export const DecisionSupportView: React.FC<DecisionSupportViewProps> = ({
                   className="p-2.5 px-3.5 hover:bg-emerald-50 transition-colors flex items-center justify-between text-xs cursor-pointer"
                 >
                   <div className="flex items-center gap-2">
-                    <MapPin className="w-3.5 h-3.5 text-emerald-600" />
-                    <span className="font-bold text-slate-800">{res.name}</span>
-                    <span className="text-slate-500 text-[11px]">
-                      {res.region ? `${res.region}, ` : ""}
-                      {res.country}
+                    <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <div>
+                      <span className="font-bold text-slate-900">{res.name}</span>
+                      <span className="text-slate-500 text-[11px] ml-1.5">
+                        {res.region ? `${res.region}, ` : ""}
+                        {res.country}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-slate-400 font-mono">
+                      {res.latitude.toFixed(2)}°, {res.longitude.toFixed(2)}°
+                    </span>
+                    <span className="text-[10px] text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded">
+                      Select
                     </span>
                   </div>
-                  <span className="text-[10px] text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded">
-                    Select
-                  </span>
                 </div>
               ))}
             </div>
           )}
 
-          <div className="pt-2">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1.5">
-              Preset Farming Hubs:
-            </span>
-            <div className="flex flex-wrap gap-1.5">
-              {PRESET_FARMING_REGIONS.map((preset, i) => (
+          {/* Global Continents & Farming Hubs */}
+          <div className="pt-2 border-t border-slate-100 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-extrabold text-slate-700 uppercase tracking-wider">
+                Worldwide Major Agricultural Hubs:
+              </span>
+              <div className="flex gap-1 text-[11px]">
+                {["All", "Asia", "Americas", "Europe", "Africa", "Oceania"].map((continent) => (
+                  <button
+                    key={continent}
+                    onClick={() => setSelectedContinent(continent)}
+                    className={`px-2 py-0.5 rounded text-[11px] font-bold cursor-pointer transition-all ${
+                      selectedContinent === continent
+                        ? "bg-slate-900 text-white"
+                        : "text-slate-500 hover:text-slate-900 hover:bg-slate-100"
+                    }`}
+                  >
+                    {continent}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto pr-1">
+              {PRESET_FARMING_REGIONS.filter(
+                (p) => selectedContinent === "All" || p.continent === selectedContinent
+              ).map((preset, i) => (
                 <button
                   key={i}
                   onClick={() => {
                     fetchWeatherForLocation(preset);
                     setIsSearchOpen(false);
                   }}
-                  className={`px-3 py-1 rounded-lg text-xs font-semibold border transition-all cursor-pointer ${
+                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all cursor-pointer flex items-center gap-1 ${
                     weather?.placeName === preset.name
                       ? "bg-emerald-700 text-white border-emerald-700 shadow-2xs"
                       : "bg-white text-slate-700 border-slate-200 hover:bg-emerald-50"
                   }`}
                 >
-                  📍 {preset.name} ({preset.region})
+                  <span className="text-[10px] opacity-70">📍</span>
+                  <span>{preset.name}</span>
+                  <span className="text-[10px] text-slate-400">({preset.country})</span>
                 </button>
               ))}
             </div>

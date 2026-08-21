@@ -674,15 +674,41 @@ Grade across 4 criteria (max 25 pts each: understandingOfAIConcept, creativity, 
   }
 });
 
-// 7. Real-Time Agricultural Weather Search
+// 7. Real-Time Global Agricultural Weather Search (All Worldwide Locations & Coordinates)
 apiRouter.get("/weather/search", async (req: Request, res: Response) => {
   try {
     const q = (req.query.q as string || "").trim();
-    if (!q || q.length < 2) {
+    if (!q) {
       return res.json({ results: [] });
     }
 
-    const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=8&language=en&format=json`;
+    // Check if user entered direct GPS coordinates: e.g. "30.901, 75.857" or "51.5074 -0.1278"
+    const coordMatch = q.match(/^([-+]?[0-9]*\.?[0-9]+)[\s,]+([-+]?[0-9]*\.?[0-9]+)$/);
+    if (coordMatch) {
+      const lat = parseFloat(coordMatch[1]);
+      const lon = parseFloat(coordMatch[2]);
+      if (lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180) {
+        return res.json({
+          results: [
+            {
+              name: `GPS Point (${lat.toFixed(4)}, ${lon.toFixed(4)})`,
+              region: "Custom Coordinates",
+              country: "Global Farm Coordinates",
+              latitude: lat,
+              longitude: lon,
+              timezone: "auto",
+            },
+          ],
+        });
+      }
+    }
+
+    if (q.length < 2) {
+      return res.json({ results: [] });
+    }
+
+    // Search Open-Meteo Global Geocoding API with 20 results across all countries
+    const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=20&language=en&format=json`;
     const response = await fetch(geoUrl);
     if (!response.ok) {
       return res.json({ results: [] });
@@ -690,11 +716,13 @@ apiRouter.get("/weather/search", async (req: Request, res: Response) => {
     const data = await response.json();
     const results = (data.results || []).map((item: any) => ({
       name: item.name,
-      region: item.admin1 || item.admin2 || "",
+      region: item.admin1 || item.admin2 || item.admin3 || "",
       country: item.country || "",
       latitude: item.latitude,
       longitude: item.longitude,
       timezone: item.timezone,
+      countryCode: item.country_code,
+      population: item.population,
     }));
     return res.json({ results });
   } catch (error) {
