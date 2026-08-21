@@ -30,6 +30,7 @@ import {
   CloudFog,
 } from "lucide-react";
 import { WeatherData, LocationOption } from "../types/agriculture";
+import { useTranslation } from "../data/translations";
 
 interface DecisionSupportViewProps {
   language: string;

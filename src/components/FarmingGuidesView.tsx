@@ -23,6 +23,7 @@ import {
   ChevronRight,
   ShieldCheck,
 } from "lucide-react";
+import { useTranslation } from "../data/translations";
 
 interface CropGuide {
   id: string;
@@ -255,7 +256,12 @@ const SOIL_TYPES_DATA = [
   },
 ];
 
-export const FarmingGuidesView: React.FC = () => {
+interface FarmingGuidesViewProps {
+  language?: string;
+}
+
+export const FarmingGuidesView: React.FC<FarmingGuidesViewProps> = ({ language = "en" }) => {
+  const { t } = useTranslation(language);
   const [activeSubTab, setActiveSubTab] = useState<"crop-advisor" | "cultivation-guides" | "soil-matrix" | "modern-methods">("crop-advisor");
   const [searchQuery, setSearchQuery] = useState("");
   const [seasonFilter, setSeasonFilter] = useState<string>("All");

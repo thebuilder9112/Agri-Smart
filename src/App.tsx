@@ -8,12 +8,14 @@ import { GovtSchemesView } from "./components/GovtSchemesView";
 import { FarmingGuidesView } from "./components/FarmingGuidesView";
 import { AskFarmAiView } from "./components/AskFarmAiView";
 import { Info, Sparkles, BookOpen, Landmark } from "lucide-react";
+import { useTranslation } from "./data/translations";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<
     "home" | "dss" | "crop-doctor" | "agrismart-guard" | "govt-schemes" | "farming-guides" | "ask-ai"
   >("home");
   const [language, setLanguage] = useState<string>("en");
+  const { t } = useTranslation(language);
 
   return (
     <div className="min-h-screen flex flex-col antialiased bg-slate-50 text-slate-900 font-sans">
@@ -44,13 +46,13 @@ export default function App() {
           />
         )}
 
-        {activeTab === "crop-doctor" && <CropDoctorView />}
+        {activeTab === "crop-doctor" && <CropDoctorView language={language} />}
 
-        {activeTab === "agrismart-guard" && <AgriSmartGuardView />}
+        {activeTab === "agrismart-guard" && <AgriSmartGuardView language={language} />}
 
-        {activeTab === "govt-schemes" && <GovtSchemesView />}
+        {activeTab === "govt-schemes" && <GovtSchemesView language={language} />}
 
-        {activeTab === "farming-guides" && <FarmingGuidesView />}
+        {activeTab === "farming-guides" && <FarmingGuidesView language={language} />}
 
         {activeTab === "ask-ai" && <AskFarmAiView language={language} />}
       </main>
@@ -63,11 +65,11 @@ export default function App() {
             <div className="flex items-start sm:items-center gap-2">
               <Info className="w-4 h-4 text-amber-700 shrink-0 mt-0.5 sm:mt-0" />
               <span className="font-medium text-[11px] sm:text-xs leading-relaxed text-amber-900">
-                <strong>Educational Study Disclaimer:</strong> This application is developed strictly for student study, academic research, and precision agriculture innovation demonstration. Real-world farming inputs, crop treatments, and government scheme eligibility should be verified through official portals or local Krishi Vigyan Kendras (KVK).
+                <strong>{t("studentProjectDemo")}:</strong> {t("academicDisclaimerShort")}
               </span>
             </div>
             <span className="text-[10px] font-bold uppercase bg-amber-200/90 text-amber-950 px-2 py-0.5 rounded shrink-0 self-start sm:self-auto">
-              Student Project Demo
+              {t("studentProjectDemo")}
             </span>
           </div>
         </div>
@@ -85,10 +87,10 @@ export default function App() {
             />
             <span className="font-bold text-slate-900">AgriVision AI</span>
             <span className="text-slate-400">|</span>
-            <span>Precision Agriculture & Irrigation Decision Support System</span>
+            <span>{t("precisionAgHeader")}</span>
           </div>
           <div className="flex flex-col sm:flex-row items-center sm:items-end gap-1 text-[11px] text-slate-500">
-            <span>Automated Weather • Leaf Doctor • AgriSmart Guard • Govt Schemes & GeM • Farming Guides</span>
+            <span>{t("navWeather")} • {t("navCropDoctor")} • {t("navAgriGuard")} • {t("navGovtSchemes")} • {t("navGuides")}</span>
           </div>
         </div>
       </footer>

@@ -15,6 +15,7 @@ import {
   Landmark,
   BookOpen,
 } from "lucide-react";
+import { useTranslation, SUPPORTED_LANGUAGES } from "../data/translations";
 
 interface HeaderProps {
   activeTab:
@@ -87,6 +88,7 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const [isLogoModalOpen, setIsLogoModalOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const { t } = useTranslation(language);
 
   const handleCopySvg = async () => {
     try {
@@ -119,16 +121,16 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="flex items-center gap-3">
               <span className="font-semibold text-emerald-300 flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                Live Farm Sensors: Connected
+                {t("sensorsConnected")}
               </span>
               <span>•</span>
               <span className="text-emerald-100/90">
-                Weather & Disease Advisory Active
+                {t("weatherAdvisoryActive")}
               </span>
             </div>
 
             <div className="flex items-center gap-3 text-emerald-200">
-              <span>Precision Agriculture & Decision Support</span>
+              <span>{t("precisionAgHeader")}</span>
             </div>
           </div>
         </div>
@@ -172,7 +174,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <Droplets className="w-3.5 h-3.5 text-sky-400" />
-              Live Weather
+              {t("navWeather")}
             </button>
 
             <button
@@ -184,7 +186,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <Leaf className="w-3.5 h-3.5 text-emerald-400" />
-              Leaf Doctor
+              {t("navCropDoctor")}
             </button>
 
             {/* AgriSmart Guard Challenge Tab */}
@@ -197,7 +199,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <ShieldAlert className="w-3.5 h-3.5 text-sky-400" />
-              AgriSmart Guard
+              {t("navAgriGuard")}
             </button>
 
             {/* Indian Govt Schemes & Policies Tab */}
@@ -210,7 +212,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <Landmark className="w-3.5 h-3.5 text-amber-400" />
-              Govt Schemes & GeM
+              {t("navGovtSchemes")}
             </button>
 
             {/* Farming Guides & Agro-Blogs Tab */}
@@ -223,7 +225,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
-              Farming Guides
+              {t("navGuides")}
             </button>
 
             {/* Ask Farm Question Tab */}
@@ -236,7 +238,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <MessageSquareQuote className="w-3.5 h-3.5 text-emerald-400" />
-              Ask AI
+              {t("navAskAi")}
             </button>
           </nav>
 
@@ -251,13 +253,11 @@ export const Header: React.FC<HeaderProps> = ({
                 className="bg-slate-800 text-slate-100 text-xs font-semibold pl-7 pr-3 py-2 rounded-xl border border-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer appearance-none shadow-sm"
                 title="Change Language"
               >
-                <option value="en">English</option>
-                <option value="hi">हिंदी (Hindi)</option>
-                <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
-                <option value="gu">ગુજરાતી (Gujarati)</option>
-                <option value="mr">मराठी (Marathi)</option>
-                <option value="te">తెలుగు (Telugu)</option>
-                <option value="es">Español</option>
+                {SUPPORTED_LANGUAGES.map((l) => (
+                  <option key={l.code} value={l.code}>
+                    {l.flag} {l.nativeName} ({l.name})
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -271,7 +271,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <MessageSquareQuote className="w-4 h-4" />
-              <span>Ask Farm Question</span>
+              <span>{t("askFarmQuestion")}</span>
               {unreadAlertCount > 0 && (
                 <span className="w-4 h-4 rounded-full bg-rose-500 text-white text-[10px] flex items-center justify-center font-bold">
                   {unreadAlertCount}
@@ -289,7 +289,7 @@ export const Header: React.FC<HeaderProps> = ({
               activeTab === "dss" ? "bg-emerald-600 text-white" : "text-slate-300"
             }`}
           >
-            Weather
+            {t("navWeather")}
           </button>
           <button
             onClick={() => setActiveTab("crop-doctor")}
@@ -297,7 +297,7 @@ export const Header: React.FC<HeaderProps> = ({
               activeTab === "crop-doctor" ? "bg-emerald-600 text-white" : "text-slate-300"
             }`}
           >
-            Leaf Doctor
+            {t("navCropDoctor")}
           </button>
           <button
             onClick={() => setActiveTab("agrismart-guard")}
@@ -305,7 +305,7 @@ export const Header: React.FC<HeaderProps> = ({
               activeTab === "agrismart-guard" ? "bg-emerald-600 text-white" : "text-slate-300"
             }`}
           >
-            AgriSmart Guard
+            {t("navAgriGuard")}
           </button>
           <button
             onClick={() => setActiveTab("govt-schemes")}
@@ -313,7 +313,7 @@ export const Header: React.FC<HeaderProps> = ({
               activeTab === "govt-schemes" ? "bg-emerald-600 text-white" : "text-amber-300"
             }`}
           >
-            Govt Schemes & GeM
+            {t("navGovtSchemes")}
           </button>
           <button
             onClick={() => setActiveTab("farming-guides")}
@@ -321,7 +321,7 @@ export const Header: React.FC<HeaderProps> = ({
               activeTab === "farming-guides" ? "bg-emerald-600 text-white" : "text-emerald-300"
             }`}
           >
-            Farming Guides
+            {t("navGuides")}
           </button>
           <button
             onClick={() => setActiveTab("ask-ai")}
@@ -329,7 +329,7 @@ export const Header: React.FC<HeaderProps> = ({
               activeTab === "ask-ai" ? "bg-emerald-600 text-white" : "text-slate-300"
             }`}
           >
-            Ask AI
+            {t("navAskAi")}
           </button>
         </div>
       </header>

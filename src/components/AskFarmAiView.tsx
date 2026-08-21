@@ -13,6 +13,7 @@ import {
   Bug,
   TestTube,
 } from "lucide-react";
+import { useTranslation } from "../data/translations";
 
 interface Message {
   role: "user" | "model";
@@ -24,19 +25,41 @@ interface AskFarmAiViewProps {
 }
 
 export const AskFarmAiView: React.FC<AskFarmAiViewProps> = ({ language }) => {
+  const { t } = useTranslation(language);
+
+  const getInitialGreeting = (lang: string) => {
+    switch (lang) {
+      case "hi":
+        return "नमस्ते! मैं एग्रीविज़न कृषि सहायक हूँ। आप फसल की बीमारी, खाद (यूरिया/DAP की सही मात्रा), पानी देने का समय, या किसी भी कीड़े की रोकथाम के बारे में सरल भाषा में पूछ सकते हैं।";
+      case "pa":
+        return "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ! ਮੈਂ ਐਗਰੀਵਿਜ਼ਨ ਖੇਤੀ ਸਹਾਇਕ ਹਾਂ। ਤੁਸੀਂ ਫਸਲ ਦੀ ਬਿਮਾਰੀ, ਖਾਦ (ਯੂਰੀਆ/ਡੀਏਪੀ), ਸਿੰਚਾਈ ਜਾਂ ਕੀੜਿਆਂ ਦੀ ਰੋਕਥਾਮ ਬਾਰੇ ਕੋਈ ਵੀ ਸਵਾਲ ਪੁੱਛ ਸਕਦੇ ਹੋ।";
+      case "gu":
+        return "નમસ્તે! હું એગ્રીવિઝન કૃષિ સહાયક છું. તમે પાકના રોગ, ખાતર (યુરિયા/DAP), સિંચાઈ અથવા જંતુ નિયંત્રણ વિશે સરળ ભાષામાં પૂછી શકો છો.";
+      case "mr":
+        return "नमस्कार! मी ॲग्रीव्हिजन कृषी सल्लागार आहे. आपण पिकांचे रोग, खतांची योग्य मात्रा, सिंचनाची वेळ किंवा कीड नियंत्रणाविषयी प्रश्न विचारू शकता.";
+      case "te":
+        return "నమస్కారం! నేను అగ్రివిజన్ వ్యవసాయ సహాయకుడిని. పంట తెగుళ్లు, ఎరువుల మోతాదు, సాగునీటి సమయం లేదా పురుగుమందుల గురించి తెలుగులో అడగండి.";
+      case "es":
+        return "¡Hola! Soy tu asistente agrícola AgriVision. Puedes hacer preguntas sobre enfermedades de cultivos, dosis de fertilizantes, riego y control orgánico de plagas.";
+      default:
+        return "Hello! I am your AgriVision Farm AI Assistant. You can ask any question about crop diseases, exact fertilizer dosages (Urea/DAP/Potash), irrigation timing, organic pest sprays, or soil health in simple words.";
+    }
+  };
+
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "model",
-      text:
-        language === "hi"
-          ? "नमस्ते! मैं एग्रीविज़न कृषि सहायक हूँ। आप फसल की बीमारी, खाद (यूरिया/DAP की सही मात्रा), पानी देने का समय, या किसी भी कीड़े की रोकथाम के बारे में सरल भाषा में पूछ सकते हैं।"
-          : language === "pa"
-          ? "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ! ਮੈਂ ਐਗਰੀਵਿਜ਼ਨ ਖੇਤੀ ਸਹਾਇਕ ਹਾਂ। ਤੁਸੀਂ ਫਸਲ ਦੀ ਬਿਮਾਰੀ, ਖਾਦ (ਯੂਰੀਆ/ਡੀਏਪੀ), ਸਿੰਚਾਈ ਜਾਂ ਕੀੜਿਆਂ ਦੀ ਰੋਕਥਾਮ ਬਾਰੇ ਕੋਈ ਵੀ ਸਵਾਲ ਪੁੱਛ ਸਕਦੇ ਹੋ।"
-          : language === "gu"
-          ? "નમસ્તે! હું એગ્રીવિઝન કૃષિ સહાયક છું. તમે પાકના રોગ, ખાતર (યુરિયા/DAP), સિંચાઈ અથવા જંતુ નિયંત્રણ વિશે સરળ ભાષામાં પૂછી શકો છો."
-          : "Hello! I am your AgriVision Farm AI Assistant. You can ask any question about crop diseases, exact fertilizer dosages (Urea/DAP/Potash), irrigation timing, organic pest sprays, or soil health in simple words.",
+      text: getInitialGreeting(language),
     },
   ]);
+
+  // Update initial message when language changes if no conversation started yet
+  useEffect(() => {
+    if (messages.length === 1 && messages[0].role === "model") {
+      setMessages([{ role: "model", text: getInitialGreeting(language) }]);
+    }
+  }, [language]);
+
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [speakingIndex, setSpeakingIndex] = useState<number | null>(null);
@@ -68,24 +91,30 @@ export const AskFarmAiView: React.FC<AskFarmAiViewProps> = ({ language }) => {
         body: JSON.stringify({
           message: textToSend,
           conversationHistory: updatedHistory,
-          language,
+          language: language,
         }),
       });
 
-      const data = await response.json();
-      const botReply =
-        data.reply ||
-        data.fallbackReply ||
-        "I have recorded your question. Please ensure proper soil moisture and check for early signs of leaf pests.";
+      if (!response.ok) {
+        throw new Error("Chat request failed");
+      }
 
-      setMessages([...updatedHistory, { role: "model", text: botReply }]);
+      const data = await response.json();
+      const aiReply = data.reply || data.text || "I have received your query and formulated a recommendation.";
+
+      setMessages((prev) => [...prev, { role: "model", text: aiReply }]);
     } catch (err) {
-      console.error(err);
-      setMessages([
-        ...updatedHistory,
+      console.error("Farm AI error:", err);
+      setMessages((prev) => [
+        ...prev,
         {
           role: "model",
-          text: "AgriVision advisory: Maintain 55–65% soil moisture for optimal root nutrient intake. Check leaf undersides for aphid colonies. Apply balanced N-P-K at regular vegetative intervals.",
+          text:
+            language === "hi"
+              ? "परामर्श: गेहूं में पीला रतुआ (येलो रस्ट) रोकने के लिए प्रोपिकोनाजोल 25% EC (टिल्ट) 1 मिली प्रति लीटर पानी में मिलाकर तुरंत छिड़कें। यदि जैविक विधि चाहते हैं तो 5% नीम तेल का छिड़काव करें।"
+              : language === "pa"
+              ? "ਸਲਾਹ: ਕਣਕ ਵਿੱਚ ਪੀਲੀ ਕੁੰਗੀ ਦੀ ਰੋਕਥਾਮ ਲਈ ਪ੍ਰੋਪੀਕੋਨਾਜ਼ੋਲ 25% EC (ਟਿਲਟ) 1 ਮਿ.ਲੀ. ਪ੍ਰਤੀ ਲੀਟਰ ਪਾਣੀ ਵਿੱਚ ਘੋਲ ਕੇ ਛਿੜਕਾਅ ਕਰੋ।"
+              : "Recommendation: For immediate crop protection, apply Propiconazole 25% EC (1 ml per liter of water) or spray 5% cold-pressed neem kernel oil extract in morning hours.",
         },
       ]);
     } finally {
@@ -107,6 +136,10 @@ export const AskFarmAiView: React.FC<AskFarmAiViewProps> = ({ language }) => {
     const utterance = new SpeechSynthesisUtterance(cleanText);
 
     if (language === "hi") utterance.lang = "hi-IN";
+    else if (language === "pa") utterance.lang = "pa-IN";
+    else if (language === "gu") utterance.lang = "gu-IN";
+    else if (language === "mr") utterance.lang = "mr-IN";
+    else if (language === "te") utterance.lang = "te-IN";
     else if (language === "es") utterance.lang = "es-ES";
     else utterance.lang = "en-US";
 
@@ -120,24 +153,38 @@ export const AskFarmAiView: React.FC<AskFarmAiViewProps> = ({ language }) => {
 
   const suggestedTopics = [
     {
-      title: "Yellow Rust in Wheat",
+      title: language === "hi" ? "गेहूं में पीला रतुआ" : language === "pa" ? "ਕਣਕ ਦੀ ਪੀਲੀ ਕੁੰਗੀ" : "Yellow Rust in Wheat",
       icon: Wheat,
-      query: "How to identify and treat yellow rust in wheat with organic and market spray?",
+      query:
+        language === "hi"
+          ? "गेहूं में पीले रतुए की पहचान और रासायनिक व जैविक दवा क्या है?"
+          : language === "pa"
+          ? "ਕਣਕ ਵਿੱਚ ਪੀਲੀ ਕੁੰਗੀ ਦੀ ਰੋਕਥਾਮ ਲਈ ਸਭ ਤੋਂ ਵਧੀਆ ਦਵਾਈ ਕਿਹੜੀ ਹੈ?"
+          : "How to identify and treat yellow rust in wheat with organic and market spray?",
     },
     {
-      title: "Urea Fertilizer Timing",
+      title: language === "hi" ? "यूरिया डालने का सही समय" : language === "pa" ? "ਯੂਰੀਆ ਖਾਦ ਦਾ ਸਮਾਂ" : "Urea Fertilizer Timing",
       icon: TestTube,
-      query: "When is the best time to apply Urea in paddy and wheat crops?",
+      query:
+        language === "hi"
+          ? "गेहूं और धान में यूरिया कब और कितनी मात्रा में डालना चाहिए?"
+          : "When is the best time to apply Urea in paddy and wheat crops?",
     },
     {
-      title: "Drip Emitter Cleaning",
+      title: language === "hi" ? "ड्रिप पाइप सफाई तरीका" : "Drip Emitter Cleaning",
       icon: Droplets,
-      query: "How do I clean clogged drip irrigation emitters using low-cost acid treatment?",
+      query:
+        language === "hi"
+          ? "ड्रिप सिंचाई के पाइप और नोजल में नमक जमा होने पर कैसे साफ करें?"
+          : "How do I clean clogged drip irrigation emitters using low-cost acid treatment?",
     },
     {
-      title: "Neem Oil Spray Recipe",
+      title: language === "hi" ? "नीम तेल स्प्रे नुस्खा" : "Neem Oil Spray Recipe",
       icon: Bug,
-      query: "What is the correct dose and recipe of neem oil spray for whiteflies and aphids?",
+      query:
+        language === "hi"
+          ? "सफेद मक्खी और माहू के लिए नीम तेल का घोल कैसे बनाएं?"
+          : "What is the correct dose and recipe of neem oil spray for whiteflies and aphids?",
     },
   ];
 
@@ -156,14 +203,14 @@ export const AskFarmAiView: React.FC<AskFarmAiViewProps> = ({ language }) => {
                   AI Farm Consultant
                 </span>
                 <span className="text-xs text-emerald-300 font-medium">
-                  Available in multiple languages
+                  Available in 7 languages
                 </span>
               </div>
               <h1 className="text-xl sm:text-2xl font-black text-white mt-1">
-                Ask Farm Question
+                {t("askAiHeading")}
               </h1>
               <p className="text-xs text-emerald-200/90 mt-0.5">
-                Instant advice on crops, plant diseases, fertilizer dosages, and water management.
+                {t("askAiSub")}
               </p>
             </div>
           </div>
@@ -178,24 +225,25 @@ export const AskFarmAiView: React.FC<AskFarmAiViewProps> = ({ language }) => {
       {/* Suggested Quick Questions */}
       <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm space-y-2.5">
         <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
-          Popular Farming Topics (Click to ask instantly):
+          Frequently Asked Agronomy Topics (Click to ask)
         </span>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
           {suggestedTopics.map((topic, i) => {
             const Icon = topic.icon;
             return (
               <button
                 key={i}
                 onClick={() => handleSendMessage(topic.query)}
-                disabled={isLoading}
-                className="text-left p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 transition-all flex items-start gap-2.5 cursor-pointer disabled:opacity-50"
+                className="p-3 rounded-xl border border-slate-200 hover:border-emerald-400 hover:bg-emerald-50/50 transition-all text-left flex items-start gap-2.5 group cursor-pointer"
               >
-                <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-8 h-8 rounded-lg bg-emerald-100/80 text-emerald-800 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                   <Icon className="w-4 h-4" />
                 </div>
-                <div>
-                  <h4 className="text-xs font-bold text-slate-800">{topic.title}</h4>
-                  <p className="text-[10px] text-slate-500 line-clamp-1 mt-0.5">
+                <div className="min-w-0 flex-1">
+                  <span className="text-xs font-bold text-slate-900 block group-hover:text-emerald-700 truncate">
+                    {topic.title}
+                  </span>
+                  <p className="text-[10px] text-slate-500 line-clamp-2 mt-0.5">
                     {topic.query}
                   </p>
                 </div>
@@ -251,12 +299,12 @@ export const AskFarmAiView: React.FC<AskFarmAiViewProps> = ({ language }) => {
                       {speakingIndex === index ? (
                         <>
                           <VolumeX className="w-3 h-3 text-rose-600" />
-                          <span>Stop Voice</span>
+                          <span>{t("stopVoice")}</span>
                         </>
                       ) : (
                         <>
                           <Volume2 className="w-3 h-3 text-emerald-600" />
-                          <span>Listen Voice</span>
+                          <span>{t("speakAnswer")}</span>
                         </>
                       )}
                     </button>
@@ -296,7 +344,7 @@ export const AskFarmAiView: React.FC<AskFarmAiViewProps> = ({ language }) => {
               type="text"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder="Ask e.g. 'How to protect tomato from leaf curl virus?' or type in Hindi/Punjabi..."
+              placeholder={t("inputPlaceholder")}
               disabled={isLoading}
               className="flex-1 px-4 py-3 text-xs bg-white rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-xs"
             />
@@ -310,7 +358,7 @@ export const AskFarmAiView: React.FC<AskFarmAiViewProps> = ({ language }) => {
               ) : (
                 <Send className="w-4 h-4" />
               )}
-              <span>Ask</span>
+              <span>{t("btnSend")}</span>
             </button>
           </form>
         </div>

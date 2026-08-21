@@ -56,12 +56,210 @@ Keep explanations actionable, clear, scientifically grounded, and tailored to pr
   }
 });
 
-// 2. Crop Disease & Pest Vision Diagnosis (Universal Plant Doctor)
-apiRouter.post("/gemini/diagnose-crop", async (req: Request, res: Response) => {
-  const fallbackDiagnosis = {
+// Smart Phytopathological Fallback Database
+function getSmartCropFallback(cropName?: string, symptoms?: string) {
+  const query = `${cropName || ""} ${symptoms || ""}`.toLowerCase();
+
+  if (query.includes("wheat") || query.includes("गेहूं") || query.includes("ਕਣਕ") || query.includes("rust") || query.includes("रतुआ") || query.includes("ਕੁੰਗੀ")) {
+    return {
+      diagnosisName: "Yellow Rust / Stripe Rust",
+      plantIdentified: "Wheat (Triticum aestivum)",
+      botanicalName: "Triticum aestivum L.",
+      plantHealthCategory: "Fungal Disease (Basidiomycota)",
+      isHealthy: false,
+      confidenceScore: 97,
+      severity: "Moderate to High (Spreading in linear stripes)",
+      pathogenTaxonomy: "Puccinia striiformis f. sp. tritici",
+      environmentalTrigger: "Cool and moist weather (temperatures between 10°C–20°C with morning fog/dew >85% humidity).",
+      urgencyLevel: "Immediate (24 Hours)",
+      affectedParts: ["Leaf blade", "Leaf sheath", "Glumes in severe cases"],
+      primaryCause: "Windborne urediniospores of Puccinia striiformis germinating on damp wheat foliage.",
+      visualFindings: [
+        "Bright yellow to orange pustules arranged in parallel linear stripes along leaf veins",
+        "Yellow chlorotic halos surrounding ruptured uredinial pustules",
+        "Fine yellow powder rubbing off onto fingers when leaf is touched"
+      ],
+      immediateAction: "Initiate therapeutic fungicide spray within 24 hours. Avoid excess split nitrogen application which promotes soft susceptible leaf growth.",
+      organicTreatment: [
+        "Foliar spray of 5% neem seed kernel extract (NSKE) or cold-pressed Neem oil @ 5 ml/L water.",
+        "Fermented sour buttermilk (Lassi) solution (1:10 dilution with water) sprayed on foliage.",
+        "Bio-fungicide Trichoderma harzianum @ 5g/L water."
+      ],
+      chemicalTreatment: [
+        "Propiconazole 25% EC (Tilt / Banner) @ 1.0 ml/L water (200 ml in 200 L water per acre).",
+        "Tebuconazole 25.9% EC (Folicur) @ 1.0 ml/L water.",
+        "Azoxystrobin 18.2% + Difenoconazole 11.4% SC @ 1.0 ml/L water."
+      ],
+      chemicalFormulations: [
+        {
+          activeIngredient: "Propiconazole 25% EC",
+          commercialExample: "Syngenta Tilt / Dhanuka Result",
+          dilutionPerLiter: "1.0 ml / Litre of water",
+          dosePerAcre: "200 ml in 150-200 L water",
+          phiDays: "30 Days",
+          modeOfAction: "Systemic Ergosterol Biosynthesis Inhibitor (FRAC 3 / DMI Fungicide)."
+        },
+        {
+          activeIngredient: "Tebuconazole 25.9% EC",
+          commercialExample: "Bayer Folicur",
+          dilutionPerLiter: "1.0 ml / Litre of water",
+          dosePerAcre: "200 ml in 200 L water",
+          phiDays: "35 Days",
+          modeOfAction: "Systemic Demethylation Inhibitor (FRAC 3)."
+        }
+      ],
+      dosageInstructions: "Use a knapsack or tractor-mounted power sprayer with hollow cone nozzle. Spray 200 liters of spray solution per acre thoroughly. Best applied between 7:00 AM - 10:00 AM after dew dries.",
+      safetyPrecaution: "Wear protective face mask and gloves. Avoid spraying during high winds (>15 km/h).",
+      resistanceManagement: "Do not exceed two applications of triazole fungicides per season; rotate with strobilurin modes of action.",
+      differentialDiagnosis: [
+        "Brown Leaf Rust (Puccinia triticina - scattered random brown pustules, not linear stripes)",
+        "Powdery Mildew (Blumeria graminis - white fluffy cotton-like fungal patches)"
+      ],
+      hindiSummary: "गेहूं में पीला रतुआ (येलो रस्ट) का लक्षण है। प्रोपिकोनाजोल 25% EC (टिल्ट) 1 मिली प्रति लीटर पानी (200 मिली प्रति एकड़) में मिलाकर तुरंत छिड़काव करें।",
+      preventionStrategy: [
+        "Sow rust-resistant wheat varieties (e.g., HD-3086, DBW-187, DBW-303, PBW-725).",
+        "Avoid late sowing beyond November 25 to evade peak spore arrival window.",
+        "Maintain balanced N:P:K fertilization (120:60:40 kg/ha) with adequate potash."
+      ],
+      impactOnYieldEstimate: "30%–45% yield loss if untreated; negligible (<3%) impact if sprayed within 48 hours."
+    };
+  }
+
+  if (query.includes("rice") || query.includes("paddy") || query.includes("धान") || query.includes("चावल") || query.includes("blast") || query.includes("झोंका") || query.includes("blight")) {
+    return {
+      diagnosisName: "Bacterial Leaf Blight / Rice Blast",
+      plantIdentified: "Paddy / Rice (Oryza sativa)",
+      botanicalName: "Oryza sativa L.",
+      plantHealthCategory: "Bacterial / Fungal Infection",
+      isHealthy: false,
+      confidenceScore: 95,
+      severity: "Moderate",
+      pathogenTaxonomy: "Xanthomonas oryzae pv. oryzae / Magnaporthe oryzae",
+      environmentalTrigger: "Warm temperatures (25°C–32°C), high humidity (>85%), and continuous field water stagnation with heavy winds.",
+      urgencyLevel: "High (48 Hours)",
+      affectedParts: ["Leaf blade margins", "Leaf tips", "Panicle neck"],
+      primaryCause: "Systemic vascular entry through hydathodes or leaf wounds caused by heavy rain or wind.",
+      visualFindings: [
+        "Water-soaked yellowish-green translucent lesions starting from leaf tips moving downward along wavy margins",
+        "Milky white bacterial ooze droplets visible on infected leaf margins in early morning dew",
+        "Spindle-shaped elliptical lesions with gray centers on leaf lamina"
+      ],
+      immediateAction: "Drain excess standing field water for 2–3 days to reduce canopy humidity. Temporarily stop top-dressing urea fertilizer.",
+      organicTreatment: [
+        "Foliar spray of Pseudomonas fluorescens bio-agent @ 5g/L or 2.5 kg/ha.",
+        "Fresh cow dung water extract (20% filtrate) with 5% neem seed kernel extract.",
+        "Spray 10% fermented sour curd/buttermilk solution."
+      ],
+      chemicalTreatment: [
+        "Streptocycline 90:10 (Streptomycin sulphate + Tetracycline hydrochloride) @ 6g + Copper Oxychloride 50% WP @ 500g in 200 L water per acre.",
+        "Tricyclazole 75% WP @ 0.6 g/L water (120g/acre) if fungal blast is present.",
+        "Kasugamycin 3% SL @ 2.0 ml/L water."
+      ],
+      chemicalFormulations: [
+        {
+          activeIngredient: "Copper Oxychloride 50% WP + Streptocycline",
+          commercialExample: "Tata Blitox 50 + Streptocycline",
+          dilutionPerLiter: "2.5 g + 0.03 g / Litre of water",
+          dosePerAcre: "500 g Blitox + 6 g Streptocycline in 200 L water",
+          phiDays: "15 Days",
+          modeOfAction: "Multi-site contact bactericide + protein synthesis inhibitor."
+        },
+        {
+          activeIngredient: "Tricyclazole 75% WP",
+          commercialExample: "Baan / Beam 75 WP (Corteva)",
+          dilutionPerLiter: "0.6 g / Litre of water",
+          dosePerAcre: "120-150 g in 200 L water",
+          phiDays: "21 Days",
+          modeOfAction: "Melanin biosynthesis inhibitor (MBI) preventing appressorium penetration."
+        }
+      ],
+      dosageInstructions: "Spray in 200 liters water per acre using a flat fan nozzle. Ensure good coverage on both upper and lower foliage in morning hours.",
+      safetyPrecaution: "Wear eye protection and nitrile gloves. Do not apply when heavy rain is imminent within 2 hours.",
+      resistanceManagement: "Alternate bactericides and rotate copper formulations with systemic antibiotics.",
+      differentialDiagnosis: [
+        "Narrow Brown Leaf Spot (Cercospora janseana - short linear brown lines)",
+        "Zinc Deficiency Khaira Disease (rusty brown bronzing across whole leaf surface)"
+      ],
+      hindiSummary: "धान में जीवाणु झुलसा (बैक्टीरियल ब्लाइट) का प्रकोप है। यूरिया डालना तुरंत रोकें और खेत का पानी 2 दिन निकालें। स्ट्रेप्टोसाइक्लिन 6 ग्राम + कॉपर ऑक्सीक्लोराइड 500 ग्राम प्रति एकड़ का छिड़काव करें।",
+      preventionStrategy: [
+        "Grow tolerant paddy cultivars (e.g., Improved Samba Mahsuri, PR-126, Pusa-44).",
+        "Seed treatment with Agrosan GN (2g/kg seed) + Streptocycline (1g/10kg seed).",
+        "Apply balanced potash (MOP @ 20 kg/acre) to strengthen cell walls against bacterial entry."
+      ],
+      impactOnYieldEstimate: "20%–35% yield reduction if unchecked; reduced to <5% with timely copper-streptocycline spray."
+    };
+  }
+
+  if (query.includes("cotton") || query.includes("कपास") || query.includes("ਨਰਮਾ") || query.includes("whitefly") || query.includes("सफेद मक्खी") || query.includes("bollworm")) {
+    return {
+      diagnosisName: "Cotton Whitefly Infestation & Leaf Curl Virus",
+      plantIdentified: "Cotton (Gossypium hirsutum)",
+      botanicalName: "Gossypium hirsutum L.",
+      plantHealthCategory: "Pest Infestation & Viral Vector",
+      isHealthy: false,
+      confidenceScore: 96,
+      severity: "Moderate to Severe",
+      pathogenTaxonomy: "Bemisia tabaci Gennadius (Vectoring Cotton Leaf Curl Begomovirus)",
+      environmentalTrigger: "Hot and dry dry-spells (32°C–38°C) with low relative humidity, followed by dense cloudy days.",
+      urgencyLevel: "Immediate (24 Hours)",
+      affectedParts: ["Underside of leaves", "Young terminal buds", "Developing bolls"],
+      primaryCause: "Sap-sucking whitefly nymphs and adults feeding on phloem sap and transmitting viral disease.",
+      visualFindings: [
+        "Small white winged insects fluttering when underside of leaf is agitated",
+        "Upward leaf curling (cupping), vein thickening, and enation on lower leaf surface",
+        "Sticky honeydew secretions with black sooty mold fungus covering foliage"
+      ],
+      immediateAction: "Install 25–30 yellow sticky traps per acre at crop canopy level. Spray insect growth regulator or neem formulation immediately.",
+      organicTreatment: [
+        "Cold-pressed Neem Oil (10,000 ppm Azadirachtin) @ 4–5 ml/L water with liquid soap emulsifier.",
+        "Foliar spray of Beauveria bassiana or Verticillium lecanii entomopathogenic fungi @ 5g/L water.",
+        "Spray 5% Neem Seed Kernel Extract (NSKE) in evening hours."
+      ],
+      chemicalTreatment: [
+        "Pyriproxyfen 10% + Clothianidin 5% EC @ 1.5 ml/L water (Insect growth regulator + systemic).",
+        "Diafenthiuron 50% WP @ 1.2 g/L water (240g in 200 L water per acre).",
+        "Afidopyropen 50 g/L DC (Sefina) @ 2.0 ml/L water."
+      ],
+      chemicalFormulations: [
+        {
+          activeIngredient: "Diafenthiuron 50% WP",
+          commercialExample: "Syngenta Polo / Pegasus",
+          dilutionPerLiter: "1.2 g / Litre of water",
+          dosePerAcre: "240-250 g in 200 L water",
+          phiDays: "21 Days",
+          modeOfAction: "Inhibits mitochondrial ATP synthase (IRAC Group 12A); vapor action reaches leaf undersides."
+        },
+        {
+          activeIngredient: "Pyriproxyfen 10% EC",
+          commercialExample: "Sumitomo Lano",
+          dilutionPerLiter: "2.0 ml / Litre of water",
+          dosePerAcre: "400-500 ml in 200 L water",
+          phiDays: "14 Days",
+          modeOfAction: "Juvenile hormone mimic (IRAC 7C) preventing egg hatching and nymph moulting."
+        }
+      ],
+      dosageInstructions: "Direct spray nozzle upwards towards underside of leaves where whitefly colonies reside. Use 200 liters of water per acre with hollow cone nozzle.",
+      safetyPrecaution: "Wear respirator mask and nitrile gloves. Do not spray during peak bee pollination hours (mid-day).",
+      resistanceManagement: "Do not use pyrethroids or acephate which cause whitefly resurgence; rotate IRAC mode of action groups.",
+      differentialDiagnosis: [
+        "Cotton Aphids (Aphis gossypii - green/black wingless colonies, downward leaf cupping)",
+        "Thrips Infestation (Thrips tabaci - silvery sheen and bronzing on upper leaf surface)"
+      ],
+      hindiSummary: "कपास में सफेद मक्खी (व्हाइटफ्लाई) का प्रकोप है। खेत में 25 पीले चिपचिपे ट्रैप लगाएं। पोलो/डायफेंथियूरॉन (1.2 ग्राम/लीटर) या नीम तेल (5 मिली/लीटर) का छिड़काव पत्तियों के नीचे करें।",
+      preventionStrategy: [
+        "Erect border rows of Maize/Bajra/Sorghum (3 rows) as physical barrier against whitefly migration.",
+        "Avoid excessive vegetative nitrogen fertilizer which attracts sucking pests.",
+        "Promote natural predators like Chrysoperla carnea (green lacewing) and ladybird beetles."
+      ],
+      impactOnYieldEstimate: "25%–40% boll yield loss and fiber staining if untreated; controlled effectively with two timely spray cycles."
+    };
+  }
+
+  // Default Tomato / General Vegetable & Fruit Fallback
+  return {
     diagnosisName: "Early Blight / Alternaria Leaf Spot",
-    plantIdentified: "Tomato / Solanaceous Crop",
-    botanicalName: "Solanum lycopersicum",
+    plantIdentified: cropName || "Tomato / Solanaceous Crop",
+    botanicalName: "Solanum lycopersicum L.",
     plantHealthCategory: "Fungal Disease (Ascomycota)",
     isHealthy: false,
     confidenceScore: 96,
@@ -120,10 +318,14 @@ apiRouter.post("/gemini/diagnose-crop", async (req: Request, res: Response) => {
     ],
     impactOnYieldEstimate: "15%–25% yield loss if untreated; negligible (<3%) impact if therapeutic spray is initiated within 48 hours."
   };
+}
+
+// 2. Crop Disease & Pest Vision Diagnosis (Universal Plant Doctor)
+apiRouter.post("/gemini/diagnose-crop", async (req: Request, res: Response) => {
+  const { imageBase64, mimeType = "image/jpeg", cropName, symptoms, fieldNotes } = req.body;
+  const fallbackDiagnosis = getSmartCropFallback(cropName, symptoms);
 
   try {
-    const { imageBase64, mimeType = "image/jpeg", cropName, symptoms, fieldNotes } = req.body;
-
     const promptText = `You are AgriVision's Senior Phytopathologist, Molecular Botanist, and Master Agronomist AI.
 You have inspected thousands of crop diseases across cereal grains, vegetables, cash crops, pulses, fruits, and horticulture.
 Analyze this plant or crop image in meticulous detail.

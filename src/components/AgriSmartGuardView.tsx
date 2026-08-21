@@ -28,6 +28,7 @@ import {
   Sliders,
   Flame,
 } from "lucide-react";
+import { useTranslation } from "../data/translations";
 
 interface NodeData {
   id: string;
@@ -42,7 +43,12 @@ interface NodeData {
   status: "active" | "warning" | "watering";
 }
 
-export const AgriSmartGuardView: React.FC = () => {
+interface AgriSmartGuardViewProps {
+  language?: string;
+}
+
+export const AgriSmartGuardView: React.FC<AgriSmartGuardViewProps> = ({ language = "en" }) => {
+  const { t } = useTranslation(language);
   // Active Node selector
   const [selectedNodeId, setSelectedNodeId] = useState<string>("node-1");
   const [nodes, setNodes] = useState<Record<string, NodeData>>({

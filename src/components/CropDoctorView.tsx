@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import { CropDiagnosisResult } from "../types/agriculture";
 import { SAMPLE_DISEASE_CASES } from "../data/mockData";
+import { useTranslation } from "../data/translations";
 
 const COMMON_SYMPTOM_TAGS = [
   "Yellow spots / Chlorosis",
@@ -89,7 +90,12 @@ async function compressImageForFastInference(file: File | Blob): Promise<string>
   });
 }
 
-export const CropDoctorView: React.FC = () => {
+interface CropDoctorViewProps {
+  language?: string;
+}
+
+export const CropDoctorView: React.FC<CropDoctorViewProps> = ({ language = "en" }) => {
+  const { t } = useTranslation(language);
   const [selectedCrop, setSelectedCrop] = useState<string>("Auto-Detect from Photo");
   const [customCropName, setCustomCropName] = useState<string>("");
   const [symptomsInput, setSymptomsInput] = useState<string>("");

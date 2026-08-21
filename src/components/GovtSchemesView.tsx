@@ -28,6 +28,7 @@ import {
   Truck,
   Building2,
 } from "lucide-react";
+import { useTranslation } from "../data/translations";
 
 interface GovtScheme {
   id: string;
@@ -377,7 +378,12 @@ const GOVT_SCHEMES_DATA: GovtScheme[] = [
   },
 ];
 
-export const GovtSchemesView: React.FC = () => {
+interface GovtSchemesViewProps {
+  language?: string;
+}
+
+export const GovtSchemesView: React.FC<GovtSchemesViewProps> = ({ language = "en" }) => {
+  const { t } = useTranslation(language);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [expandedSchemeId, setExpandedSchemeId] = useState<string | null>("pm-kisan");
